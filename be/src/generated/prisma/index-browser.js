@@ -117,11 +117,34 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.DurianDataScalarFieldEnum = {
+exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  filename: 'filename',
-  jenis: 'jenis',
-  grade: 'grade',
+  nama: 'nama',
+  email: 'email',
+  password: 'password',
+  role: 'role'
+};
+
+exports.Prisma.JadwalScalarFieldEnum = {
+  id: 'id',
+  tanggal: 'tanggal',
+  shift: 'shift',
+  id_user: 'id_user'
+};
+
+exports.Prisma.AbsensiScalarFieldEnum = {
+  id: 'id',
+  tanggal: 'tanggal',
+  status: 'status',
+  verifikasi: 'verifikasi',
+  user_id: 'user_id'
+};
+
+exports.Prisma.PrediksiScalarFieldEnum = {
+  id: 'id',
+  imageUrl: 'imageUrl',
+  user_id: 'user_id',
+  kualitas: 'kualitas',
   harga: 'harga'
 };
 
@@ -135,9 +158,33 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.Role = exports.$Enums.Role = {
+  ADMIN: 'ADMIN',
+  KARYAWAN: 'KARYAWAN'
+};
+
+exports.Shift = exports.$Enums.Shift = {
+  PAGI: 'PAGI',
+  SIANG: 'SIANG',
+  MALAM: 'MALAM'
+};
+
+exports.AbsensiStatus = exports.$Enums.AbsensiStatus = {
+  HADIR: 'HADIR',
+  ALFA: 'ALFA',
+  IZIN: 'IZIN',
+  SAKIT: 'SAKIT'
+};
 
 exports.Prisma.ModelName = {
-  DurianData: 'DurianData'
+  User: 'User',
+  Jadwal: 'Jadwal',
+  Absensi: 'Absensi',
+  Prediksi: 'Prediksi'
 };
 
 /**

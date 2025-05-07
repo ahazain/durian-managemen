@@ -14,10 +14,69 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
- * Model DurianData
+ * Model User
  * 
  */
-export type DurianData = $Result.DefaultSelection<Prisma.$DurianDataPayload>
+export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
+ * Model Jadwal
+ * 
+ */
+export type Jadwal = $Result.DefaultSelection<Prisma.$JadwalPayload>
+/**
+ * Model Absensi
+ * 
+ */
+export type Absensi = $Result.DefaultSelection<Prisma.$AbsensiPayload>
+/**
+ * Model Prediksi
+ * 
+ */
+export type Prediksi = $Result.DefaultSelection<Prisma.$PrediksiPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const AbsensiStatus: {
+  HADIR: 'HADIR',
+  ALFA: 'ALFA',
+  IZIN: 'IZIN',
+  SAKIT: 'SAKIT'
+};
+
+export type AbsensiStatus = (typeof AbsensiStatus)[keyof typeof AbsensiStatus]
+
+
+export const Shift: {
+  PAGI: 'PAGI',
+  SIANG: 'SIANG',
+  MALAM: 'MALAM'
+};
+
+export type Shift = (typeof Shift)[keyof typeof Shift]
+
+
+export const Role: {
+  ADMIN: 'ADMIN',
+  KARYAWAN: 'KARYAWAN'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+}
+
+export type AbsensiStatus = $Enums.AbsensiStatus
+
+export const AbsensiStatus: typeof $Enums.AbsensiStatus
+
+export type Shift = $Enums.Shift
+
+export const Shift: typeof $Enums.Shift
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
 
 /**
  * ##  Prisma Client ʲˢ
@@ -26,8 +85,8 @@ export type DurianData = $Result.DefaultSelection<Prisma.$DurianDataPayload>
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more DurianData
- * const durianData = await prisma.durianData.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  *
  *
@@ -47,8 +106,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more DurianData
-   * const durianData = await prisma.durianData.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    *
    *
@@ -145,14 +204,44 @@ export class PrismaClient<
   }>>
 
       /**
-   * `prisma.durianData`: Exposes CRUD operations for the **DurianData** model.
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more DurianData
-    * const durianData = await prisma.durianData.findMany()
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
     * ```
     */
-  get durianData(): Prisma.DurianDataDelegate<ExtArgs, ClientOptions>;
+  get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.jadwal`: Exposes CRUD operations for the **Jadwal** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Jadwals
+    * const jadwals = await prisma.jadwal.findMany()
+    * ```
+    */
+  get jadwal(): Prisma.JadwalDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.absensi`: Exposes CRUD operations for the **Absensi** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Absensis
+    * const absensis = await prisma.absensi.findMany()
+    * ```
+    */
+  get absensi(): Prisma.AbsensiDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.prediksi`: Exposes CRUD operations for the **Prediksi** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Prediksis
+    * const prediksis = await prisma.prediksi.findMany()
+    * ```
+    */
+  get prediksi(): Prisma.PrediksiDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -593,7 +682,10 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    DurianData: 'DurianData'
+    User: 'User',
+    Jadwal: 'Jadwal',
+    Absensi: 'Absensi',
+    Prediksi: 'Prediksi'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -612,81 +704,303 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "durianData"
+      modelProps: "user" | "jadwal" | "absensi" | "prediksi"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
-      DurianData: {
-        payload: Prisma.$DurianDataPayload<ExtArgs>
-        fields: Prisma.DurianDataFieldRefs
+      User: {
+        payload: Prisma.$UserPayload<ExtArgs>
+        fields: Prisma.UserFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.DurianDataFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload> | null
+            args: Prisma.UserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.DurianDataFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>
+            args: Prisma.UserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           findFirst: {
-            args: Prisma.DurianDataFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload> | null
+            args: Prisma.UserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.DurianDataFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>
+            args: Prisma.UserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           findMany: {
-            args: Prisma.DurianDataFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>[]
+            args: Prisma.UserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           create: {
-            args: Prisma.DurianDataCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>
+            args: Prisma.UserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           createMany: {
-            args: Prisma.DurianDataCreateManyArgs<ExtArgs>
+            args: Prisma.UserCreateManyArgs<ExtArgs>
             result: BatchPayload
           }
           createManyAndReturn: {
-            args: Prisma.DurianDataCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>[]
+            args: Prisma.UserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           delete: {
-            args: Prisma.DurianDataDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>
+            args: Prisma.UserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           update: {
-            args: Prisma.DurianDataUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>
+            args: Prisma.UserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           deleteMany: {
-            args: Prisma.DurianDataDeleteManyArgs<ExtArgs>
+            args: Prisma.UserDeleteManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateMany: {
-            args: Prisma.DurianDataUpdateManyArgs<ExtArgs>
+            args: Prisma.UserUpdateManyArgs<ExtArgs>
             result: BatchPayload
           }
           updateManyAndReturn: {
-            args: Prisma.DurianDataUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>[]
+            args: Prisma.UserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>[]
           }
           upsert: {
-            args: Prisma.DurianDataUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$DurianDataPayload>
+            args: Prisma.UserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserPayload>
           }
           aggregate: {
-            args: Prisma.DurianDataAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateDurianData>
+            args: Prisma.UserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUser>
           }
           groupBy: {
-            args: Prisma.DurianDataGroupByArgs<ExtArgs>
-            result: $Utils.Optional<DurianDataGroupByOutputType>[]
+            args: Prisma.UserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserGroupByOutputType>[]
           }
           count: {
-            args: Prisma.DurianDataCountArgs<ExtArgs>
-            result: $Utils.Optional<DurianDataCountAggregateOutputType> | number
+            args: Prisma.UserCountArgs<ExtArgs>
+            result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Jadwal: {
+        payload: Prisma.$JadwalPayload<ExtArgs>
+        fields: Prisma.JadwalFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.JadwalFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.JadwalFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>
+          }
+          findFirst: {
+            args: Prisma.JadwalFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.JadwalFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>
+          }
+          findMany: {
+            args: Prisma.JadwalFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>[]
+          }
+          create: {
+            args: Prisma.JadwalCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>
+          }
+          createMany: {
+            args: Prisma.JadwalCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.JadwalCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>[]
+          }
+          delete: {
+            args: Prisma.JadwalDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>
+          }
+          update: {
+            args: Prisma.JadwalUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>
+          }
+          deleteMany: {
+            args: Prisma.JadwalDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.JadwalUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.JadwalUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>[]
+          }
+          upsert: {
+            args: Prisma.JadwalUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$JadwalPayload>
+          }
+          aggregate: {
+            args: Prisma.JadwalAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateJadwal>
+          }
+          groupBy: {
+            args: Prisma.JadwalGroupByArgs<ExtArgs>
+            result: $Utils.Optional<JadwalGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.JadwalCountArgs<ExtArgs>
+            result: $Utils.Optional<JadwalCountAggregateOutputType> | number
+          }
+        }
+      }
+      Absensi: {
+        payload: Prisma.$AbsensiPayload<ExtArgs>
+        fields: Prisma.AbsensiFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AbsensiFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AbsensiFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>
+          }
+          findFirst: {
+            args: Prisma.AbsensiFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AbsensiFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>
+          }
+          findMany: {
+            args: Prisma.AbsensiFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>[]
+          }
+          create: {
+            args: Prisma.AbsensiCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>
+          }
+          createMany: {
+            args: Prisma.AbsensiCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AbsensiCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>[]
+          }
+          delete: {
+            args: Prisma.AbsensiDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>
+          }
+          update: {
+            args: Prisma.AbsensiUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>
+          }
+          deleteMany: {
+            args: Prisma.AbsensiDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AbsensiUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AbsensiUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>[]
+          }
+          upsert: {
+            args: Prisma.AbsensiUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AbsensiPayload>
+          }
+          aggregate: {
+            args: Prisma.AbsensiAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAbsensi>
+          }
+          groupBy: {
+            args: Prisma.AbsensiGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AbsensiGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AbsensiCountArgs<ExtArgs>
+            result: $Utils.Optional<AbsensiCountAggregateOutputType> | number
+          }
+        }
+      }
+      Prediksi: {
+        payload: Prisma.$PrediksiPayload<ExtArgs>
+        fields: Prisma.PrediksiFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PrediksiFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PrediksiFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>
+          }
+          findFirst: {
+            args: Prisma.PrediksiFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PrediksiFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>
+          }
+          findMany: {
+            args: Prisma.PrediksiFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>[]
+          }
+          create: {
+            args: Prisma.PrediksiCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>
+          }
+          createMany: {
+            args: Prisma.PrediksiCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PrediksiCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>[]
+          }
+          delete: {
+            args: Prisma.PrediksiDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>
+          }
+          update: {
+            args: Prisma.PrediksiUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>
+          }
+          deleteMany: {
+            args: Prisma.PrediksiDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PrediksiUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PrediksiUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>[]
+          }
+          upsert: {
+            args: Prisma.PrediksiUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PrediksiPayload>
+          }
+          aggregate: {
+            args: Prisma.PrediksiAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePrediksi>
+          }
+          groupBy: {
+            args: Prisma.PrediksiGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PrediksiGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PrediksiCountArgs<ExtArgs>
+            result: $Utils.Optional<PrediksiCountAggregateOutputType> | number
           }
         }
       }
@@ -774,7 +1088,10 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
-    durianData?: DurianDataOmit
+    user?: UserOmit
+    jadwal?: JadwalOmit
+    absensi?: AbsensiOmit
+    prediksi?: PrediksiOmit
   }
 
   /* Types for Logging */
@@ -864,380 +1181,406 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type UserCountOutputType
+   */
+
+  export type UserCountOutputType = {
+    prediksi: number
+    absensi: number
+    jadwal: number
+  }
+
+  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prediksi?: boolean | UserCountOutputTypeCountPrediksiArgs
+    absensi?: boolean | UserCountOutputTypeCountAbsensiArgs
+    jadwal?: boolean | UserCountOutputTypeCountJadwalArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserCountOutputType
+     */
+    select?: UserCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPrediksiArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PrediksiWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAbsensiArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AbsensiWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountJadwalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JadwalWhereInput
+  }
+
 
   /**
    * Models
    */
 
   /**
-   * Model DurianData
+   * Model User
    */
 
-  export type AggregateDurianData = {
-    _count: DurianDataCountAggregateOutputType | null
-    _avg: DurianDataAvgAggregateOutputType | null
-    _sum: DurianDataSumAggregateOutputType | null
-    _min: DurianDataMinAggregateOutputType | null
-    _max: DurianDataMaxAggregateOutputType | null
+  export type AggregateUser = {
+    _count: UserCountAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
   }
 
-  export type DurianDataAvgAggregateOutputType = {
-    id: number | null
-    harga: number | null
+  export type UserMinAggregateOutputType = {
+    id: string | null
+    nama: string | null
+    email: string | null
+    password: string | null
+    role: $Enums.Role | null
   }
 
-  export type DurianDataSumAggregateOutputType = {
-    id: number | null
-    harga: number | null
+  export type UserMaxAggregateOutputType = {
+    id: string | null
+    nama: string | null
+    email: string | null
+    password: string | null
+    role: $Enums.Role | null
   }
 
-  export type DurianDataMinAggregateOutputType = {
-    id: number | null
-    filename: string | null
-    jenis: string | null
-    grade: string | null
-    harga: number | null
-  }
-
-  export type DurianDataMaxAggregateOutputType = {
-    id: number | null
-    filename: string | null
-    jenis: string | null
-    grade: string | null
-    harga: number | null
-  }
-
-  export type DurianDataCountAggregateOutputType = {
+  export type UserCountAggregateOutputType = {
     id: number
-    filename: number
-    jenis: number
-    grade: number
-    harga: number
+    nama: number
+    email: number
+    password: number
+    role: number
     _all: number
   }
 
 
-  export type DurianDataAvgAggregateInputType = {
+  export type UserMinAggregateInputType = {
     id?: true
-    harga?: true
+    nama?: true
+    email?: true
+    password?: true
+    role?: true
   }
 
-  export type DurianDataSumAggregateInputType = {
+  export type UserMaxAggregateInputType = {
     id?: true
-    harga?: true
+    nama?: true
+    email?: true
+    password?: true
+    role?: true
   }
 
-  export type DurianDataMinAggregateInputType = {
+  export type UserCountAggregateInputType = {
     id?: true
-    filename?: true
-    jenis?: true
-    grade?: true
-    harga?: true
-  }
-
-  export type DurianDataMaxAggregateInputType = {
-    id?: true
-    filename?: true
-    jenis?: true
-    grade?: true
-    harga?: true
-  }
-
-  export type DurianDataCountAggregateInputType = {
-    id?: true
-    filename?: true
-    jenis?: true
-    grade?: true
-    harga?: true
+    nama?: true
+    email?: true
+    password?: true
+    role?: true
     _all?: true
   }
 
-  export type DurianDataAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which DurianData to aggregate.
+     * Filter which User to aggregate.
      */
-    where?: DurianDataWhereInput
+    where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of DurianData to fetch.
+     * Determine the order of Users to fetch.
      */
-    orderBy?: DurianDataOrderByWithRelationInput | DurianDataOrderByWithRelationInput[]
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: DurianDataWhereUniqueInput
+    cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` DurianData from the position of the cursor.
+     * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` DurianData.
+     * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned DurianData
+     * Count returned Users
     **/
-    _count?: true | DurianDataCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: DurianDataAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: DurianDataSumAggregateInputType
+    _count?: true | UserCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: DurianDataMinAggregateInputType
+    _min?: UserMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: DurianDataMaxAggregateInputType
+    _max?: UserMaxAggregateInputType
   }
 
-  export type GetDurianDataAggregateType<T extends DurianDataAggregateArgs> = {
-        [P in keyof T & keyof AggregateDurianData]: P extends '_count' | 'count'
+  export type GetUserAggregateType<T extends UserAggregateArgs> = {
+        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateDurianData[P]>
-      : GetScalarType<T[P], AggregateDurianData[P]>
+        : GetScalarType<T[P], AggregateUser[P]>
+      : GetScalarType<T[P], AggregateUser[P]>
   }
 
 
 
 
-  export type DurianDataGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DurianDataWhereInput
-    orderBy?: DurianDataOrderByWithAggregationInput | DurianDataOrderByWithAggregationInput[]
-    by: DurianDataScalarFieldEnum[] | DurianDataScalarFieldEnum
-    having?: DurianDataScalarWhereWithAggregatesInput
+  export type UserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithAggregationInput | UserOrderByWithAggregationInput[]
+    by: UserScalarFieldEnum[] | UserScalarFieldEnum
+    having?: UserScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: DurianDataCountAggregateInputType | true
-    _avg?: DurianDataAvgAggregateInputType
-    _sum?: DurianDataSumAggregateInputType
-    _min?: DurianDataMinAggregateInputType
-    _max?: DurianDataMaxAggregateInputType
+    _count?: UserCountAggregateInputType | true
+    _min?: UserMinAggregateInputType
+    _max?: UserMaxAggregateInputType
   }
 
-  export type DurianDataGroupByOutputType = {
-    id: number
-    filename: string
-    jenis: string
-    grade: string
-    harga: number
-    _count: DurianDataCountAggregateOutputType | null
-    _avg: DurianDataAvgAggregateOutputType | null
-    _sum: DurianDataSumAggregateOutputType | null
-    _min: DurianDataMinAggregateOutputType | null
-    _max: DurianDataMaxAggregateOutputType | null
+  export type UserGroupByOutputType = {
+    id: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    _count: UserCountAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
   }
 
-  type GetDurianDataGroupByPayload<T extends DurianDataGroupByArgs> = Prisma.PrismaPromise<
+  type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<DurianDataGroupByOutputType, T['by']> &
+      PickEnumerable<UserGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof DurianDataGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], DurianDataGroupByOutputType[P]>
-            : GetScalarType<T[P], DurianDataGroupByOutputType[P]>
+              : GetScalarType<T[P], UserGroupByOutputType[P]>
+            : GetScalarType<T[P], UserGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type DurianDataSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    filename?: boolean
-    jenis?: boolean
-    grade?: boolean
-    harga?: boolean
-  }, ExtArgs["result"]["durianData"]>
+    nama?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    prediksi?: boolean | User$prediksiArgs<ExtArgs>
+    absensi?: boolean | User$absensiArgs<ExtArgs>
+    jadwal?: boolean | User$jadwalArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["user"]>
 
-  export type DurianDataSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    filename?: boolean
-    jenis?: boolean
-    grade?: boolean
-    harga?: boolean
-  }, ExtArgs["result"]["durianData"]>
+    nama?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+  }, ExtArgs["result"]["user"]>
 
-  export type DurianDataSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    filename?: boolean
-    jenis?: boolean
-    grade?: boolean
-    harga?: boolean
-  }, ExtArgs["result"]["durianData"]>
+    nama?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+  }, ExtArgs["result"]["user"]>
 
-  export type DurianDataSelectScalar = {
+  export type UserSelectScalar = {
     id?: boolean
-    filename?: boolean
-    jenis?: boolean
-    grade?: boolean
-    harga?: boolean
+    nama?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
   }
 
-  export type DurianDataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "filename" | "jenis" | "grade" | "harga", ExtArgs["result"]["durianData"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nama" | "email" | "password" | "role", ExtArgs["result"]["user"]>
+  export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prediksi?: boolean | User$prediksiArgs<ExtArgs>
+    absensi?: boolean | User$absensiArgs<ExtArgs>
+    jadwal?: boolean | User$jadwalArgs<ExtArgs>
+    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type UserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
-  export type $DurianDataPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "DurianData"
-    objects: {}
+  export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "User"
+    objects: {
+      prediksi: Prisma.$PrediksiPayload<ExtArgs>[]
+      absensi: Prisma.$AbsensiPayload<ExtArgs>[]
+      jadwal: Prisma.$JadwalPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
-      filename: string
-      jenis: string
-      grade: string
-      harga: number
-    }, ExtArgs["result"]["durianData"]>
+      id: string
+      nama: string
+      email: string
+      password: string
+      role: $Enums.Role
+    }, ExtArgs["result"]["user"]>
     composites: {}
   }
 
-  type DurianDataGetPayload<S extends boolean | null | undefined | DurianDataDefaultArgs> = $Result.GetResult<Prisma.$DurianDataPayload, S>
+  type UserGetPayload<S extends boolean | null | undefined | UserDefaultArgs> = $Result.GetResult<Prisma.$UserPayload, S>
 
-  type DurianDataCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<DurianDataFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: DurianDataCountAggregateInputType | true
+  type UserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserCountAggregateInputType | true
     }
 
-  export interface DurianDataDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DurianData'], meta: { name: 'DurianData' } }
+  export interface UserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['User'], meta: { name: 'User' } }
     /**
-     * Find zero or one DurianData that matches the filter.
-     * @param {DurianDataFindUniqueArgs} args - Arguments to find a DurianData
+     * Find zero or one User that matches the filter.
+     * @param {UserFindUniqueArgs} args - Arguments to find a User
      * @example
-     * // Get one DurianData
-     * const durianData = await prisma.durianData.findUnique({
+     * // Get one User
+     * const user = await prisma.user.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUnique<T extends DurianDataFindUniqueArgs>(args: SelectSubset<T, DurianDataFindUniqueArgs<ExtArgs>>): Prisma__DurianDataClient<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findUnique<T extends UserFindUniqueArgs>(args: SelectSubset<T, UserFindUniqueArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find one DurianData that matches the filter or throw an error with `error.code='P2025'`
+     * Find one User that matches the filter or throw an error with `error.code='P2025'`
      * if no matches were found.
-     * @param {DurianDataFindUniqueOrThrowArgs} args - Arguments to find a DurianData
+     * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
      * @example
-     * // Get one DurianData
-     * const durianData = await prisma.durianData.findUniqueOrThrow({
+     * // Get one User
+     * const user = await prisma.user.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findUniqueOrThrow<T extends DurianDataFindUniqueOrThrowArgs>(args: SelectSubset<T, DurianDataFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DurianDataClient<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(args: SelectSubset<T, UserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first DurianData that matches the filter.
+     * Find the first User that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DurianDataFindFirstArgs} args - Arguments to find a DurianData
+     * @param {UserFindFirstArgs} args - Arguments to find a User
      * @example
-     * // Get one DurianData
-     * const durianData = await prisma.durianData.findFirst({
+     * // Get one User
+     * const user = await prisma.user.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirst<T extends DurianDataFindFirstArgs>(args?: SelectSubset<T, DurianDataFindFirstArgs<ExtArgs>>): Prisma__DurianDataClient<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    findFirst<T extends UserFindFirstArgs>(args?: SelectSubset<T, UserFindFirstArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find the first DurianData that matches the filter or
+     * Find the first User that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DurianDataFindFirstOrThrowArgs} args - Arguments to find a DurianData
+     * @param {UserFindFirstOrThrowArgs} args - Arguments to find a User
      * @example
-     * // Get one DurianData
-     * const durianData = await prisma.durianData.findFirstOrThrow({
+     * // Get one User
+     * const user = await prisma.user.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      */
-    findFirstOrThrow<T extends DurianDataFindFirstOrThrowArgs>(args?: SelectSubset<T, DurianDataFindFirstOrThrowArgs<ExtArgs>>): Prisma__DurianDataClient<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(args?: SelectSubset<T, UserFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Find zero or more DurianData that matches the filter.
+     * Find zero or more Users that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DurianDataFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @param {UserFindManyArgs} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all DurianData
-     * const durianData = await prisma.durianData.findMany()
+     * // Get all Users
+     * const users = await prisma.user.findMany()
      * 
-     * // Get first 10 DurianData
-     * const durianData = await prisma.durianData.findMany({ take: 10 })
+     * // Get first 10 Users
+     * const users = await prisma.user.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const durianDataWithIdOnly = await prisma.durianData.findMany({ select: { id: true } })
+     * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
      * 
      */
-    findMany<T extends DurianDataFindManyArgs>(args?: SelectSubset<T, DurianDataFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+    findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
     /**
-     * Create a DurianData.
-     * @param {DurianDataCreateArgs} args - Arguments to create a DurianData.
+     * Create a User.
+     * @param {UserCreateArgs} args - Arguments to create a User.
      * @example
-     * // Create one DurianData
-     * const DurianData = await prisma.durianData.create({
+     * // Create one User
+     * const User = await prisma.user.create({
      *   data: {
-     *     // ... data to create a DurianData
+     *     // ... data to create a User
      *   }
      * })
      * 
      */
-    create<T extends DurianDataCreateArgs>(args: SelectSubset<T, DurianDataCreateArgs<ExtArgs>>): Prisma__DurianDataClient<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Create many DurianData.
-     * @param {DurianDataCreateManyArgs} args - Arguments to create many DurianData.
+     * Create many Users.
+     * @param {UserCreateManyArgs} args - Arguments to create many Users.
      * @example
-     * // Create many DurianData
-     * const durianData = await prisma.durianData.createMany({
+     * // Create many Users
+     * const user = await prisma.user.createMany({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      *     
      */
-    createMany<T extends DurianDataCreateManyArgs>(args?: SelectSubset<T, DurianDataCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create many DurianData and returns the data saved in the database.
-     * @param {DurianDataCreateManyAndReturnArgs} args - Arguments to create many DurianData.
+     * Create many Users and returns the data saved in the database.
+     * @param {UserCreateManyAndReturnArgs} args - Arguments to create many Users.
      * @example
-     * // Create many DurianData
-     * const durianData = await prisma.durianData.createManyAndReturn({
+     * // Create many Users
+     * const user = await prisma.user.createManyAndReturn({
      *   data: [
      *     // ... provide data here
      *   ]
      * })
      * 
-     * // Create many DurianData and only return the `id`
-     * const durianDataWithIdOnly = await prisma.durianData.createManyAndReturn({
+     * // Create many Users and only return the `id`
+     * const userWithIdOnly = await prisma.user.createManyAndReturn({
      *   select: { id: true },
      *   data: [
      *     // ... provide data here
@@ -1247,28 +1590,28 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    createManyAndReturn<T extends DurianDataCreateManyAndReturnArgs>(args?: SelectSubset<T, DurianDataCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+    createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Delete a DurianData.
-     * @param {DurianDataDeleteArgs} args - Arguments to delete one DurianData.
+     * Delete a User.
+     * @param {UserDeleteArgs} args - Arguments to delete one User.
      * @example
-     * // Delete one DurianData
-     * const DurianData = await prisma.durianData.delete({
+     * // Delete one User
+     * const User = await prisma.user.delete({
      *   where: {
-     *     // ... filter to delete one DurianData
+     *     // ... filter to delete one User
      *   }
      * })
      * 
      */
-    delete<T extends DurianDataDeleteArgs>(args: SelectSubset<T, DurianDataDeleteArgs<ExtArgs>>): Prisma__DurianDataClient<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Update one DurianData.
-     * @param {DurianDataUpdateArgs} args - Arguments to update one DurianData.
+     * Update one User.
+     * @param {UserUpdateArgs} args - Arguments to update one User.
      * @example
-     * // Update one DurianData
-     * const durianData = await prisma.durianData.update({
+     * // Update one User
+     * const user = await prisma.user.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1278,30 +1621,30 @@ export namespace Prisma {
      * })
      * 
      */
-    update<T extends DurianDataUpdateArgs>(args: SelectSubset<T, DurianDataUpdateArgs<ExtArgs>>): Prisma__DurianDataClient<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
     /**
-     * Delete zero or more DurianData.
-     * @param {DurianDataDeleteManyArgs} args - Arguments to filter DurianData to delete.
+     * Delete zero or more Users.
+     * @param {UserDeleteManyArgs} args - Arguments to filter Users to delete.
      * @example
-     * // Delete a few DurianData
-     * const { count } = await prisma.durianData.deleteMany({
+     * // Delete a few Users
+     * const { count } = await prisma.user.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
      */
-    deleteMany<T extends DurianDataDeleteManyArgs>(args?: SelectSubset<T, DurianDataDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more DurianData.
+     * Update zero or more Users.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DurianDataUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {UserUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many DurianData
-     * const durianData = await prisma.durianData.updateMany({
+     * // Update many Users
+     * const user = await prisma.user.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1311,14 +1654,14 @@ export namespace Prisma {
      * })
      * 
      */
-    updateMany<T extends DurianDataUpdateManyArgs>(args: SelectSubset<T, DurianDataUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+    updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more DurianData and returns the data updated in the database.
-     * @param {DurianDataUpdateManyAndReturnArgs} args - Arguments to update many DurianData.
+     * Update zero or more Users and returns the data updated in the database.
+     * @param {UserUpdateManyAndReturnArgs} args - Arguments to update many Users.
      * @example
-     * // Update many DurianData
-     * const durianData = await prisma.durianData.updateManyAndReturn({
+     * // Update many Users
+     * const user = await prisma.user.updateManyAndReturn({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1327,8 +1670,8 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more DurianData and only return the `id`
-     * const durianDataWithIdOnly = await prisma.durianData.updateManyAndReturn({
+     * // Update zero or more Users and only return the `id`
+     * const userWithIdOnly = await prisma.user.updateManyAndReturn({
      *   select: { id: true },
      *   where: {
      *     // ... provide filter here
@@ -1341,56 +1684,56 @@ export namespace Prisma {
      * Read more here: https://pris.ly/d/null-undefined
      * 
      */
-    updateManyAndReturn<T extends DurianDataUpdateManyAndReturnArgs>(args: SelectSubset<T, DurianDataUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+    updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
     /**
-     * Create or update one DurianData.
-     * @param {DurianDataUpsertArgs} args - Arguments to update or create a DurianData.
+     * Create or update one User.
+     * @param {UserUpsertArgs} args - Arguments to update or create a User.
      * @example
-     * // Update or create a DurianData
-     * const durianData = await prisma.durianData.upsert({
+     * // Update or create a User
+     * const user = await prisma.user.upsert({
      *   create: {
-     *     // ... data to create a DurianData
+     *     // ... data to create a User
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the DurianData we want to update
+     *     // ... the filter for the User we want to update
      *   }
      * })
      */
-    upsert<T extends DurianDataUpsertArgs>(args: SelectSubset<T, DurianDataUpsertArgs<ExtArgs>>): Prisma__DurianDataClient<$Result.GetResult<Prisma.$DurianDataPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+    upsert<T extends UserUpsertArgs>(args: SelectSubset<T, UserUpsertArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
     /**
-     * Count the number of DurianData.
+     * Count the number of Users.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DurianDataCountArgs} args - Arguments to filter DurianData to count.
+     * @param {UserCountArgs} args - Arguments to filter Users to count.
      * @example
-     * // Count the number of DurianData
-     * const count = await prisma.durianData.count({
+     * // Count the number of Users
+     * const count = await prisma.user.count({
      *   where: {
-     *     // ... the filter for the DurianData we want to count
+     *     // ... the filter for the Users we want to count
      *   }
      * })
     **/
-    count<T extends DurianDataCountArgs>(
-      args?: Subset<T, DurianDataCountArgs>,
+    count<T extends UserCountArgs>(
+      args?: Subset<T, UserCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], DurianDataCountAggregateOutputType>
+          : GetScalarType<T['select'], UserCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a DurianData.
+     * Allows you to perform aggregations operations on a User.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DurianDataAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {UserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -1410,13 +1753,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends DurianDataAggregateArgs>(args: Subset<T, DurianDataAggregateArgs>): Prisma.PrismaPromise<GetDurianDataAggregateType<T>>
+    aggregate<T extends UserAggregateArgs>(args: Subset<T, UserAggregateArgs>): Prisma.PrismaPromise<GetUserAggregateType<T>>
 
     /**
-     * Group by DurianData.
+     * Group by User.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {DurianDataGroupByArgs} args - Group by arguments.
+     * @param {UserGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -1431,14 +1774,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends DurianDataGroupByArgs,
+      T extends UserGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DurianDataGroupByArgs['orderBy'] }
-        : { orderBy?: DurianDataGroupByArgs['orderBy'] },
+        ? { orderBy: UserGroupByArgs['orderBy'] }
+        : { orderBy?: UserGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -1487,21 +1830,24 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, DurianDataGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDurianDataGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the DurianData model
+   * Fields of the User model
    */
-  readonly fields: DurianDataFieldRefs;
+  readonly fields: UserFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for DurianData.
+   * The delegate class that acts as a "Promise-like" for User.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__DurianDataClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    prediksi<T extends User$prediksiArgs<ExtArgs> = {}>(args?: Subset<T, User$prediksiArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    absensi<T extends User$absensiArgs<ExtArgs> = {}>(args?: Subset<T, User$absensiArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    jadwal<T extends User$jadwalArgs<ExtArgs> = {}>(args?: Subset<T, User$jadwalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1528,377 +1874,3684 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the DurianData model
+   * Fields of the User model
    */
-  interface DurianDataFieldRefs {
-    readonly id: FieldRef<"DurianData", 'Int'>
-    readonly filename: FieldRef<"DurianData", 'String'>
-    readonly jenis: FieldRef<"DurianData", 'String'>
-    readonly grade: FieldRef<"DurianData", 'String'>
-    readonly harga: FieldRef<"DurianData", 'Float'>
+  interface UserFieldRefs {
+    readonly id: FieldRef<"User", 'String'>
+    readonly nama: FieldRef<"User", 'String'>
+    readonly email: FieldRef<"User", 'String'>
+    readonly password: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
   }
     
 
   // Custom InputTypes
   /**
-   * DurianData findUnique
+   * User findUnique
    */
-  export type DurianDataFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * Filter, which DurianData to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: DurianDataWhereUniqueInput
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where: UserWhereUniqueInput
   }
 
   /**
-   * DurianData findUniqueOrThrow
+   * User findUniqueOrThrow
    */
-  export type DurianDataFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * Filter, which DurianData to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where: DurianDataWhereUniqueInput
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where: UserWhereUniqueInput
   }
 
   /**
-   * DurianData findFirst
+   * User findFirst
    */
-  export type DurianDataFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * Filter, which DurianData to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: DurianDataWhereInput
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of DurianData to fetch.
+     * Determine the order of Users to fetch.
      */
-    orderBy?: DurianDataOrderByWithRelationInput | DurianDataOrderByWithRelationInput[]
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for DurianData.
+     * Sets the position for searching for Users.
      */
-    cursor?: DurianDataWhereUniqueInput
+    cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` DurianData from the position of the cursor.
+     * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` DurianData.
+     * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of DurianData.
+     * Filter by unique combinations of Users.
      */
-    distinct?: DurianDataScalarFieldEnum | DurianDataScalarFieldEnum[]
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
-   * DurianData findFirstOrThrow
+   * User findFirstOrThrow
    */
-  export type DurianDataFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * Filter, which DurianData to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: DurianDataWhereInput
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of DurianData to fetch.
+     * Determine the order of Users to fetch.
      */
-    orderBy?: DurianDataOrderByWithRelationInput | DurianDataOrderByWithRelationInput[]
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for DurianData.
+     * Sets the position for searching for Users.
      */
-    cursor?: DurianDataWhereUniqueInput
+    cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` DurianData from the position of the cursor.
+     * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` DurianData.
+     * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of DurianData.
+     * Filter by unique combinations of Users.
      */
-    distinct?: DurianDataScalarFieldEnum | DurianDataScalarFieldEnum[]
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
-   * DurianData findMany
+   * User findMany
    */
-  export type DurianDataFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * Filter, which DurianData to fetch.
+     * Choose, which related nodes to fetch as well
      */
-    where?: DurianDataWhereInput
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter, which Users to fetch.
+     */
+    where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of DurianData to fetch.
+     * Determine the order of Users to fetch.
      */
-    orderBy?: DurianDataOrderByWithRelationInput | DurianDataOrderByWithRelationInput[]
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing DurianData.
+     * Sets the position for listing Users.
      */
-    cursor?: DurianDataWhereUniqueInput
+    cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` DurianData from the position of the cursor.
+     * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` DurianData.
+     * Skip the first `n` Users.
      */
     skip?: number
-    distinct?: DurianDataScalarFieldEnum | DurianDataScalarFieldEnum[]
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
-   * DurianData create
+   * User create
    */
-  export type DurianDataCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * The data needed to create a DurianData.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<DurianDataCreateInput, DurianDataUncheckedCreateInput>
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * The data needed to create a User.
+     */
+    data: XOR<UserCreateInput, UserUncheckedCreateInput>
   }
 
   /**
-   * DurianData createMany
+   * User createMany
    */
-  export type DurianDataCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many DurianData.
+     * The data used to create many Users.
      */
-    data: DurianDataCreateManyInput | DurianDataCreateManyInput[]
+    data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * DurianData createManyAndReturn
+   * User createManyAndReturn
    */
-  export type DurianDataCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelectCreateManyAndReturn<ExtArgs> | null
+    select?: UserSelectCreateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * The data used to create many DurianData.
+     * The data used to create many Users.
      */
-    data: DurianDataCreateManyInput | DurianDataCreateManyInput[]
+    data: UserCreateManyInput | UserCreateManyInput[]
     skipDuplicates?: boolean
   }
 
   /**
-   * DurianData update
+   * User update
    */
-  export type DurianDataUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * The data needed to update a DurianData.
+     * Choose, which related nodes to fetch as well
      */
-    data: XOR<DurianDataUpdateInput, DurianDataUncheckedUpdateInput>
+    include?: UserInclude<ExtArgs> | null
     /**
-     * Choose, which DurianData to update.
+     * The data needed to update a User.
      */
-    where: DurianDataWhereUniqueInput
+    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+    /**
+     * Choose, which User to update.
+     */
+    where: UserWhereUniqueInput
   }
 
   /**
-   * DurianData updateMany
+   * User updateMany
    */
-  export type DurianDataUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update DurianData.
+     * The data used to update Users.
      */
-    data: XOR<DurianDataUpdateManyMutationInput, DurianDataUncheckedUpdateManyInput>
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
     /**
-     * Filter which DurianData to update
+     * Filter which Users to update
      */
-    where?: DurianDataWhereInput
+    where?: UserWhereInput
     /**
-     * Limit how many DurianData to update.
+     * Limit how many Users to update.
      */
     limit?: number
   }
 
   /**
-   * DurianData updateManyAndReturn
+   * User updateManyAndReturn
    */
-  export type DurianDataUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelectUpdateManyAndReturn<ExtArgs> | null
+    select?: UserSelectUpdateManyAndReturn<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * The data used to update DurianData.
+     * The data used to update Users.
      */
-    data: XOR<DurianDataUpdateManyMutationInput, DurianDataUncheckedUpdateManyInput>
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
     /**
-     * Filter which DurianData to update
+     * Filter which Users to update
      */
-    where?: DurianDataWhereInput
+    where?: UserWhereInput
     /**
-     * Limit how many DurianData to update.
+     * Limit how many Users to update.
      */
     limit?: number
   }
 
   /**
-   * DurianData upsert
+   * User upsert
    */
-  export type DurianDataUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * The filter to search for the DurianData to update in case it exists.
+     * Choose, which related nodes to fetch as well
      */
-    where: DurianDataWhereUniqueInput
+    include?: UserInclude<ExtArgs> | null
     /**
-     * In case the DurianData found by the `where` argument doesn't exist, create a new DurianData with this data.
+     * The filter to search for the User to update in case it exists.
      */
-    create: XOR<DurianDataCreateInput, DurianDataUncheckedCreateInput>
+    where: UserWhereUniqueInput
     /**
-     * In case the DurianData was found with the provided `where` argument, update it with this data.
+     * In case the User found by the `where` argument doesn't exist, create a new User with this data.
      */
-    update: XOR<DurianDataUpdateInput, DurianDataUncheckedUpdateInput>
+    create: XOR<UserCreateInput, UserUncheckedCreateInput>
+    /**
+     * In case the User was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
   }
 
   /**
-   * DurianData delete
+   * User delete
    */
-  export type DurianDataDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the User
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the User
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
-     * Filter which DurianData to delete.
+     * Choose, which related nodes to fetch as well
      */
-    where: DurianDataWhereUniqueInput
+    include?: UserInclude<ExtArgs> | null
+    /**
+     * Filter which User to delete.
+     */
+    where: UserWhereUniqueInput
   }
 
   /**
-   * DurianData deleteMany
+   * User deleteMany
    */
-  export type DurianDataDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which DurianData to delete
+     * Filter which Users to delete
      */
-    where?: DurianDataWhereInput
+    where?: UserWhereInput
     /**
-     * Limit how many DurianData to delete.
+     * Limit how many Users to delete.
      */
     limit?: number
   }
 
   /**
-   * DurianData without action
+   * User.prediksi
    */
-  export type DurianDataDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$prediksiArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the DurianData
+     * Select specific fields to fetch from the Prediksi
      */
-    select?: DurianDataSelect<ExtArgs> | null
+    select?: PrediksiSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the DurianData
+     * Omit specific fields from the Prediksi
      */
-    omit?: DurianDataOmit<ExtArgs> | null
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    where?: PrediksiWhereInput
+    orderBy?: PrediksiOrderByWithRelationInput | PrediksiOrderByWithRelationInput[]
+    cursor?: PrediksiWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PrediksiScalarFieldEnum | PrediksiScalarFieldEnum[]
+  }
+
+  /**
+   * User.absensi
+   */
+  export type User$absensiArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    where?: AbsensiWhereInput
+    orderBy?: AbsensiOrderByWithRelationInput | AbsensiOrderByWithRelationInput[]
+    cursor?: AbsensiWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AbsensiScalarFieldEnum | AbsensiScalarFieldEnum[]
+  }
+
+  /**
+   * User.jadwal
+   */
+  export type User$jadwalArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    where?: JadwalWhereInput
+    orderBy?: JadwalOrderByWithRelationInput | JadwalOrderByWithRelationInput[]
+    cursor?: JadwalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: JadwalScalarFieldEnum | JadwalScalarFieldEnum[]
+  }
+
+  /**
+   * User without action
+   */
+  export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Jadwal
+   */
+
+  export type AggregateJadwal = {
+    _count: JadwalCountAggregateOutputType | null
+    _min: JadwalMinAggregateOutputType | null
+    _max: JadwalMaxAggregateOutputType | null
+  }
+
+  export type JadwalMinAggregateOutputType = {
+    id: string | null
+    tanggal: Date | null
+    shift: $Enums.Shift | null
+    id_user: string | null
+  }
+
+  export type JadwalMaxAggregateOutputType = {
+    id: string | null
+    tanggal: Date | null
+    shift: $Enums.Shift | null
+    id_user: string | null
+  }
+
+  export type JadwalCountAggregateOutputType = {
+    id: number
+    tanggal: number
+    shift: number
+    id_user: number
+    _all: number
+  }
+
+
+  export type JadwalMinAggregateInputType = {
+    id?: true
+    tanggal?: true
+    shift?: true
+    id_user?: true
+  }
+
+  export type JadwalMaxAggregateInputType = {
+    id?: true
+    tanggal?: true
+    shift?: true
+    id_user?: true
+  }
+
+  export type JadwalCountAggregateInputType = {
+    id?: true
+    tanggal?: true
+    shift?: true
+    id_user?: true
+    _all?: true
+  }
+
+  export type JadwalAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Jadwal to aggregate.
+     */
+    where?: JadwalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Jadwals to fetch.
+     */
+    orderBy?: JadwalOrderByWithRelationInput | JadwalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: JadwalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Jadwals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Jadwals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Jadwals
+    **/
+    _count?: true | JadwalCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: JadwalMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: JadwalMaxAggregateInputType
+  }
+
+  export type GetJadwalAggregateType<T extends JadwalAggregateArgs> = {
+        [P in keyof T & keyof AggregateJadwal]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateJadwal[P]>
+      : GetScalarType<T[P], AggregateJadwal[P]>
+  }
+
+
+
+
+  export type JadwalGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: JadwalWhereInput
+    orderBy?: JadwalOrderByWithAggregationInput | JadwalOrderByWithAggregationInput[]
+    by: JadwalScalarFieldEnum[] | JadwalScalarFieldEnum
+    having?: JadwalScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: JadwalCountAggregateInputType | true
+    _min?: JadwalMinAggregateInputType
+    _max?: JadwalMaxAggregateInputType
+  }
+
+  export type JadwalGroupByOutputType = {
+    id: string
+    tanggal: Date
+    shift: $Enums.Shift
+    id_user: string
+    _count: JadwalCountAggregateOutputType | null
+    _min: JadwalMinAggregateOutputType | null
+    _max: JadwalMaxAggregateOutputType | null
+  }
+
+  type GetJadwalGroupByPayload<T extends JadwalGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<JadwalGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof JadwalGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], JadwalGroupByOutputType[P]>
+            : GetScalarType<T[P], JadwalGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type JadwalSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tanggal?: boolean
+    shift?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jadwal"]>
+
+  export type JadwalSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tanggal?: boolean
+    shift?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jadwal"]>
+
+  export type JadwalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tanggal?: boolean
+    shift?: boolean
+    id_user?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["jadwal"]>
+
+  export type JadwalSelectScalar = {
+    id?: boolean
+    tanggal?: boolean
+    shift?: boolean
+    id_user?: boolean
+  }
+
+  export type JadwalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tanggal" | "shift" | "id_user", ExtArgs["result"]["jadwal"]>
+  export type JadwalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type JadwalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type JadwalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $JadwalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Jadwal"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tanggal: Date
+      shift: $Enums.Shift
+      id_user: string
+    }, ExtArgs["result"]["jadwal"]>
+    composites: {}
+  }
+
+  type JadwalGetPayload<S extends boolean | null | undefined | JadwalDefaultArgs> = $Result.GetResult<Prisma.$JadwalPayload, S>
+
+  type JadwalCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<JadwalFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: JadwalCountAggregateInputType | true
+    }
+
+  export interface JadwalDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Jadwal'], meta: { name: 'Jadwal' } }
+    /**
+     * Find zero or one Jadwal that matches the filter.
+     * @param {JadwalFindUniqueArgs} args - Arguments to find a Jadwal
+     * @example
+     * // Get one Jadwal
+     * const jadwal = await prisma.jadwal.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends JadwalFindUniqueArgs>(args: SelectSubset<T, JadwalFindUniqueArgs<ExtArgs>>): Prisma__JadwalClient<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Jadwal that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {JadwalFindUniqueOrThrowArgs} args - Arguments to find a Jadwal
+     * @example
+     * // Get one Jadwal
+     * const jadwal = await prisma.jadwal.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends JadwalFindUniqueOrThrowArgs>(args: SelectSubset<T, JadwalFindUniqueOrThrowArgs<ExtArgs>>): Prisma__JadwalClient<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Jadwal that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JadwalFindFirstArgs} args - Arguments to find a Jadwal
+     * @example
+     * // Get one Jadwal
+     * const jadwal = await prisma.jadwal.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends JadwalFindFirstArgs>(args?: SelectSubset<T, JadwalFindFirstArgs<ExtArgs>>): Prisma__JadwalClient<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Jadwal that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JadwalFindFirstOrThrowArgs} args - Arguments to find a Jadwal
+     * @example
+     * // Get one Jadwal
+     * const jadwal = await prisma.jadwal.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends JadwalFindFirstOrThrowArgs>(args?: SelectSubset<T, JadwalFindFirstOrThrowArgs<ExtArgs>>): Prisma__JadwalClient<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Jadwals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JadwalFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Jadwals
+     * const jadwals = await prisma.jadwal.findMany()
+     * 
+     * // Get first 10 Jadwals
+     * const jadwals = await prisma.jadwal.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const jadwalWithIdOnly = await prisma.jadwal.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends JadwalFindManyArgs>(args?: SelectSubset<T, JadwalFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Jadwal.
+     * @param {JadwalCreateArgs} args - Arguments to create a Jadwal.
+     * @example
+     * // Create one Jadwal
+     * const Jadwal = await prisma.jadwal.create({
+     *   data: {
+     *     // ... data to create a Jadwal
+     *   }
+     * })
+     * 
+     */
+    create<T extends JadwalCreateArgs>(args: SelectSubset<T, JadwalCreateArgs<ExtArgs>>): Prisma__JadwalClient<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Jadwals.
+     * @param {JadwalCreateManyArgs} args - Arguments to create many Jadwals.
+     * @example
+     * // Create many Jadwals
+     * const jadwal = await prisma.jadwal.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends JadwalCreateManyArgs>(args?: SelectSubset<T, JadwalCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Jadwals and returns the data saved in the database.
+     * @param {JadwalCreateManyAndReturnArgs} args - Arguments to create many Jadwals.
+     * @example
+     * // Create many Jadwals
+     * const jadwal = await prisma.jadwal.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Jadwals and only return the `id`
+     * const jadwalWithIdOnly = await prisma.jadwal.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends JadwalCreateManyAndReturnArgs>(args?: SelectSubset<T, JadwalCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Jadwal.
+     * @param {JadwalDeleteArgs} args - Arguments to delete one Jadwal.
+     * @example
+     * // Delete one Jadwal
+     * const Jadwal = await prisma.jadwal.delete({
+     *   where: {
+     *     // ... filter to delete one Jadwal
+     *   }
+     * })
+     * 
+     */
+    delete<T extends JadwalDeleteArgs>(args: SelectSubset<T, JadwalDeleteArgs<ExtArgs>>): Prisma__JadwalClient<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Jadwal.
+     * @param {JadwalUpdateArgs} args - Arguments to update one Jadwal.
+     * @example
+     * // Update one Jadwal
+     * const jadwal = await prisma.jadwal.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends JadwalUpdateArgs>(args: SelectSubset<T, JadwalUpdateArgs<ExtArgs>>): Prisma__JadwalClient<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Jadwals.
+     * @param {JadwalDeleteManyArgs} args - Arguments to filter Jadwals to delete.
+     * @example
+     * // Delete a few Jadwals
+     * const { count } = await prisma.jadwal.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends JadwalDeleteManyArgs>(args?: SelectSubset<T, JadwalDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Jadwals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JadwalUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Jadwals
+     * const jadwal = await prisma.jadwal.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends JadwalUpdateManyArgs>(args: SelectSubset<T, JadwalUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Jadwals and returns the data updated in the database.
+     * @param {JadwalUpdateManyAndReturnArgs} args - Arguments to update many Jadwals.
+     * @example
+     * // Update many Jadwals
+     * const jadwal = await prisma.jadwal.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Jadwals and only return the `id`
+     * const jadwalWithIdOnly = await prisma.jadwal.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends JadwalUpdateManyAndReturnArgs>(args: SelectSubset<T, JadwalUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Jadwal.
+     * @param {JadwalUpsertArgs} args - Arguments to update or create a Jadwal.
+     * @example
+     * // Update or create a Jadwal
+     * const jadwal = await prisma.jadwal.upsert({
+     *   create: {
+     *     // ... data to create a Jadwal
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Jadwal we want to update
+     *   }
+     * })
+     */
+    upsert<T extends JadwalUpsertArgs>(args: SelectSubset<T, JadwalUpsertArgs<ExtArgs>>): Prisma__JadwalClient<$Result.GetResult<Prisma.$JadwalPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Jadwals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JadwalCountArgs} args - Arguments to filter Jadwals to count.
+     * @example
+     * // Count the number of Jadwals
+     * const count = await prisma.jadwal.count({
+     *   where: {
+     *     // ... the filter for the Jadwals we want to count
+     *   }
+     * })
+    **/
+    count<T extends JadwalCountArgs>(
+      args?: Subset<T, JadwalCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], JadwalCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Jadwal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JadwalAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends JadwalAggregateArgs>(args: Subset<T, JadwalAggregateArgs>): Prisma.PrismaPromise<GetJadwalAggregateType<T>>
+
+    /**
+     * Group by Jadwal.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {JadwalGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends JadwalGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: JadwalGroupByArgs['orderBy'] }
+        : { orderBy?: JadwalGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, JadwalGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetJadwalGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Jadwal model
+   */
+  readonly fields: JadwalFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Jadwal.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__JadwalClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Jadwal model
+   */
+  interface JadwalFieldRefs {
+    readonly id: FieldRef<"Jadwal", 'String'>
+    readonly tanggal: FieldRef<"Jadwal", 'DateTime'>
+    readonly shift: FieldRef<"Jadwal", 'Shift'>
+    readonly id_user: FieldRef<"Jadwal", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Jadwal findUnique
+   */
+  export type JadwalFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * Filter, which Jadwal to fetch.
+     */
+    where: JadwalWhereUniqueInput
+  }
+
+  /**
+   * Jadwal findUniqueOrThrow
+   */
+  export type JadwalFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * Filter, which Jadwal to fetch.
+     */
+    where: JadwalWhereUniqueInput
+  }
+
+  /**
+   * Jadwal findFirst
+   */
+  export type JadwalFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * Filter, which Jadwal to fetch.
+     */
+    where?: JadwalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Jadwals to fetch.
+     */
+    orderBy?: JadwalOrderByWithRelationInput | JadwalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Jadwals.
+     */
+    cursor?: JadwalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Jadwals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Jadwals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Jadwals.
+     */
+    distinct?: JadwalScalarFieldEnum | JadwalScalarFieldEnum[]
+  }
+
+  /**
+   * Jadwal findFirstOrThrow
+   */
+  export type JadwalFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * Filter, which Jadwal to fetch.
+     */
+    where?: JadwalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Jadwals to fetch.
+     */
+    orderBy?: JadwalOrderByWithRelationInput | JadwalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Jadwals.
+     */
+    cursor?: JadwalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Jadwals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Jadwals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Jadwals.
+     */
+    distinct?: JadwalScalarFieldEnum | JadwalScalarFieldEnum[]
+  }
+
+  /**
+   * Jadwal findMany
+   */
+  export type JadwalFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * Filter, which Jadwals to fetch.
+     */
+    where?: JadwalWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Jadwals to fetch.
+     */
+    orderBy?: JadwalOrderByWithRelationInput | JadwalOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Jadwals.
+     */
+    cursor?: JadwalWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Jadwals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Jadwals.
+     */
+    skip?: number
+    distinct?: JadwalScalarFieldEnum | JadwalScalarFieldEnum[]
+  }
+
+  /**
+   * Jadwal create
+   */
+  export type JadwalCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Jadwal.
+     */
+    data: XOR<JadwalCreateInput, JadwalUncheckedCreateInput>
+  }
+
+  /**
+   * Jadwal createMany
+   */
+  export type JadwalCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Jadwals.
+     */
+    data: JadwalCreateManyInput | JadwalCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Jadwal createManyAndReturn
+   */
+  export type JadwalCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * The data used to create many Jadwals.
+     */
+    data: JadwalCreateManyInput | JadwalCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Jadwal update
+   */
+  export type JadwalUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Jadwal.
+     */
+    data: XOR<JadwalUpdateInput, JadwalUncheckedUpdateInput>
+    /**
+     * Choose, which Jadwal to update.
+     */
+    where: JadwalWhereUniqueInput
+  }
+
+  /**
+   * Jadwal updateMany
+   */
+  export type JadwalUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Jadwals.
+     */
+    data: XOR<JadwalUpdateManyMutationInput, JadwalUncheckedUpdateManyInput>
+    /**
+     * Filter which Jadwals to update
+     */
+    where?: JadwalWhereInput
+    /**
+     * Limit how many Jadwals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Jadwal updateManyAndReturn
+   */
+  export type JadwalUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * The data used to update Jadwals.
+     */
+    data: XOR<JadwalUpdateManyMutationInput, JadwalUncheckedUpdateManyInput>
+    /**
+     * Filter which Jadwals to update
+     */
+    where?: JadwalWhereInput
+    /**
+     * Limit how many Jadwals to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Jadwal upsert
+   */
+  export type JadwalUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Jadwal to update in case it exists.
+     */
+    where: JadwalWhereUniqueInput
+    /**
+     * In case the Jadwal found by the `where` argument doesn't exist, create a new Jadwal with this data.
+     */
+    create: XOR<JadwalCreateInput, JadwalUncheckedCreateInput>
+    /**
+     * In case the Jadwal was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<JadwalUpdateInput, JadwalUncheckedUpdateInput>
+  }
+
+  /**
+   * Jadwal delete
+   */
+  export type JadwalDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+    /**
+     * Filter which Jadwal to delete.
+     */
+    where: JadwalWhereUniqueInput
+  }
+
+  /**
+   * Jadwal deleteMany
+   */
+  export type JadwalDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Jadwals to delete
+     */
+    where?: JadwalWhereInput
+    /**
+     * Limit how many Jadwals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Jadwal without action
+   */
+  export type JadwalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Jadwal
+     */
+    select?: JadwalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Jadwal
+     */
+    omit?: JadwalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: JadwalInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Absensi
+   */
+
+  export type AggregateAbsensi = {
+    _count: AbsensiCountAggregateOutputType | null
+    _min: AbsensiMinAggregateOutputType | null
+    _max: AbsensiMaxAggregateOutputType | null
+  }
+
+  export type AbsensiMinAggregateOutputType = {
+    id: string | null
+    tanggal: Date | null
+    status: $Enums.AbsensiStatus | null
+    verifikasi: boolean | null
+    user_id: string | null
+  }
+
+  export type AbsensiMaxAggregateOutputType = {
+    id: string | null
+    tanggal: Date | null
+    status: $Enums.AbsensiStatus | null
+    verifikasi: boolean | null
+    user_id: string | null
+  }
+
+  export type AbsensiCountAggregateOutputType = {
+    id: number
+    tanggal: number
+    status: number
+    verifikasi: number
+    user_id: number
+    _all: number
+  }
+
+
+  export type AbsensiMinAggregateInputType = {
+    id?: true
+    tanggal?: true
+    status?: true
+    verifikasi?: true
+    user_id?: true
+  }
+
+  export type AbsensiMaxAggregateInputType = {
+    id?: true
+    tanggal?: true
+    status?: true
+    verifikasi?: true
+    user_id?: true
+  }
+
+  export type AbsensiCountAggregateInputType = {
+    id?: true
+    tanggal?: true
+    status?: true
+    verifikasi?: true
+    user_id?: true
+    _all?: true
+  }
+
+  export type AbsensiAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Absensi to aggregate.
+     */
+    where?: AbsensiWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Absensis to fetch.
+     */
+    orderBy?: AbsensiOrderByWithRelationInput | AbsensiOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AbsensiWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Absensis from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Absensis.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Absensis
+    **/
+    _count?: true | AbsensiCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AbsensiMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AbsensiMaxAggregateInputType
+  }
+
+  export type GetAbsensiAggregateType<T extends AbsensiAggregateArgs> = {
+        [P in keyof T & keyof AggregateAbsensi]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAbsensi[P]>
+      : GetScalarType<T[P], AggregateAbsensi[P]>
+  }
+
+
+
+
+  export type AbsensiGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AbsensiWhereInput
+    orderBy?: AbsensiOrderByWithAggregationInput | AbsensiOrderByWithAggregationInput[]
+    by: AbsensiScalarFieldEnum[] | AbsensiScalarFieldEnum
+    having?: AbsensiScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AbsensiCountAggregateInputType | true
+    _min?: AbsensiMinAggregateInputType
+    _max?: AbsensiMaxAggregateInputType
+  }
+
+  export type AbsensiGroupByOutputType = {
+    id: string
+    tanggal: Date
+    status: $Enums.AbsensiStatus
+    verifikasi: boolean
+    user_id: string
+    _count: AbsensiCountAggregateOutputType | null
+    _min: AbsensiMinAggregateOutputType | null
+    _max: AbsensiMaxAggregateOutputType | null
+  }
+
+  type GetAbsensiGroupByPayload<T extends AbsensiGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AbsensiGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AbsensiGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AbsensiGroupByOutputType[P]>
+            : GetScalarType<T[P], AbsensiGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AbsensiSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tanggal?: boolean
+    status?: boolean
+    verifikasi?: boolean
+    user_id?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["absensi"]>
+
+  export type AbsensiSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tanggal?: boolean
+    status?: boolean
+    verifikasi?: boolean
+    user_id?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["absensi"]>
+
+  export type AbsensiSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tanggal?: boolean
+    status?: boolean
+    verifikasi?: boolean
+    user_id?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["absensi"]>
+
+  export type AbsensiSelectScalar = {
+    id?: boolean
+    tanggal?: boolean
+    status?: boolean
+    verifikasi?: boolean
+    user_id?: boolean
+  }
+
+  export type AbsensiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tanggal" | "status" | "verifikasi" | "user_id", ExtArgs["result"]["absensi"]>
+  export type AbsensiInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AbsensiIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AbsensiIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AbsensiPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Absensi"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tanggal: Date
+      status: $Enums.AbsensiStatus
+      verifikasi: boolean
+      user_id: string
+    }, ExtArgs["result"]["absensi"]>
+    composites: {}
+  }
+
+  type AbsensiGetPayload<S extends boolean | null | undefined | AbsensiDefaultArgs> = $Result.GetResult<Prisma.$AbsensiPayload, S>
+
+  type AbsensiCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AbsensiFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AbsensiCountAggregateInputType | true
+    }
+
+  export interface AbsensiDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Absensi'], meta: { name: 'Absensi' } }
+    /**
+     * Find zero or one Absensi that matches the filter.
+     * @param {AbsensiFindUniqueArgs} args - Arguments to find a Absensi
+     * @example
+     * // Get one Absensi
+     * const absensi = await prisma.absensi.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AbsensiFindUniqueArgs>(args: SelectSubset<T, AbsensiFindUniqueArgs<ExtArgs>>): Prisma__AbsensiClient<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Absensi that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AbsensiFindUniqueOrThrowArgs} args - Arguments to find a Absensi
+     * @example
+     * // Get one Absensi
+     * const absensi = await prisma.absensi.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AbsensiFindUniqueOrThrowArgs>(args: SelectSubset<T, AbsensiFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AbsensiClient<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Absensi that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AbsensiFindFirstArgs} args - Arguments to find a Absensi
+     * @example
+     * // Get one Absensi
+     * const absensi = await prisma.absensi.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AbsensiFindFirstArgs>(args?: SelectSubset<T, AbsensiFindFirstArgs<ExtArgs>>): Prisma__AbsensiClient<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Absensi that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AbsensiFindFirstOrThrowArgs} args - Arguments to find a Absensi
+     * @example
+     * // Get one Absensi
+     * const absensi = await prisma.absensi.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AbsensiFindFirstOrThrowArgs>(args?: SelectSubset<T, AbsensiFindFirstOrThrowArgs<ExtArgs>>): Prisma__AbsensiClient<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Absensis that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AbsensiFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Absensis
+     * const absensis = await prisma.absensi.findMany()
+     * 
+     * // Get first 10 Absensis
+     * const absensis = await prisma.absensi.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const absensiWithIdOnly = await prisma.absensi.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AbsensiFindManyArgs>(args?: SelectSubset<T, AbsensiFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Absensi.
+     * @param {AbsensiCreateArgs} args - Arguments to create a Absensi.
+     * @example
+     * // Create one Absensi
+     * const Absensi = await prisma.absensi.create({
+     *   data: {
+     *     // ... data to create a Absensi
+     *   }
+     * })
+     * 
+     */
+    create<T extends AbsensiCreateArgs>(args: SelectSubset<T, AbsensiCreateArgs<ExtArgs>>): Prisma__AbsensiClient<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Absensis.
+     * @param {AbsensiCreateManyArgs} args - Arguments to create many Absensis.
+     * @example
+     * // Create many Absensis
+     * const absensi = await prisma.absensi.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AbsensiCreateManyArgs>(args?: SelectSubset<T, AbsensiCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Absensis and returns the data saved in the database.
+     * @param {AbsensiCreateManyAndReturnArgs} args - Arguments to create many Absensis.
+     * @example
+     * // Create many Absensis
+     * const absensi = await prisma.absensi.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Absensis and only return the `id`
+     * const absensiWithIdOnly = await prisma.absensi.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AbsensiCreateManyAndReturnArgs>(args?: SelectSubset<T, AbsensiCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Absensi.
+     * @param {AbsensiDeleteArgs} args - Arguments to delete one Absensi.
+     * @example
+     * // Delete one Absensi
+     * const Absensi = await prisma.absensi.delete({
+     *   where: {
+     *     // ... filter to delete one Absensi
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AbsensiDeleteArgs>(args: SelectSubset<T, AbsensiDeleteArgs<ExtArgs>>): Prisma__AbsensiClient<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Absensi.
+     * @param {AbsensiUpdateArgs} args - Arguments to update one Absensi.
+     * @example
+     * // Update one Absensi
+     * const absensi = await prisma.absensi.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AbsensiUpdateArgs>(args: SelectSubset<T, AbsensiUpdateArgs<ExtArgs>>): Prisma__AbsensiClient<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Absensis.
+     * @param {AbsensiDeleteManyArgs} args - Arguments to filter Absensis to delete.
+     * @example
+     * // Delete a few Absensis
+     * const { count } = await prisma.absensi.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AbsensiDeleteManyArgs>(args?: SelectSubset<T, AbsensiDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Absensis.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AbsensiUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Absensis
+     * const absensi = await prisma.absensi.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AbsensiUpdateManyArgs>(args: SelectSubset<T, AbsensiUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Absensis and returns the data updated in the database.
+     * @param {AbsensiUpdateManyAndReturnArgs} args - Arguments to update many Absensis.
+     * @example
+     * // Update many Absensis
+     * const absensi = await prisma.absensi.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Absensis and only return the `id`
+     * const absensiWithIdOnly = await prisma.absensi.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AbsensiUpdateManyAndReturnArgs>(args: SelectSubset<T, AbsensiUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Absensi.
+     * @param {AbsensiUpsertArgs} args - Arguments to update or create a Absensi.
+     * @example
+     * // Update or create a Absensi
+     * const absensi = await prisma.absensi.upsert({
+     *   create: {
+     *     // ... data to create a Absensi
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Absensi we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AbsensiUpsertArgs>(args: SelectSubset<T, AbsensiUpsertArgs<ExtArgs>>): Prisma__AbsensiClient<$Result.GetResult<Prisma.$AbsensiPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Absensis.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AbsensiCountArgs} args - Arguments to filter Absensis to count.
+     * @example
+     * // Count the number of Absensis
+     * const count = await prisma.absensi.count({
+     *   where: {
+     *     // ... the filter for the Absensis we want to count
+     *   }
+     * })
+    **/
+    count<T extends AbsensiCountArgs>(
+      args?: Subset<T, AbsensiCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AbsensiCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Absensi.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AbsensiAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AbsensiAggregateArgs>(args: Subset<T, AbsensiAggregateArgs>): Prisma.PrismaPromise<GetAbsensiAggregateType<T>>
+
+    /**
+     * Group by Absensi.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AbsensiGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AbsensiGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AbsensiGroupByArgs['orderBy'] }
+        : { orderBy?: AbsensiGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AbsensiGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAbsensiGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Absensi model
+   */
+  readonly fields: AbsensiFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Absensi.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AbsensiClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Absensi model
+   */
+  interface AbsensiFieldRefs {
+    readonly id: FieldRef<"Absensi", 'String'>
+    readonly tanggal: FieldRef<"Absensi", 'DateTime'>
+    readonly status: FieldRef<"Absensi", 'AbsensiStatus'>
+    readonly verifikasi: FieldRef<"Absensi", 'Boolean'>
+    readonly user_id: FieldRef<"Absensi", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Absensi findUnique
+   */
+  export type AbsensiFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * Filter, which Absensi to fetch.
+     */
+    where: AbsensiWhereUniqueInput
+  }
+
+  /**
+   * Absensi findUniqueOrThrow
+   */
+  export type AbsensiFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * Filter, which Absensi to fetch.
+     */
+    where: AbsensiWhereUniqueInput
+  }
+
+  /**
+   * Absensi findFirst
+   */
+  export type AbsensiFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * Filter, which Absensi to fetch.
+     */
+    where?: AbsensiWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Absensis to fetch.
+     */
+    orderBy?: AbsensiOrderByWithRelationInput | AbsensiOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Absensis.
+     */
+    cursor?: AbsensiWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Absensis from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Absensis.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Absensis.
+     */
+    distinct?: AbsensiScalarFieldEnum | AbsensiScalarFieldEnum[]
+  }
+
+  /**
+   * Absensi findFirstOrThrow
+   */
+  export type AbsensiFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * Filter, which Absensi to fetch.
+     */
+    where?: AbsensiWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Absensis to fetch.
+     */
+    orderBy?: AbsensiOrderByWithRelationInput | AbsensiOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Absensis.
+     */
+    cursor?: AbsensiWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Absensis from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Absensis.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Absensis.
+     */
+    distinct?: AbsensiScalarFieldEnum | AbsensiScalarFieldEnum[]
+  }
+
+  /**
+   * Absensi findMany
+   */
+  export type AbsensiFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * Filter, which Absensis to fetch.
+     */
+    where?: AbsensiWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Absensis to fetch.
+     */
+    orderBy?: AbsensiOrderByWithRelationInput | AbsensiOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Absensis.
+     */
+    cursor?: AbsensiWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Absensis from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Absensis.
+     */
+    skip?: number
+    distinct?: AbsensiScalarFieldEnum | AbsensiScalarFieldEnum[]
+  }
+
+  /**
+   * Absensi create
+   */
+  export type AbsensiCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Absensi.
+     */
+    data: XOR<AbsensiCreateInput, AbsensiUncheckedCreateInput>
+  }
+
+  /**
+   * Absensi createMany
+   */
+  export type AbsensiCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Absensis.
+     */
+    data: AbsensiCreateManyInput | AbsensiCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Absensi createManyAndReturn
+   */
+  export type AbsensiCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * The data used to create many Absensis.
+     */
+    data: AbsensiCreateManyInput | AbsensiCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Absensi update
+   */
+  export type AbsensiUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Absensi.
+     */
+    data: XOR<AbsensiUpdateInput, AbsensiUncheckedUpdateInput>
+    /**
+     * Choose, which Absensi to update.
+     */
+    where: AbsensiWhereUniqueInput
+  }
+
+  /**
+   * Absensi updateMany
+   */
+  export type AbsensiUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Absensis.
+     */
+    data: XOR<AbsensiUpdateManyMutationInput, AbsensiUncheckedUpdateManyInput>
+    /**
+     * Filter which Absensis to update
+     */
+    where?: AbsensiWhereInput
+    /**
+     * Limit how many Absensis to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Absensi updateManyAndReturn
+   */
+  export type AbsensiUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * The data used to update Absensis.
+     */
+    data: XOR<AbsensiUpdateManyMutationInput, AbsensiUncheckedUpdateManyInput>
+    /**
+     * Filter which Absensis to update
+     */
+    where?: AbsensiWhereInput
+    /**
+     * Limit how many Absensis to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Absensi upsert
+   */
+  export type AbsensiUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Absensi to update in case it exists.
+     */
+    where: AbsensiWhereUniqueInput
+    /**
+     * In case the Absensi found by the `where` argument doesn't exist, create a new Absensi with this data.
+     */
+    create: XOR<AbsensiCreateInput, AbsensiUncheckedCreateInput>
+    /**
+     * In case the Absensi was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AbsensiUpdateInput, AbsensiUncheckedUpdateInput>
+  }
+
+  /**
+   * Absensi delete
+   */
+  export type AbsensiDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+    /**
+     * Filter which Absensi to delete.
+     */
+    where: AbsensiWhereUniqueInput
+  }
+
+  /**
+   * Absensi deleteMany
+   */
+  export type AbsensiDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Absensis to delete
+     */
+    where?: AbsensiWhereInput
+    /**
+     * Limit how many Absensis to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Absensi without action
+   */
+  export type AbsensiDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Absensi
+     */
+    select?: AbsensiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Absensi
+     */
+    omit?: AbsensiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AbsensiInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Prediksi
+   */
+
+  export type AggregatePrediksi = {
+    _count: PrediksiCountAggregateOutputType | null
+    _avg: PrediksiAvgAggregateOutputType | null
+    _sum: PrediksiSumAggregateOutputType | null
+    _min: PrediksiMinAggregateOutputType | null
+    _max: PrediksiMaxAggregateOutputType | null
+  }
+
+  export type PrediksiAvgAggregateOutputType = {
+    harga: number | null
+  }
+
+  export type PrediksiSumAggregateOutputType = {
+    harga: number | null
+  }
+
+  export type PrediksiMinAggregateOutputType = {
+    id: string | null
+    imageUrl: string | null
+    user_id: string | null
+    kualitas: string | null
+    harga: number | null
+  }
+
+  export type PrediksiMaxAggregateOutputType = {
+    id: string | null
+    imageUrl: string | null
+    user_id: string | null
+    kualitas: string | null
+    harga: number | null
+  }
+
+  export type PrediksiCountAggregateOutputType = {
+    id: number
+    imageUrl: number
+    user_id: number
+    kualitas: number
+    harga: number
+    _all: number
+  }
+
+
+  export type PrediksiAvgAggregateInputType = {
+    harga?: true
+  }
+
+  export type PrediksiSumAggregateInputType = {
+    harga?: true
+  }
+
+  export type PrediksiMinAggregateInputType = {
+    id?: true
+    imageUrl?: true
+    user_id?: true
+    kualitas?: true
+    harga?: true
+  }
+
+  export type PrediksiMaxAggregateInputType = {
+    id?: true
+    imageUrl?: true
+    user_id?: true
+    kualitas?: true
+    harga?: true
+  }
+
+  export type PrediksiCountAggregateInputType = {
+    id?: true
+    imageUrl?: true
+    user_id?: true
+    kualitas?: true
+    harga?: true
+    _all?: true
+  }
+
+  export type PrediksiAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Prediksi to aggregate.
+     */
+    where?: PrediksiWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prediksis to fetch.
+     */
+    orderBy?: PrediksiOrderByWithRelationInput | PrediksiOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PrediksiWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prediksis from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prediksis.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Prediksis
+    **/
+    _count?: true | PrediksiCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PrediksiAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PrediksiSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PrediksiMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PrediksiMaxAggregateInputType
+  }
+
+  export type GetPrediksiAggregateType<T extends PrediksiAggregateArgs> = {
+        [P in keyof T & keyof AggregatePrediksi]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePrediksi[P]>
+      : GetScalarType<T[P], AggregatePrediksi[P]>
+  }
+
+
+
+
+  export type PrediksiGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PrediksiWhereInput
+    orderBy?: PrediksiOrderByWithAggregationInput | PrediksiOrderByWithAggregationInput[]
+    by: PrediksiScalarFieldEnum[] | PrediksiScalarFieldEnum
+    having?: PrediksiScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PrediksiCountAggregateInputType | true
+    _avg?: PrediksiAvgAggregateInputType
+    _sum?: PrediksiSumAggregateInputType
+    _min?: PrediksiMinAggregateInputType
+    _max?: PrediksiMaxAggregateInputType
+  }
+
+  export type PrediksiGroupByOutputType = {
+    id: string
+    imageUrl: string
+    user_id: string
+    kualitas: string | null
+    harga: number | null
+    _count: PrediksiCountAggregateOutputType | null
+    _avg: PrediksiAvgAggregateOutputType | null
+    _sum: PrediksiSumAggregateOutputType | null
+    _min: PrediksiMinAggregateOutputType | null
+    _max: PrediksiMaxAggregateOutputType | null
+  }
+
+  type GetPrediksiGroupByPayload<T extends PrediksiGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PrediksiGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PrediksiGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PrediksiGroupByOutputType[P]>
+            : GetScalarType<T[P], PrediksiGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PrediksiSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    imageUrl?: boolean
+    user_id?: boolean
+    kualitas?: boolean
+    harga?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["prediksi"]>
+
+  export type PrediksiSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    imageUrl?: boolean
+    user_id?: boolean
+    kualitas?: boolean
+    harga?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["prediksi"]>
+
+  export type PrediksiSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    imageUrl?: boolean
+    user_id?: boolean
+    kualitas?: boolean
+    harga?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["prediksi"]>
+
+  export type PrediksiSelectScalar = {
+    id?: boolean
+    imageUrl?: boolean
+    user_id?: boolean
+    kualitas?: boolean
+    harga?: boolean
+  }
+
+  export type PrediksiOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "imageUrl" | "user_id" | "kualitas" | "harga", ExtArgs["result"]["prediksi"]>
+  export type PrediksiInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PrediksiIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PrediksiIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PrediksiPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Prediksi"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      imageUrl: string
+      user_id: string
+      kualitas: string | null
+      harga: number | null
+    }, ExtArgs["result"]["prediksi"]>
+    composites: {}
+  }
+
+  type PrediksiGetPayload<S extends boolean | null | undefined | PrediksiDefaultArgs> = $Result.GetResult<Prisma.$PrediksiPayload, S>
+
+  type PrediksiCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PrediksiFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PrediksiCountAggregateInputType | true
+    }
+
+  export interface PrediksiDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Prediksi'], meta: { name: 'Prediksi' } }
+    /**
+     * Find zero or one Prediksi that matches the filter.
+     * @param {PrediksiFindUniqueArgs} args - Arguments to find a Prediksi
+     * @example
+     * // Get one Prediksi
+     * const prediksi = await prisma.prediksi.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PrediksiFindUniqueArgs>(args: SelectSubset<T, PrediksiFindUniqueArgs<ExtArgs>>): Prisma__PrediksiClient<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Prediksi that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PrediksiFindUniqueOrThrowArgs} args - Arguments to find a Prediksi
+     * @example
+     * // Get one Prediksi
+     * const prediksi = await prisma.prediksi.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PrediksiFindUniqueOrThrowArgs>(args: SelectSubset<T, PrediksiFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PrediksiClient<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Prediksi that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrediksiFindFirstArgs} args - Arguments to find a Prediksi
+     * @example
+     * // Get one Prediksi
+     * const prediksi = await prisma.prediksi.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PrediksiFindFirstArgs>(args?: SelectSubset<T, PrediksiFindFirstArgs<ExtArgs>>): Prisma__PrediksiClient<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Prediksi that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrediksiFindFirstOrThrowArgs} args - Arguments to find a Prediksi
+     * @example
+     * // Get one Prediksi
+     * const prediksi = await prisma.prediksi.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PrediksiFindFirstOrThrowArgs>(args?: SelectSubset<T, PrediksiFindFirstOrThrowArgs<ExtArgs>>): Prisma__PrediksiClient<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Prediksis that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrediksiFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Prediksis
+     * const prediksis = await prisma.prediksi.findMany()
+     * 
+     * // Get first 10 Prediksis
+     * const prediksis = await prisma.prediksi.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const prediksiWithIdOnly = await prisma.prediksi.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PrediksiFindManyArgs>(args?: SelectSubset<T, PrediksiFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Prediksi.
+     * @param {PrediksiCreateArgs} args - Arguments to create a Prediksi.
+     * @example
+     * // Create one Prediksi
+     * const Prediksi = await prisma.prediksi.create({
+     *   data: {
+     *     // ... data to create a Prediksi
+     *   }
+     * })
+     * 
+     */
+    create<T extends PrediksiCreateArgs>(args: SelectSubset<T, PrediksiCreateArgs<ExtArgs>>): Prisma__PrediksiClient<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Prediksis.
+     * @param {PrediksiCreateManyArgs} args - Arguments to create many Prediksis.
+     * @example
+     * // Create many Prediksis
+     * const prediksi = await prisma.prediksi.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PrediksiCreateManyArgs>(args?: SelectSubset<T, PrediksiCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Prediksis and returns the data saved in the database.
+     * @param {PrediksiCreateManyAndReturnArgs} args - Arguments to create many Prediksis.
+     * @example
+     * // Create many Prediksis
+     * const prediksi = await prisma.prediksi.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Prediksis and only return the `id`
+     * const prediksiWithIdOnly = await prisma.prediksi.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PrediksiCreateManyAndReturnArgs>(args?: SelectSubset<T, PrediksiCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Prediksi.
+     * @param {PrediksiDeleteArgs} args - Arguments to delete one Prediksi.
+     * @example
+     * // Delete one Prediksi
+     * const Prediksi = await prisma.prediksi.delete({
+     *   where: {
+     *     // ... filter to delete one Prediksi
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PrediksiDeleteArgs>(args: SelectSubset<T, PrediksiDeleteArgs<ExtArgs>>): Prisma__PrediksiClient<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Prediksi.
+     * @param {PrediksiUpdateArgs} args - Arguments to update one Prediksi.
+     * @example
+     * // Update one Prediksi
+     * const prediksi = await prisma.prediksi.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PrediksiUpdateArgs>(args: SelectSubset<T, PrediksiUpdateArgs<ExtArgs>>): Prisma__PrediksiClient<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Prediksis.
+     * @param {PrediksiDeleteManyArgs} args - Arguments to filter Prediksis to delete.
+     * @example
+     * // Delete a few Prediksis
+     * const { count } = await prisma.prediksi.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PrediksiDeleteManyArgs>(args?: SelectSubset<T, PrediksiDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Prediksis.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrediksiUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Prediksis
+     * const prediksi = await prisma.prediksi.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PrediksiUpdateManyArgs>(args: SelectSubset<T, PrediksiUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Prediksis and returns the data updated in the database.
+     * @param {PrediksiUpdateManyAndReturnArgs} args - Arguments to update many Prediksis.
+     * @example
+     * // Update many Prediksis
+     * const prediksi = await prisma.prediksi.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Prediksis and only return the `id`
+     * const prediksiWithIdOnly = await prisma.prediksi.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PrediksiUpdateManyAndReturnArgs>(args: SelectSubset<T, PrediksiUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Prediksi.
+     * @param {PrediksiUpsertArgs} args - Arguments to update or create a Prediksi.
+     * @example
+     * // Update or create a Prediksi
+     * const prediksi = await prisma.prediksi.upsert({
+     *   create: {
+     *     // ... data to create a Prediksi
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Prediksi we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PrediksiUpsertArgs>(args: SelectSubset<T, PrediksiUpsertArgs<ExtArgs>>): Prisma__PrediksiClient<$Result.GetResult<Prisma.$PrediksiPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Prediksis.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrediksiCountArgs} args - Arguments to filter Prediksis to count.
+     * @example
+     * // Count the number of Prediksis
+     * const count = await prisma.prediksi.count({
+     *   where: {
+     *     // ... the filter for the Prediksis we want to count
+     *   }
+     * })
+    **/
+    count<T extends PrediksiCountArgs>(
+      args?: Subset<T, PrediksiCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PrediksiCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Prediksi.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrediksiAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PrediksiAggregateArgs>(args: Subset<T, PrediksiAggregateArgs>): Prisma.PrismaPromise<GetPrediksiAggregateType<T>>
+
+    /**
+     * Group by Prediksi.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrediksiGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PrediksiGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PrediksiGroupByArgs['orderBy'] }
+        : { orderBy?: PrediksiGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PrediksiGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPrediksiGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Prediksi model
+   */
+  readonly fields: PrediksiFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Prediksi.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PrediksiClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Prediksi model
+   */
+  interface PrediksiFieldRefs {
+    readonly id: FieldRef<"Prediksi", 'String'>
+    readonly imageUrl: FieldRef<"Prediksi", 'String'>
+    readonly user_id: FieldRef<"Prediksi", 'String'>
+    readonly kualitas: FieldRef<"Prediksi", 'String'>
+    readonly harga: FieldRef<"Prediksi", 'Float'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Prediksi findUnique
+   */
+  export type PrediksiFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediksi to fetch.
+     */
+    where: PrediksiWhereUniqueInput
+  }
+
+  /**
+   * Prediksi findUniqueOrThrow
+   */
+  export type PrediksiFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediksi to fetch.
+     */
+    where: PrediksiWhereUniqueInput
+  }
+
+  /**
+   * Prediksi findFirst
+   */
+  export type PrediksiFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediksi to fetch.
+     */
+    where?: PrediksiWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prediksis to fetch.
+     */
+    orderBy?: PrediksiOrderByWithRelationInput | PrediksiOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Prediksis.
+     */
+    cursor?: PrediksiWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prediksis from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prediksis.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Prediksis.
+     */
+    distinct?: PrediksiScalarFieldEnum | PrediksiScalarFieldEnum[]
+  }
+
+  /**
+   * Prediksi findFirstOrThrow
+   */
+  export type PrediksiFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediksi to fetch.
+     */
+    where?: PrediksiWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prediksis to fetch.
+     */
+    orderBy?: PrediksiOrderByWithRelationInput | PrediksiOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Prediksis.
+     */
+    cursor?: PrediksiWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prediksis from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prediksis.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Prediksis.
+     */
+    distinct?: PrediksiScalarFieldEnum | PrediksiScalarFieldEnum[]
+  }
+
+  /**
+   * Prediksi findMany
+   */
+  export type PrediksiFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediksis to fetch.
+     */
+    where?: PrediksiWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Prediksis to fetch.
+     */
+    orderBy?: PrediksiOrderByWithRelationInput | PrediksiOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Prediksis.
+     */
+    cursor?: PrediksiWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Prediksis from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Prediksis.
+     */
+    skip?: number
+    distinct?: PrediksiScalarFieldEnum | PrediksiScalarFieldEnum[]
+  }
+
+  /**
+   * Prediksi create
+   */
+  export type PrediksiCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Prediksi.
+     */
+    data: XOR<PrediksiCreateInput, PrediksiUncheckedCreateInput>
+  }
+
+  /**
+   * Prediksi createMany
+   */
+  export type PrediksiCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Prediksis.
+     */
+    data: PrediksiCreateManyInput | PrediksiCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Prediksi createManyAndReturn
+   */
+  export type PrediksiCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * The data used to create many Prediksis.
+     */
+    data: PrediksiCreateManyInput | PrediksiCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Prediksi update
+   */
+  export type PrediksiUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Prediksi.
+     */
+    data: XOR<PrediksiUpdateInput, PrediksiUncheckedUpdateInput>
+    /**
+     * Choose, which Prediksi to update.
+     */
+    where: PrediksiWhereUniqueInput
+  }
+
+  /**
+   * Prediksi updateMany
+   */
+  export type PrediksiUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Prediksis.
+     */
+    data: XOR<PrediksiUpdateManyMutationInput, PrediksiUncheckedUpdateManyInput>
+    /**
+     * Filter which Prediksis to update
+     */
+    where?: PrediksiWhereInput
+    /**
+     * Limit how many Prediksis to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Prediksi updateManyAndReturn
+   */
+  export type PrediksiUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * The data used to update Prediksis.
+     */
+    data: XOR<PrediksiUpdateManyMutationInput, PrediksiUncheckedUpdateManyInput>
+    /**
+     * Filter which Prediksis to update
+     */
+    where?: PrediksiWhereInput
+    /**
+     * Limit how many Prediksis to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Prediksi upsert
+   */
+  export type PrediksiUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Prediksi to update in case it exists.
+     */
+    where: PrediksiWhereUniqueInput
+    /**
+     * In case the Prediksi found by the `where` argument doesn't exist, create a new Prediksi with this data.
+     */
+    create: XOR<PrediksiCreateInput, PrediksiUncheckedCreateInput>
+    /**
+     * In case the Prediksi was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PrediksiUpdateInput, PrediksiUncheckedUpdateInput>
+  }
+
+  /**
+   * Prediksi delete
+   */
+  export type PrediksiDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
+    /**
+     * Filter which Prediksi to delete.
+     */
+    where: PrediksiWhereUniqueInput
+  }
+
+  /**
+   * Prediksi deleteMany
+   */
+  export type PrediksiDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Prediksis to delete
+     */
+    where?: PrediksiWhereInput
+    /**
+     * Limit how many Prediksis to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Prediksi without action
+   */
+  export type PrediksiDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediksi
+     */
+    select?: PrediksiSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediksi
+     */
+    omit?: PrediksiOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PrediksiInclude<ExtArgs> | null
   }
 
 
@@ -1916,15 +5569,47 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-  export const DurianDataScalarFieldEnum: {
+  export const UserScalarFieldEnum: {
     id: 'id',
-    filename: 'filename',
-    jenis: 'jenis',
-    grade: 'grade',
+    nama: 'nama',
+    email: 'email',
+    password: 'password',
+    role: 'role'
+  };
+
+  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const JadwalScalarFieldEnum: {
+    id: 'id',
+    tanggal: 'tanggal',
+    shift: 'shift',
+    id_user: 'id_user'
+  };
+
+  export type JadwalScalarFieldEnum = (typeof JadwalScalarFieldEnum)[keyof typeof JadwalScalarFieldEnum]
+
+
+  export const AbsensiScalarFieldEnum: {
+    id: 'id',
+    tanggal: 'tanggal',
+    status: 'status',
+    verifikasi: 'verifikasi',
+    user_id: 'user_id'
+  };
+
+  export type AbsensiScalarFieldEnum = (typeof AbsensiScalarFieldEnum)[keyof typeof AbsensiScalarFieldEnum]
+
+
+  export const PrediksiScalarFieldEnum: {
+    id: 'id',
+    imageUrl: 'imageUrl',
+    user_id: 'user_id',
+    kualitas: 'kualitas',
     harga: 'harga'
   };
 
-  export type DurianDataScalarFieldEnum = (typeof DurianDataScalarFieldEnum)[keyof typeof DurianDataScalarFieldEnum]
+  export type PrediksiScalarFieldEnum = (typeof PrediksiScalarFieldEnum)[keyof typeof PrediksiScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -1943,23 +5628,17 @@ export namespace Prisma {
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
   /**
    * Field references
    */
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
 
 
   /**
@@ -1977,6 +5656,69 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Shift'
+   */
+  export type EnumShiftFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Shift'>
+    
+
+
+  /**
+   * Reference to a field of type 'Shift[]'
+   */
+  export type ListEnumShiftFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Shift[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AbsensiStatus'
+   */
+  export type EnumAbsensiStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AbsensiStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AbsensiStatus[]'
+   */
+  export type ListEnumAbsensiStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AbsensiStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1988,127 +5730,472 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
   /**
    * Deep Input Types
    */
 
 
-  export type DurianDataWhereInput = {
-    AND?: DurianDataWhereInput | DurianDataWhereInput[]
-    OR?: DurianDataWhereInput[]
-    NOT?: DurianDataWhereInput | DurianDataWhereInput[]
-    id?: IntFilter<"DurianData"> | number
-    filename?: StringFilter<"DurianData"> | string
-    jenis?: StringFilter<"DurianData"> | string
-    grade?: StringFilter<"DurianData"> | string
-    harga?: FloatFilter<"DurianData"> | number
+  export type UserWhereInput = {
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    id?: StringFilter<"User"> | string
+    nama?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    prediksi?: PrediksiListRelationFilter
+    absensi?: AbsensiListRelationFilter
+    jadwal?: JadwalListRelationFilter
   }
 
-  export type DurianDataOrderByWithRelationInput = {
+  export type UserOrderByWithRelationInput = {
     id?: SortOrder
-    filename?: SortOrder
-    jenis?: SortOrder
-    grade?: SortOrder
-    harga?: SortOrder
+    nama?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    prediksi?: PrediksiOrderByRelationAggregateInput
+    absensi?: AbsensiOrderByRelationAggregateInput
+    jadwal?: JadwalOrderByRelationAggregateInput
   }
 
-  export type DurianDataWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
-    AND?: DurianDataWhereInput | DurianDataWhereInput[]
-    OR?: DurianDataWhereInput[]
-    NOT?: DurianDataWhereInput | DurianDataWhereInput[]
-    filename?: StringFilter<"DurianData"> | string
-    jenis?: StringFilter<"DurianData"> | string
-    grade?: StringFilter<"DurianData"> | string
-    harga?: FloatFilter<"DurianData"> | number
+  export type UserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    AND?: UserWhereInput | UserWhereInput[]
+    OR?: UserWhereInput[]
+    NOT?: UserWhereInput | UserWhereInput[]
+    nama?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
+    prediksi?: PrediksiListRelationFilter
+    absensi?: AbsensiListRelationFilter
+    jadwal?: JadwalListRelationFilter
+  }, "id" | "email">
+
+  export type UserOrderByWithAggregationInput = {
+    id?: SortOrder
+    nama?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    _count?: UserCountOrderByAggregateInput
+    _max?: UserMaxOrderByAggregateInput
+    _min?: UserMinOrderByAggregateInput
+  }
+
+  export type UserScalarWhereWithAggregatesInput = {
+    AND?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    OR?: UserScalarWhereWithAggregatesInput[]
+    NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"User"> | string
+    nama?: StringWithAggregatesFilter<"User"> | string
+    email?: StringWithAggregatesFilter<"User"> | string
+    password?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  }
+
+  export type JadwalWhereInput = {
+    AND?: JadwalWhereInput | JadwalWhereInput[]
+    OR?: JadwalWhereInput[]
+    NOT?: JadwalWhereInput | JadwalWhereInput[]
+    id?: StringFilter<"Jadwal"> | string
+    tanggal?: DateTimeFilter<"Jadwal"> | Date | string
+    shift?: EnumShiftFilter<"Jadwal"> | $Enums.Shift
+    id_user?: StringFilter<"Jadwal"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type JadwalOrderByWithRelationInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    shift?: SortOrder
+    id_user?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type JadwalWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: JadwalWhereInput | JadwalWhereInput[]
+    OR?: JadwalWhereInput[]
+    NOT?: JadwalWhereInput | JadwalWhereInput[]
+    tanggal?: DateTimeFilter<"Jadwal"> | Date | string
+    shift?: EnumShiftFilter<"Jadwal"> | $Enums.Shift
+    id_user?: StringFilter<"Jadwal"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
-  export type DurianDataOrderByWithAggregationInput = {
+  export type JadwalOrderByWithAggregationInput = {
     id?: SortOrder
-    filename?: SortOrder
-    jenis?: SortOrder
-    grade?: SortOrder
-    harga?: SortOrder
-    _count?: DurianDataCountOrderByAggregateInput
-    _avg?: DurianDataAvgOrderByAggregateInput
-    _max?: DurianDataMaxOrderByAggregateInput
-    _min?: DurianDataMinOrderByAggregateInput
-    _sum?: DurianDataSumOrderByAggregateInput
+    tanggal?: SortOrder
+    shift?: SortOrder
+    id_user?: SortOrder
+    _count?: JadwalCountOrderByAggregateInput
+    _max?: JadwalMaxOrderByAggregateInput
+    _min?: JadwalMinOrderByAggregateInput
   }
 
-  export type DurianDataScalarWhereWithAggregatesInput = {
-    AND?: DurianDataScalarWhereWithAggregatesInput | DurianDataScalarWhereWithAggregatesInput[]
-    OR?: DurianDataScalarWhereWithAggregatesInput[]
-    NOT?: DurianDataScalarWhereWithAggregatesInput | DurianDataScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"DurianData"> | number
-    filename?: StringWithAggregatesFilter<"DurianData"> | string
-    jenis?: StringWithAggregatesFilter<"DurianData"> | string
-    grade?: StringWithAggregatesFilter<"DurianData"> | string
-    harga?: FloatWithAggregatesFilter<"DurianData"> | number
+  export type JadwalScalarWhereWithAggregatesInput = {
+    AND?: JadwalScalarWhereWithAggregatesInput | JadwalScalarWhereWithAggregatesInput[]
+    OR?: JadwalScalarWhereWithAggregatesInput[]
+    NOT?: JadwalScalarWhereWithAggregatesInput | JadwalScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Jadwal"> | string
+    tanggal?: DateTimeWithAggregatesFilter<"Jadwal"> | Date | string
+    shift?: EnumShiftWithAggregatesFilter<"Jadwal"> | $Enums.Shift
+    id_user?: StringWithAggregatesFilter<"Jadwal"> | string
   }
 
-  export type DurianDataCreateInput = {
-    filename: string
-    jenis: string
-    grade: string
-    harga: number
+  export type AbsensiWhereInput = {
+    AND?: AbsensiWhereInput | AbsensiWhereInput[]
+    OR?: AbsensiWhereInput[]
+    NOT?: AbsensiWhereInput | AbsensiWhereInput[]
+    id?: StringFilter<"Absensi"> | string
+    tanggal?: DateTimeFilter<"Absensi"> | Date | string
+    status?: EnumAbsensiStatusFilter<"Absensi"> | $Enums.AbsensiStatus
+    verifikasi?: BoolFilter<"Absensi"> | boolean
+    user_id?: StringFilter<"Absensi"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type DurianDataUncheckedCreateInput = {
-    id?: number
-    filename: string
-    jenis: string
-    grade: string
-    harga: number
+  export type AbsensiOrderByWithRelationInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    status?: SortOrder
+    verifikasi?: SortOrder
+    user_id?: SortOrder
+    user?: UserOrderByWithRelationInput
   }
 
-  export type DurianDataUpdateInput = {
-    filename?: StringFieldUpdateOperationsInput | string
-    jenis?: StringFieldUpdateOperationsInput | string
-    grade?: StringFieldUpdateOperationsInput | string
-    harga?: FloatFieldUpdateOperationsInput | number
+  export type AbsensiWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AbsensiWhereInput | AbsensiWhereInput[]
+    OR?: AbsensiWhereInput[]
+    NOT?: AbsensiWhereInput | AbsensiWhereInput[]
+    tanggal?: DateTimeFilter<"Absensi"> | Date | string
+    status?: EnumAbsensiStatusFilter<"Absensi"> | $Enums.AbsensiStatus
+    verifikasi?: BoolFilter<"Absensi"> | boolean
+    user_id?: StringFilter<"Absensi"> | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type AbsensiOrderByWithAggregationInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    status?: SortOrder
+    verifikasi?: SortOrder
+    user_id?: SortOrder
+    _count?: AbsensiCountOrderByAggregateInput
+    _max?: AbsensiMaxOrderByAggregateInput
+    _min?: AbsensiMinOrderByAggregateInput
   }
 
-  export type DurianDataUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    filename?: StringFieldUpdateOperationsInput | string
-    jenis?: StringFieldUpdateOperationsInput | string
-    grade?: StringFieldUpdateOperationsInput | string
-    harga?: FloatFieldUpdateOperationsInput | number
+  export type AbsensiScalarWhereWithAggregatesInput = {
+    AND?: AbsensiScalarWhereWithAggregatesInput | AbsensiScalarWhereWithAggregatesInput[]
+    OR?: AbsensiScalarWhereWithAggregatesInput[]
+    NOT?: AbsensiScalarWhereWithAggregatesInput | AbsensiScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Absensi"> | string
+    tanggal?: DateTimeWithAggregatesFilter<"Absensi"> | Date | string
+    status?: EnumAbsensiStatusWithAggregatesFilter<"Absensi"> | $Enums.AbsensiStatus
+    verifikasi?: BoolWithAggregatesFilter<"Absensi"> | boolean
+    user_id?: StringWithAggregatesFilter<"Absensi"> | string
   }
 
-  export type DurianDataCreateManyInput = {
-    id?: number
-    filename: string
-    jenis: string
-    grade: string
-    harga: number
+  export type PrediksiWhereInput = {
+    AND?: PrediksiWhereInput | PrediksiWhereInput[]
+    OR?: PrediksiWhereInput[]
+    NOT?: PrediksiWhereInput | PrediksiWhereInput[]
+    id?: StringFilter<"Prediksi"> | string
+    imageUrl?: StringFilter<"Prediksi"> | string
+    user_id?: StringFilter<"Prediksi"> | string
+    kualitas?: StringNullableFilter<"Prediksi"> | string | null
+    harga?: FloatNullableFilter<"Prediksi"> | number | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
-  export type DurianDataUpdateManyMutationInput = {
-    filename?: StringFieldUpdateOperationsInput | string
-    jenis?: StringFieldUpdateOperationsInput | string
-    grade?: StringFieldUpdateOperationsInput | string
-    harga?: FloatFieldUpdateOperationsInput | number
+  export type PrediksiOrderByWithRelationInput = {
+    id?: SortOrder
+    imageUrl?: SortOrder
+    user_id?: SortOrder
+    kualitas?: SortOrderInput | SortOrder
+    harga?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
   }
 
-  export type DurianDataUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    filename?: StringFieldUpdateOperationsInput | string
-    jenis?: StringFieldUpdateOperationsInput | string
-    grade?: StringFieldUpdateOperationsInput | string
-    harga?: FloatFieldUpdateOperationsInput | number
+  export type PrediksiWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PrediksiWhereInput | PrediksiWhereInput[]
+    OR?: PrediksiWhereInput[]
+    NOT?: PrediksiWhereInput | PrediksiWhereInput[]
+    imageUrl?: StringFilter<"Prediksi"> | string
+    user_id?: StringFilter<"Prediksi"> | string
+    kualitas?: StringNullableFilter<"Prediksi"> | string | null
+    harga?: FloatNullableFilter<"Prediksi"> | number | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type PrediksiOrderByWithAggregationInput = {
+    id?: SortOrder
+    imageUrl?: SortOrder
+    user_id?: SortOrder
+    kualitas?: SortOrderInput | SortOrder
+    harga?: SortOrderInput | SortOrder
+    _count?: PrediksiCountOrderByAggregateInput
+    _avg?: PrediksiAvgOrderByAggregateInput
+    _max?: PrediksiMaxOrderByAggregateInput
+    _min?: PrediksiMinOrderByAggregateInput
+    _sum?: PrediksiSumOrderByAggregateInput
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type PrediksiScalarWhereWithAggregatesInput = {
+    AND?: PrediksiScalarWhereWithAggregatesInput | PrediksiScalarWhereWithAggregatesInput[]
+    OR?: PrediksiScalarWhereWithAggregatesInput[]
+    NOT?: PrediksiScalarWhereWithAggregatesInput | PrediksiScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Prediksi"> | string
+    imageUrl?: StringWithAggregatesFilter<"Prediksi"> | string
+    user_id?: StringWithAggregatesFilter<"Prediksi"> | string
+    kualitas?: StringNullableWithAggregatesFilter<"Prediksi"> | string | null
+    harga?: FloatNullableWithAggregatesFilter<"Prediksi"> | number | null
+  }
+
+  export type UserCreateInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    prediksi?: PrediksiCreateNestedManyWithoutUserInput
+    absensi?: AbsensiCreateNestedManyWithoutUserInput
+    jadwal?: JadwalCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    prediksi?: PrediksiUncheckedCreateNestedManyWithoutUserInput
+    absensi?: AbsensiUncheckedCreateNestedManyWithoutUserInput
+    jadwal?: JadwalUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    prediksi?: PrediksiUpdateManyWithoutUserNestedInput
+    absensi?: AbsensiUpdateManyWithoutUserNestedInput
+    jadwal?: JadwalUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    prediksi?: PrediksiUncheckedUpdateManyWithoutUserNestedInput
+    absensi?: AbsensiUncheckedUpdateManyWithoutUserNestedInput
+    jadwal?: JadwalUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateManyInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+  }
+
+  export type UserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  }
+
+  export type UserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  }
+
+  export type JadwalCreateInput = {
+    id?: string
+    tanggal: Date | string
+    shift: $Enums.Shift
+    user: UserCreateNestedOneWithoutJadwalInput
+  }
+
+  export type JadwalUncheckedCreateInput = {
+    id?: string
+    tanggal: Date | string
+    shift: $Enums.Shift
+    id_user: string
+  }
+
+  export type JadwalUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    shift?: EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+    user?: UserUpdateOneRequiredWithoutJadwalNestedInput
+  }
+
+  export type JadwalUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    shift?: EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+    id_user?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type JadwalCreateManyInput = {
+    id?: string
+    tanggal: Date | string
+    shift: $Enums.Shift
+    id_user: string
+  }
+
+  export type JadwalUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    shift?: EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  }
+
+  export type JadwalUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    shift?: EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+    id_user?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AbsensiCreateInput = {
+    id?: string
+    tanggal: Date | string
+    status: $Enums.AbsensiStatus
+    verifikasi?: boolean
+    user: UserCreateNestedOneWithoutAbsensiInput
+  }
+
+  export type AbsensiUncheckedCreateInput = {
+    id?: string
+    tanggal: Date | string
+    status: $Enums.AbsensiStatus
+    verifikasi?: boolean
+    user_id: string
+  }
+
+  export type AbsensiUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAbsensiStatusFieldUpdateOperationsInput | $Enums.AbsensiStatus
+    verifikasi?: BoolFieldUpdateOperationsInput | boolean
+    user?: UserUpdateOneRequiredWithoutAbsensiNestedInput
+  }
+
+  export type AbsensiUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAbsensiStatusFieldUpdateOperationsInput | $Enums.AbsensiStatus
+    verifikasi?: BoolFieldUpdateOperationsInput | boolean
+    user_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AbsensiCreateManyInput = {
+    id?: string
+    tanggal: Date | string
+    status: $Enums.AbsensiStatus
+    verifikasi?: boolean
+    user_id: string
+  }
+
+  export type AbsensiUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAbsensiStatusFieldUpdateOperationsInput | $Enums.AbsensiStatus
+    verifikasi?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AbsensiUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAbsensiStatusFieldUpdateOperationsInput | $Enums.AbsensiStatus
+    verifikasi?: BoolFieldUpdateOperationsInput | boolean
+    user_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PrediksiCreateInput = {
+    id?: string
+    imageUrl: string
+    kualitas?: string | null
+    harga?: number | null
+    user: UserCreateNestedOneWithoutPrediksiInput
+  }
+
+  export type PrediksiUncheckedCreateInput = {
+    id?: string
+    imageUrl: string
+    user_id: string
+    kualitas?: string | null
+    harga?: number | null
+  }
+
+  export type PrediksiUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    kualitas?: NullableStringFieldUpdateOperationsInput | string | null
+    harga?: NullableFloatFieldUpdateOperationsInput | number | null
+    user?: UserUpdateOneRequiredWithoutPrediksiNestedInput
+  }
+
+  export type PrediksiUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    kualitas?: NullableStringFieldUpdateOperationsInput | string | null
+    harga?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type PrediksiCreateManyInput = {
+    id?: string
+    imageUrl: string
+    user_id: string
+    kualitas?: string | null
+    harga?: number | null
+  }
+
+  export type PrediksiUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    kualitas?: NullableStringFieldUpdateOperationsInput | string | null
+    harga?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type PrediksiUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    user_id?: StringFieldUpdateOperationsInput | string
+    kualitas?: NullableStringFieldUpdateOperationsInput | string | null
+    harga?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -2126,65 +6213,65 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
-  export type DurianDataCountOrderByAggregateInput = {
+  export type PrediksiListRelationFilter = {
+    every?: PrediksiWhereInput
+    some?: PrediksiWhereInput
+    none?: PrediksiWhereInput
+  }
+
+  export type AbsensiListRelationFilter = {
+    every?: AbsensiWhereInput
+    some?: AbsensiWhereInput
+    none?: AbsensiWhereInput
+  }
+
+  export type JadwalListRelationFilter = {
+    every?: JadwalWhereInput
+    some?: JadwalWhereInput
+    none?: JadwalWhereInput
+  }
+
+  export type PrediksiOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AbsensiOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type JadwalOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserCountOrderByAggregateInput = {
     id?: SortOrder
-    filename?: SortOrder
-    jenis?: SortOrder
-    grade?: SortOrder
-    harga?: SortOrder
+    nama?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
   }
 
-  export type DurianDataAvgOrderByAggregateInput = {
+  export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
-    harga?: SortOrder
+    nama?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
   }
 
-  export type DurianDataMaxOrderByAggregateInput = {
+  export type UserMinOrderByAggregateInput = {
     id?: SortOrder
-    filename?: SortOrder
-    jenis?: SortOrder
-    grade?: SortOrder
-    harga?: SortOrder
-  }
-
-  export type DurianDataMinOrderByAggregateInput = {
-    id?: SortOrder
-    filename?: SortOrder
-    jenis?: SortOrder
-    grade?: SortOrder
-    harga?: SortOrder
-  }
-
-  export type DurianDataSumOrderByAggregateInput = {
-    id?: SortOrder
-    harga?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    nama?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2205,51 +6292,437 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type EnumShiftFilter<$PrismaModel = never> = {
+    equals?: $Enums.Shift | EnumShiftFieldRefInput<$PrismaModel>
+    in?: $Enums.Shift[] | ListEnumShiftFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Shift[] | ListEnumShiftFieldRefInput<$PrismaModel>
+    not?: NestedEnumShiftFilter<$PrismaModel> | $Enums.Shift
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type JadwalCountOrderByAggregateInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    shift?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type JadwalMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    shift?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type JadwalMinOrderByAggregateInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    shift?: SortOrder
+    id_user?: SortOrder
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type EnumShiftWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Shift | EnumShiftFieldRefInput<$PrismaModel>
+    in?: $Enums.Shift[] | ListEnumShiftFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Shift[] | ListEnumShiftFieldRefInput<$PrismaModel>
+    not?: NestedEnumShiftWithAggregatesFilter<$PrismaModel> | $Enums.Shift
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShiftFilter<$PrismaModel>
+    _max?: NestedEnumShiftFilter<$PrismaModel>
+  }
+
+  export type EnumAbsensiStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AbsensiStatus | EnumAbsensiStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AbsensiStatus[] | ListEnumAbsensiStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AbsensiStatus[] | ListEnumAbsensiStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAbsensiStatusFilter<$PrismaModel> | $Enums.AbsensiStatus
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type AbsensiCountOrderByAggregateInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    status?: SortOrder
+    verifikasi?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type AbsensiMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    status?: SortOrder
+    verifikasi?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type AbsensiMinOrderByAggregateInput = {
+    id?: SortOrder
+    tanggal?: SortOrder
+    status?: SortOrder
+    verifikasi?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type EnumAbsensiStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AbsensiStatus | EnumAbsensiStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AbsensiStatus[] | ListEnumAbsensiStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AbsensiStatus[] | ListEnumAbsensiStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAbsensiStatusWithAggregatesFilter<$PrismaModel> | $Enums.AbsensiStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAbsensiStatusFilter<$PrismaModel>
+    _max?: NestedEnumAbsensiStatusFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type PrediksiCountOrderByAggregateInput = {
+    id?: SortOrder
+    imageUrl?: SortOrder
+    user_id?: SortOrder
+    kualitas?: SortOrder
+    harga?: SortOrder
+  }
+
+  export type PrediksiAvgOrderByAggregateInput = {
+    harga?: SortOrder
+  }
+
+  export type PrediksiMaxOrderByAggregateInput = {
+    id?: SortOrder
+    imageUrl?: SortOrder
+    user_id?: SortOrder
+    kualitas?: SortOrder
+    harga?: SortOrder
+  }
+
+  export type PrediksiMinOrderByAggregateInput = {
+    id?: SortOrder
+    imageUrl?: SortOrder
+    user_id?: SortOrder
+    kualitas?: SortOrder
+    harga?: SortOrder
+  }
+
+  export type PrediksiSumOrderByAggregateInput = {
+    harga?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type PrediksiCreateNestedManyWithoutUserInput = {
+    create?: XOR<PrediksiCreateWithoutUserInput, PrediksiUncheckedCreateWithoutUserInput> | PrediksiCreateWithoutUserInput[] | PrediksiUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PrediksiCreateOrConnectWithoutUserInput | PrediksiCreateOrConnectWithoutUserInput[]
+    createMany?: PrediksiCreateManyUserInputEnvelope
+    connect?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+  }
+
+  export type AbsensiCreateNestedManyWithoutUserInput = {
+    create?: XOR<AbsensiCreateWithoutUserInput, AbsensiUncheckedCreateWithoutUserInput> | AbsensiCreateWithoutUserInput[] | AbsensiUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AbsensiCreateOrConnectWithoutUserInput | AbsensiCreateOrConnectWithoutUserInput[]
+    createMany?: AbsensiCreateManyUserInputEnvelope
+    connect?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+  }
+
+  export type JadwalCreateNestedManyWithoutUserInput = {
+    create?: XOR<JadwalCreateWithoutUserInput, JadwalUncheckedCreateWithoutUserInput> | JadwalCreateWithoutUserInput[] | JadwalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JadwalCreateOrConnectWithoutUserInput | JadwalCreateOrConnectWithoutUserInput[]
+    createMany?: JadwalCreateManyUserInputEnvelope
+    connect?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+  }
+
+  export type PrediksiUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PrediksiCreateWithoutUserInput, PrediksiUncheckedCreateWithoutUserInput> | PrediksiCreateWithoutUserInput[] | PrediksiUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PrediksiCreateOrConnectWithoutUserInput | PrediksiCreateOrConnectWithoutUserInput[]
+    createMany?: PrediksiCreateManyUserInputEnvelope
+    connect?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+  }
+
+  export type AbsensiUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AbsensiCreateWithoutUserInput, AbsensiUncheckedCreateWithoutUserInput> | AbsensiCreateWithoutUserInput[] | AbsensiUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AbsensiCreateOrConnectWithoutUserInput | AbsensiCreateOrConnectWithoutUserInput[]
+    createMany?: AbsensiCreateManyUserInputEnvelope
+    connect?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+  }
+
+  export type JadwalUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<JadwalCreateWithoutUserInput, JadwalUncheckedCreateWithoutUserInput> | JadwalCreateWithoutUserInput[] | JadwalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JadwalCreateOrConnectWithoutUserInput | JadwalCreateOrConnectWithoutUserInput[]
+    createMany?: JadwalCreateManyUserInputEnvelope
+    connect?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
+  }
+
+  export type PrediksiUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PrediksiCreateWithoutUserInput, PrediksiUncheckedCreateWithoutUserInput> | PrediksiCreateWithoutUserInput[] | PrediksiUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PrediksiCreateOrConnectWithoutUserInput | PrediksiCreateOrConnectWithoutUserInput[]
+    upsert?: PrediksiUpsertWithWhereUniqueWithoutUserInput | PrediksiUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PrediksiCreateManyUserInputEnvelope
+    set?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+    disconnect?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+    delete?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+    connect?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+    update?: PrediksiUpdateWithWhereUniqueWithoutUserInput | PrediksiUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PrediksiUpdateManyWithWhereWithoutUserInput | PrediksiUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PrediksiScalarWhereInput | PrediksiScalarWhereInput[]
+  }
+
+  export type AbsensiUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AbsensiCreateWithoutUserInput, AbsensiUncheckedCreateWithoutUserInput> | AbsensiCreateWithoutUserInput[] | AbsensiUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AbsensiCreateOrConnectWithoutUserInput | AbsensiCreateOrConnectWithoutUserInput[]
+    upsert?: AbsensiUpsertWithWhereUniqueWithoutUserInput | AbsensiUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AbsensiCreateManyUserInputEnvelope
+    set?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+    disconnect?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+    delete?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+    connect?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+    update?: AbsensiUpdateWithWhereUniqueWithoutUserInput | AbsensiUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AbsensiUpdateManyWithWhereWithoutUserInput | AbsensiUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AbsensiScalarWhereInput | AbsensiScalarWhereInput[]
+  }
+
+  export type JadwalUpdateManyWithoutUserNestedInput = {
+    create?: XOR<JadwalCreateWithoutUserInput, JadwalUncheckedCreateWithoutUserInput> | JadwalCreateWithoutUserInput[] | JadwalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JadwalCreateOrConnectWithoutUserInput | JadwalCreateOrConnectWithoutUserInput[]
+    upsert?: JadwalUpsertWithWhereUniqueWithoutUserInput | JadwalUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: JadwalCreateManyUserInputEnvelope
+    set?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+    disconnect?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+    delete?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+    connect?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+    update?: JadwalUpdateWithWhereUniqueWithoutUserInput | JadwalUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: JadwalUpdateManyWithWhereWithoutUserInput | JadwalUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: JadwalScalarWhereInput | JadwalScalarWhereInput[]
+  }
+
+  export type PrediksiUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PrediksiCreateWithoutUserInput, PrediksiUncheckedCreateWithoutUserInput> | PrediksiCreateWithoutUserInput[] | PrediksiUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PrediksiCreateOrConnectWithoutUserInput | PrediksiCreateOrConnectWithoutUserInput[]
+    upsert?: PrediksiUpsertWithWhereUniqueWithoutUserInput | PrediksiUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PrediksiCreateManyUserInputEnvelope
+    set?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+    disconnect?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+    delete?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+    connect?: PrediksiWhereUniqueInput | PrediksiWhereUniqueInput[]
+    update?: PrediksiUpdateWithWhereUniqueWithoutUserInput | PrediksiUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PrediksiUpdateManyWithWhereWithoutUserInput | PrediksiUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PrediksiScalarWhereInput | PrediksiScalarWhereInput[]
+  }
+
+  export type AbsensiUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AbsensiCreateWithoutUserInput, AbsensiUncheckedCreateWithoutUserInput> | AbsensiCreateWithoutUserInput[] | AbsensiUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AbsensiCreateOrConnectWithoutUserInput | AbsensiCreateOrConnectWithoutUserInput[]
+    upsert?: AbsensiUpsertWithWhereUniqueWithoutUserInput | AbsensiUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AbsensiCreateManyUserInputEnvelope
+    set?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+    disconnect?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+    delete?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+    connect?: AbsensiWhereUniqueInput | AbsensiWhereUniqueInput[]
+    update?: AbsensiUpdateWithWhereUniqueWithoutUserInput | AbsensiUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AbsensiUpdateManyWithWhereWithoutUserInput | AbsensiUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AbsensiScalarWhereInput | AbsensiScalarWhereInput[]
+  }
+
+  export type JadwalUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<JadwalCreateWithoutUserInput, JadwalUncheckedCreateWithoutUserInput> | JadwalCreateWithoutUserInput[] | JadwalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: JadwalCreateOrConnectWithoutUserInput | JadwalCreateOrConnectWithoutUserInput[]
+    upsert?: JadwalUpsertWithWhereUniqueWithoutUserInput | JadwalUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: JadwalCreateManyUserInputEnvelope
+    set?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+    disconnect?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+    delete?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+    connect?: JadwalWhereUniqueInput | JadwalWhereUniqueInput[]
+    update?: JadwalUpdateWithWhereUniqueWithoutUserInput | JadwalUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: JadwalUpdateManyWithWhereWithoutUserInput | JadwalUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: JadwalScalarWhereInput | JadwalScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutJadwalInput = {
+    create?: XOR<UserCreateWithoutJadwalInput, UserUncheckedCreateWithoutJadwalInput>
+    connectOrCreate?: UserCreateOrConnectWithoutJadwalInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type EnumShiftFieldUpdateOperationsInput = {
+    set?: $Enums.Shift
+  }
+
+  export type UserUpdateOneRequiredWithoutJadwalNestedInput = {
+    create?: XOR<UserCreateWithoutJadwalInput, UserUncheckedCreateWithoutJadwalInput>
+    connectOrCreate?: UserCreateOrConnectWithoutJadwalInput
+    upsert?: UserUpsertWithoutJadwalInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutJadwalInput, UserUpdateWithoutJadwalInput>, UserUncheckedUpdateWithoutJadwalInput>
+  }
+
+  export type UserCreateNestedOneWithoutAbsensiInput = {
+    create?: XOR<UserCreateWithoutAbsensiInput, UserUncheckedCreateWithoutAbsensiInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAbsensiInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumAbsensiStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AbsensiStatus
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type UserUpdateOneRequiredWithoutAbsensiNestedInput = {
+    create?: XOR<UserCreateWithoutAbsensiInput, UserUncheckedCreateWithoutAbsensiInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAbsensiInput
+    upsert?: UserUpsertWithoutAbsensiInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAbsensiInput, UserUpdateWithoutAbsensiInput>, UserUncheckedUpdateWithoutAbsensiInput>
+  }
+
+  export type UserCreateNestedOneWithoutPrediksiInput = {
+    create?: XOR<UserCreateWithoutPrediksiInput, UserUncheckedCreateWithoutPrediksiInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPrediksiInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type UserUpdateOneRequiredWithoutPrediksiNestedInput = {
+    create?: XOR<UserCreateWithoutPrediksiInput, UserUncheckedCreateWithoutPrediksiInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPrediksiInput
+    upsert?: UserUpsertWithoutPrediksiInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPrediksiInput, UserUpdateWithoutPrediksiInput>, UserUncheckedUpdateWithoutPrediksiInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -2266,31 +6739,11 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2310,20 +6763,564 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedEnumShiftFilter<$PrismaModel = never> = {
+    equals?: $Enums.Shift | EnumShiftFieldRefInput<$PrismaModel>
+    in?: $Enums.Shift[] | ListEnumShiftFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Shift[] | ListEnumShiftFieldRefInput<$PrismaModel>
+    not?: NestedEnumShiftFilter<$PrismaModel> | $Enums.Shift
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumShiftWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Shift | EnumShiftFieldRefInput<$PrismaModel>
+    in?: $Enums.Shift[] | ListEnumShiftFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Shift[] | ListEnumShiftFieldRefInput<$PrismaModel>
+    not?: NestedEnumShiftWithAggregatesFilter<$PrismaModel> | $Enums.Shift
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumShiftFilter<$PrismaModel>
+    _max?: NestedEnumShiftFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAbsensiStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AbsensiStatus | EnumAbsensiStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AbsensiStatus[] | ListEnumAbsensiStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AbsensiStatus[] | ListEnumAbsensiStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAbsensiStatusFilter<$PrismaModel> | $Enums.AbsensiStatus
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedEnumAbsensiStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AbsensiStatus | EnumAbsensiStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AbsensiStatus[] | ListEnumAbsensiStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AbsensiStatus[] | ListEnumAbsensiStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAbsensiStatusWithAggregatesFilter<$PrismaModel> | $Enums.AbsensiStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAbsensiStatusFilter<$PrismaModel>
+    _max?: NestedEnumAbsensiStatusFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type PrediksiCreateWithoutUserInput = {
+    id?: string
+    imageUrl: string
+    kualitas?: string | null
+    harga?: number | null
+  }
+
+  export type PrediksiUncheckedCreateWithoutUserInput = {
+    id?: string
+    imageUrl: string
+    kualitas?: string | null
+    harga?: number | null
+  }
+
+  export type PrediksiCreateOrConnectWithoutUserInput = {
+    where: PrediksiWhereUniqueInput
+    create: XOR<PrediksiCreateWithoutUserInput, PrediksiUncheckedCreateWithoutUserInput>
+  }
+
+  export type PrediksiCreateManyUserInputEnvelope = {
+    data: PrediksiCreateManyUserInput | PrediksiCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AbsensiCreateWithoutUserInput = {
+    id?: string
+    tanggal: Date | string
+    status: $Enums.AbsensiStatus
+    verifikasi?: boolean
+  }
+
+  export type AbsensiUncheckedCreateWithoutUserInput = {
+    id?: string
+    tanggal: Date | string
+    status: $Enums.AbsensiStatus
+    verifikasi?: boolean
+  }
+
+  export type AbsensiCreateOrConnectWithoutUserInput = {
+    where: AbsensiWhereUniqueInput
+    create: XOR<AbsensiCreateWithoutUserInput, AbsensiUncheckedCreateWithoutUserInput>
+  }
+
+  export type AbsensiCreateManyUserInputEnvelope = {
+    data: AbsensiCreateManyUserInput | AbsensiCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type JadwalCreateWithoutUserInput = {
+    id?: string
+    tanggal: Date | string
+    shift: $Enums.Shift
+  }
+
+  export type JadwalUncheckedCreateWithoutUserInput = {
+    id?: string
+    tanggal: Date | string
+    shift: $Enums.Shift
+  }
+
+  export type JadwalCreateOrConnectWithoutUserInput = {
+    where: JadwalWhereUniqueInput
+    create: XOR<JadwalCreateWithoutUserInput, JadwalUncheckedCreateWithoutUserInput>
+  }
+
+  export type JadwalCreateManyUserInputEnvelope = {
+    data: JadwalCreateManyUserInput | JadwalCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PrediksiUpsertWithWhereUniqueWithoutUserInput = {
+    where: PrediksiWhereUniqueInput
+    update: XOR<PrediksiUpdateWithoutUserInput, PrediksiUncheckedUpdateWithoutUserInput>
+    create: XOR<PrediksiCreateWithoutUserInput, PrediksiUncheckedCreateWithoutUserInput>
+  }
+
+  export type PrediksiUpdateWithWhereUniqueWithoutUserInput = {
+    where: PrediksiWhereUniqueInput
+    data: XOR<PrediksiUpdateWithoutUserInput, PrediksiUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PrediksiUpdateManyWithWhereWithoutUserInput = {
+    where: PrediksiScalarWhereInput
+    data: XOR<PrediksiUpdateManyMutationInput, PrediksiUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PrediksiScalarWhereInput = {
+    AND?: PrediksiScalarWhereInput | PrediksiScalarWhereInput[]
+    OR?: PrediksiScalarWhereInput[]
+    NOT?: PrediksiScalarWhereInput | PrediksiScalarWhereInput[]
+    id?: StringFilter<"Prediksi"> | string
+    imageUrl?: StringFilter<"Prediksi"> | string
+    user_id?: StringFilter<"Prediksi"> | string
+    kualitas?: StringNullableFilter<"Prediksi"> | string | null
+    harga?: FloatNullableFilter<"Prediksi"> | number | null
+  }
+
+  export type AbsensiUpsertWithWhereUniqueWithoutUserInput = {
+    where: AbsensiWhereUniqueInput
+    update: XOR<AbsensiUpdateWithoutUserInput, AbsensiUncheckedUpdateWithoutUserInput>
+    create: XOR<AbsensiCreateWithoutUserInput, AbsensiUncheckedCreateWithoutUserInput>
+  }
+
+  export type AbsensiUpdateWithWhereUniqueWithoutUserInput = {
+    where: AbsensiWhereUniqueInput
+    data: XOR<AbsensiUpdateWithoutUserInput, AbsensiUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AbsensiUpdateManyWithWhereWithoutUserInput = {
+    where: AbsensiScalarWhereInput
+    data: XOR<AbsensiUpdateManyMutationInput, AbsensiUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AbsensiScalarWhereInput = {
+    AND?: AbsensiScalarWhereInput | AbsensiScalarWhereInput[]
+    OR?: AbsensiScalarWhereInput[]
+    NOT?: AbsensiScalarWhereInput | AbsensiScalarWhereInput[]
+    id?: StringFilter<"Absensi"> | string
+    tanggal?: DateTimeFilter<"Absensi"> | Date | string
+    status?: EnumAbsensiStatusFilter<"Absensi"> | $Enums.AbsensiStatus
+    verifikasi?: BoolFilter<"Absensi"> | boolean
+    user_id?: StringFilter<"Absensi"> | string
+  }
+
+  export type JadwalUpsertWithWhereUniqueWithoutUserInput = {
+    where: JadwalWhereUniqueInput
+    update: XOR<JadwalUpdateWithoutUserInput, JadwalUncheckedUpdateWithoutUserInput>
+    create: XOR<JadwalCreateWithoutUserInput, JadwalUncheckedCreateWithoutUserInput>
+  }
+
+  export type JadwalUpdateWithWhereUniqueWithoutUserInput = {
+    where: JadwalWhereUniqueInput
+    data: XOR<JadwalUpdateWithoutUserInput, JadwalUncheckedUpdateWithoutUserInput>
+  }
+
+  export type JadwalUpdateManyWithWhereWithoutUserInput = {
+    where: JadwalScalarWhereInput
+    data: XOR<JadwalUpdateManyMutationInput, JadwalUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type JadwalScalarWhereInput = {
+    AND?: JadwalScalarWhereInput | JadwalScalarWhereInput[]
+    OR?: JadwalScalarWhereInput[]
+    NOT?: JadwalScalarWhereInput | JadwalScalarWhereInput[]
+    id?: StringFilter<"Jadwal"> | string
+    tanggal?: DateTimeFilter<"Jadwal"> | Date | string
+    shift?: EnumShiftFilter<"Jadwal"> | $Enums.Shift
+    id_user?: StringFilter<"Jadwal"> | string
+  }
+
+  export type UserCreateWithoutJadwalInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    prediksi?: PrediksiCreateNestedManyWithoutUserInput
+    absensi?: AbsensiCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutJadwalInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    prediksi?: PrediksiUncheckedCreateNestedManyWithoutUserInput
+    absensi?: AbsensiUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutJadwalInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutJadwalInput, UserUncheckedCreateWithoutJadwalInput>
+  }
+
+  export type UserUpsertWithoutJadwalInput = {
+    update: XOR<UserUpdateWithoutJadwalInput, UserUncheckedUpdateWithoutJadwalInput>
+    create: XOR<UserCreateWithoutJadwalInput, UserUncheckedCreateWithoutJadwalInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutJadwalInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutJadwalInput, UserUncheckedUpdateWithoutJadwalInput>
+  }
+
+  export type UserUpdateWithoutJadwalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    prediksi?: PrediksiUpdateManyWithoutUserNestedInput
+    absensi?: AbsensiUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutJadwalInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    prediksi?: PrediksiUncheckedUpdateManyWithoutUserNestedInput
+    absensi?: AbsensiUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutAbsensiInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    prediksi?: PrediksiCreateNestedManyWithoutUserInput
+    jadwal?: JadwalCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAbsensiInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    prediksi?: PrediksiUncheckedCreateNestedManyWithoutUserInput
+    jadwal?: JadwalUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAbsensiInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAbsensiInput, UserUncheckedCreateWithoutAbsensiInput>
+  }
+
+  export type UserUpsertWithoutAbsensiInput = {
+    update: XOR<UserUpdateWithoutAbsensiInput, UserUncheckedUpdateWithoutAbsensiInput>
+    create: XOR<UserCreateWithoutAbsensiInput, UserUncheckedCreateWithoutAbsensiInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAbsensiInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAbsensiInput, UserUncheckedUpdateWithoutAbsensiInput>
+  }
+
+  export type UserUpdateWithoutAbsensiInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    prediksi?: PrediksiUpdateManyWithoutUserNestedInput
+    jadwal?: JadwalUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAbsensiInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    prediksi?: PrediksiUncheckedUpdateManyWithoutUserNestedInput
+    jadwal?: JadwalUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutPrediksiInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    absensi?: AbsensiCreateNestedManyWithoutUserInput
+    jadwal?: JadwalCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPrediksiInput = {
+    id?: string
+    nama: string
+    email: string
+    password: string
+    role: $Enums.Role
+    absensi?: AbsensiUncheckedCreateNestedManyWithoutUserInput
+    jadwal?: JadwalUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPrediksiInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPrediksiInput, UserUncheckedCreateWithoutPrediksiInput>
+  }
+
+  export type UserUpsertWithoutPrediksiInput = {
+    update: XOR<UserUpdateWithoutPrediksiInput, UserUncheckedUpdateWithoutPrediksiInput>
+    create: XOR<UserCreateWithoutPrediksiInput, UserUncheckedCreateWithoutPrediksiInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPrediksiInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPrediksiInput, UserUncheckedUpdateWithoutPrediksiInput>
+  }
+
+  export type UserUpdateWithoutPrediksiInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    absensi?: AbsensiUpdateManyWithoutUserNestedInput
+    jadwal?: JadwalUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPrediksiInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nama?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    absensi?: AbsensiUncheckedUpdateManyWithoutUserNestedInput
+    jadwal?: JadwalUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type PrediksiCreateManyUserInput = {
+    id?: string
+    imageUrl: string
+    kualitas?: string | null
+    harga?: number | null
+  }
+
+  export type AbsensiCreateManyUserInput = {
+    id?: string
+    tanggal: Date | string
+    status: $Enums.AbsensiStatus
+    verifikasi?: boolean
+  }
+
+  export type JadwalCreateManyUserInput = {
+    id?: string
+    tanggal: Date | string
+    shift: $Enums.Shift
+  }
+
+  export type PrediksiUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    kualitas?: NullableStringFieldUpdateOperationsInput | string | null
+    harga?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type PrediksiUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    kualitas?: NullableStringFieldUpdateOperationsInput | string | null
+    harga?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type PrediksiUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imageUrl?: StringFieldUpdateOperationsInput | string
+    kualitas?: NullableStringFieldUpdateOperationsInput | string | null
+    harga?: NullableFloatFieldUpdateOperationsInput | number | null
+  }
+
+  export type AbsensiUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAbsensiStatusFieldUpdateOperationsInput | $Enums.AbsensiStatus
+    verifikasi?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AbsensiUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAbsensiStatusFieldUpdateOperationsInput | $Enums.AbsensiStatus
+    verifikasi?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type AbsensiUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumAbsensiStatusFieldUpdateOperationsInput | $Enums.AbsensiStatus
+    verifikasi?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type JadwalUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    shift?: EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  }
+
+  export type JadwalUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    shift?: EnumShiftFieldUpdateOperationsInput | $Enums.Shift
+  }
+
+  export type JadwalUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tanggal?: DateTimeFieldUpdateOperationsInput | Date | string
+    shift?: EnumShiftFieldUpdateOperationsInput | $Enums.Shift
   }
 
 
