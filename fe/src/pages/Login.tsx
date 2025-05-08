@@ -1,37 +1,41 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { User, Lock, Citrus as Fruit } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { Input } from '../components/common/Input';
-import { Button } from '../components/common/Button';
-import { Card } from '../components/common/Card';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { Mail, Lock, Citrus as Fruit } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { Input } from "../components/common/Input";
+import { Button } from "../components/common/Button";
+import { Card } from "../components/common/Card";
 
 export const Login: React.FC = () => {
   const { login, loading } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
-    if (!username || !password) {
-      setError('Please enter both username and password');
+    if (!email || !password) {
+      setError("Please enter both email and password");
       return;
     }
 
     try {
-      await login(username, password);
-      // Redirect based on user role
-      if (username === 'admin') {
-        navigate('/admin');
+      await login(email, password);
+      // Get the latest user data after login
+      const userData = JSON.parse(
+        localStorage.getItem("durianAppUser") || "{}"
+      );
+      // Redirect based on role
+      if (userData.role === "admin") {
+        navigate("/admin");
       } else {
-        navigate('/employee');
+        navigate("/employee");
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to login');
+      setError(err.message || "Failed to login");
     }
   };
 
@@ -42,7 +46,9 @@ export const Login: React.FC = () => {
           <div className="inline-flex items-center justify-center p-3 bg-white rounded-full shadow-md mb-4">
             <Fruit size={40} className="text-durian-600" />
           </div>
-          <h1 className="text-3xl font-bold text-durian-800">Durian Management</h1>
+          <h1 className="text-3xl font-bold text-durian-800">
+            Durian Management
+          </h1>
           <p className="text-gray-600 mt-2">Login to access your account</p>
         </div>
 
@@ -55,12 +61,12 @@ export const Login: React.FC = () => {
             )}
 
             <Input
-              label="Username"
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              icon={<User size={18} />}
+              label="Email"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              icon={<Mail size={18} />}
               required
             />
 
@@ -75,21 +81,23 @@ export const Login: React.FC = () => {
             />
 
             <div className="mt-6">
-              <Button type="submit" variant="primary" fullWidth loading={loading}>
+              <Button
+                type="submit"
+                variant="primary"
+                fullWidth
+                loading={loading}
+              >
                 Login
               </Button>
             </div>
 
-            <div className="mt-4 text-center text-sm text-gray-600">
-              <p>
-                For demo: Use "admin" or "employee" as username with password "password"
-              </p>
-            </div>
-
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Don't have an account?{' '}
-                <Link to="/register" className="text-durian-600 hover:underline font-medium">
+                Don't have an account?{" "}
+                <Link
+                  to="/register"
+                  className="text-durian-600 hover:underline font-medium"
+                >
                   Register here
                 </Link>
               </p>

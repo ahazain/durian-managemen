@@ -4,43 +4,18 @@ import { User } from '../types';
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  register: (userData: Partial<User> & { password: string }) => Promise<void>;
+  register: (userData: { nama: string; email: string; password: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Mock users for demo purposes
-const MOCK_USERS: User[] = [
-  {
-    id: '1',
-    username: 'admin',
-    fullName: 'Admin User',
-    email: 'admin@durian.com',
-    role: 'admin',
-    phoneNumber: '+62123456789',
-    avatar: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150',
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: '2',
-    username: 'employee',
-    fullName: 'Sample Employee',
-    email: 'employee@durian.com',
-    role: 'employee',
-    phoneNumber: '+62987654321',
-    avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=150',
-    createdAt: new Date().toISOString(),
-  },
-];
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // Check for existing session in localStorage
     const storedUser = localStorage.getItem('durianAppUser');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -48,24 +23,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(false);
   }, []);
 
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     setLoading(true);
-    
-    // Simulate API call with some delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Find user (this would be an API call in a real app)
-    const foundUser = MOCK_USERS.find(u => u.username === username);
-    
-    if (!foundUser || password !== 'password') {
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/autentifikasi/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      const userData: User = {
+        id: data.data.user.id,
+        nama: data.data.user.nama,
+        email: data.data.user.email,
+        role: data.data.user.role.toLowerCase(),
+        token: data.data.token,
+        createdAt: new Date().toISOString(),
+      };
+
+      localStorage.setItem('durianAppUser', JSON.stringify(userData));
+      setUser(userData);
+    } catch (error) {
+      throw new Error('Login failed');
+    } finally {
       setLoading(false);
-      throw new Error('Invalid credentials');
     }
-    
-    // Store user in local storage
-    localStorage.setItem('durianAppUser', JSON.stringify(foundUser));
-    setUser(foundUser);
-    setLoading(false);
   };
 
   const logout = () => {
@@ -73,28 +67,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
   };
 
-  const register = async (userData: Partial<User> & { password: string }) => {
+  const register = async (userData: { nama: string; email: string; password: string }) => {
     setLoading(true);
-    
-    // Simulate API call with some delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch('http://localhost:3000/api/v1/autentifikasi/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
 
-    // In a real app, this would be an API call to register the user
-    const newUser: User = {
-      id: String(Date.now()),
-      username: userData.username || '',
-      fullName: userData.fullName || '',
-      email: userData.email || '',
-      role: 'employee', // Default role for registration
-      createdAt: new Date().toISOString(),
-      phoneNumber: userData.phoneNumber,
-      avatar: 'https://images.pexels.com/photos/2726111/pexels-photo-2726111.jpeg?auto=compress&cs=tinysrgb&w=150',
-    };
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
 
-    // In a real app, we would post this to an API
-    console.log('Registered new user:', newUser);
-    
-    setLoading(false);
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || 'Registration failed');
+      }
+    } catch (error) {
+      throw new Error('Registration failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

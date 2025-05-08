@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Phone, Lock, Citrus as Fruit } from 'lucide-react';
+import { User, Mail, Lock, Citrus as Fruit } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { Input } from '../components/common/Input';
 import { Button } from '../components/common/Button';
@@ -11,10 +11,8 @@ export const Register: React.FC = () => {
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
-    username: '',
-    fullName: '',
+    nama: '',
     email: '',
-    phoneNumber: '',
     password: '',
     confirmPassword: '',
   });
@@ -25,7 +23,6 @@ export const Register: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
-    // Clear specific error when field is edited
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -38,8 +35,7 @@ export const Register: React.FC = () => {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     
-    if (!formData.username) newErrors.username = 'Username is required';
-    if (!formData.fullName) newErrors.fullName = 'Full name is required';
+    if (!formData.nama) newErrors.nama = 'Name is required';
     
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -70,8 +66,8 @@ export const Register: React.FC = () => {
     }
     
     try {
-      const { confirmPassword, ...userData } = formData;
-      await register(userData);
+      const { confirmPassword, ...registerData } = formData;
+      await register(registerData);
       navigate('/login');
     } catch (err: any) {
       setErrors({ form: err.message || 'Registration failed' });
@@ -98,25 +94,14 @@ export const Register: React.FC = () => {
             )}
             
             <Input
-              label="Username"
-              name="username"
-              type="text"
-              placeholder="Choose a username"
-              value={formData.username}
-              onChange={handleChange}
-              icon={<User size={18} />}
-              error={errors.username}
-            />
-            
-            <Input
               label="Full Name"
-              name="fullName"
+              name="nama"
               type="text"
               placeholder="Enter your full name"
-              value={formData.fullName}
+              value={formData.nama}
               onChange={handleChange}
               icon={<User size={18} />}
-              error={errors.fullName}
+              error={errors.nama}
             />
             
             <Input
@@ -128,17 +113,6 @@ export const Register: React.FC = () => {
               onChange={handleChange}
               icon={<Mail size={18} />}
               error={errors.email}
-            />
-            
-            <Input
-              label="Phone Number"
-              name="phoneNumber"
-              type="tel"
-              placeholder="Enter your phone number"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              icon={<Phone size={18} />}
-              error={errors.phoneNumber}
             />
             
             <Input
