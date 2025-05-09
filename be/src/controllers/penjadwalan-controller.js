@@ -21,5 +21,18 @@ class PenjadwalanController {
       return response.error(res, error);
     }
   }
+
+  static async getJadwalKerja(req, res) {
+    try {
+      const data = await PenjadwalanService.getJadwalKerja();
+      return response.success(
+        res,
+        data,
+        "berhasil menampilkan semua list jadwal kerja"
+      );
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
 }
 module.exports = PenjadwalanController;

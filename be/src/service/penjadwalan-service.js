@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { BadRequestError, NotFoundError } = require("../utils/error-handling");
 const { formatTanggalIndonesia } = require("../utils/formated-waktu");
+const id = require("dayjs/locale/id");
 
 class PenjadwalanService {
   static async addJadwalKerja({
@@ -34,10 +35,20 @@ class PenjadwalanService {
     });
 
     return {
-      ...createdJadwal,
+      ...createdJadwal, //spread
       tanggal_mulai: formatTanggalIndonesia(createdJadwal.tanggal_mulai),
       tanggal_selesai: formatTanggalIndonesia(createdJadwal.tanggal_selesai),
     };
+  }
+
+  static async getJadwalKerja() {
+    const data = await prisma.jadwal.findMany();
+    const formatData = data.map((item) => ({
+      ...item,
+      tanggal_mulai: formatTanggalIndonesia(item.tanggal_mulai),
+      tanggal_selesai: formatTanggalIndonesia(item.tanggal_selesai),
+    }));
+    return formatData;
   }
 }
 module.exports = PenjadwalanService;
