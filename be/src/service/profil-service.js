@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const { Role } = require("@prisma/client");
 const prisma = new PrismaClient();
 const {
   NotFoundError,
@@ -46,6 +47,19 @@ class profilService {
       },
     });
     return updateData;
+  }
+  static async getAll() {
+    const karyawanYgAda = await prisma.user.findMany({
+      where: { role: Role.KARYAWAN },
+      select: {
+        id: true,
+        nama: true,
+      },
+    });
+    if (!karyawanYgAda || karyawanYgAda.length === 0) {
+      throw new NotFoundError("List karyawan kosong.");
+    }
+    return karyawanYgAda;
   }
 }
 
