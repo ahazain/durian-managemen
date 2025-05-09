@@ -34,5 +34,38 @@ class PenjadwalanController {
       return response.error(res, error);
     }
   }
+  static async updateJadwalKerja(req, res) {
+    try {
+      const { id } = req.params;
+      const { title, deskripsi, tanggal_mulai, tanggal_selesai, user } =
+        req.body;
+      const data = await PenjadwalanService.updateJadwalKerja({
+        title,
+        deskripsi,
+        tanggal_mulai,
+        tanggal_selesai,
+        user,
+        id,
+      });
+
+      return response.success(
+        res,
+        data,
+        "berhasil melakukan perubahan atau update"
+      );
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
+
+  static async deleteJadwalKerja(req, res) {
+    try {
+      const { id } = req.params;
+      const data = await PenjadwalanService.deleteJadwalKerja(id);
+      return response.success(res, data, "berhasil menghapus jadwal kerja");
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
 }
 module.exports = PenjadwalanController;

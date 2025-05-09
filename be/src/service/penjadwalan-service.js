@@ -50,5 +50,60 @@ class PenjadwalanService {
     }));
     return formatData;
   }
+
+  static async updateJadwalKerja({
+    title,
+    deskripsi,
+    tanggal_mulai,
+    tanggal_selesai,
+    user,
+    id,
+  }) {
+    if (
+      !title ||
+      !deskripsi ||
+      !tanggal_mulai ||
+      !tanggal_selesai ||
+      !user ||
+      !id
+    ) {
+      throw new BadRequestError("semua field harus di isi");
+    }
+
+    const dataJadwal = await prisma.jadwal.findUnique({ where: { id } });
+    if (!dataJadwal) {
+      throw new NotFoundError("id jadwal kerja tidak ada di database");
+    }
+    const updateJadwal = await prisma.jadwal.update({
+      where: { id },
+      data: {
+        title,
+        deskripsi,
+        tanggal_mulai,
+        tanggal_selesai,
+        user: {
+          connect: { id: user.id },
+        },
+      },
+    });
+
+    return {
+      ...updateJadwal,
+      tanggal_mulai: formatTanggalIndonesia(updateJadwal.tanggal_mulai),
+      tanggal_selesai: formatTanggalIndonesia(updateJadwal.tanggal_selesai),
+    };
+  }
+
+  static async deleteJadwalKerja(id) {
+    const dataJadwalKerja = await prisma.jadwal.findUnique({ where: { id } });
+    if (!dataJadwalKerja) {
+      throw new NotFoundError("data jadwal kerja tidak ada di database");
+    }
+    const deleteData = await prisma.jadwal.delete({
+      where: { id },
+      select: { id: true, title: true },
+    });
+    return deleteData;
+  }
 }
 module.exports = PenjadwalanService;
