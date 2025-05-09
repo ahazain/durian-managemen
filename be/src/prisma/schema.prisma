@@ -30,8 +30,10 @@ model User{
 
 model Jadwal{
   id String @id @default(uuid())
-  tanggal DateTime
-  shift Shift
+  deskripsi String
+  title String
+  tanggal_mulai DateTime
+  tanggal_selesai DateTime
   id_user String
   user User @relation(fields: [id_user], references: [id])
 
@@ -60,11 +62,6 @@ enum AbsensiStatus {
   ALFA
   IZIN
   SAKIT
-}
-enum Shift {
-  PAGI
-  SIANG
-  MALAM
 }
 enum Role {
   ADMIN
