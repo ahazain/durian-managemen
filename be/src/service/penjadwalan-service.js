@@ -51,6 +51,22 @@ class PenjadwalanService {
     return formatData;
   }
 
+  static async getById(id) {
+    if (!id) {
+      throw new BadRequestError("id harus di isi");
+    }
+    const dataYgAda = await prisma.jadwal.findUnique({ where: { id } });
+    if (!dataYgAda) {
+      throw new NotFoundError("id jadwal kerja tidak ada");
+    }
+
+    return {
+      ...dataYgAda,
+      tanggal_mulai: formatTanggalIndonesia(dataYgAda.tanggal_mulai),
+      tanggal_selesai: formatTanggalIndonesia(dataYgAda.tanggal_selesai),
+    };
+  }
+
   static async updateJadwalKerja({
     title,
     deskripsi,

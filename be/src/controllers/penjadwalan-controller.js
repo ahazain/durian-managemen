@@ -21,6 +21,15 @@ class PenjadwalanController {
       return response.error(res, error);
     }
   }
+  static async getById(req, res) {
+    try {
+      const { id } = req.params;
+      const data = await PenjadwalanService.getById(id);
+      return response.success(res, data, "berhasil menampilkan data by id");
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
 
   static async getJadwalKerja(req, res) {
     try {

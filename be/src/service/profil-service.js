@@ -6,6 +6,7 @@ const {
   UnauthorizedError,
   BadRequestError,
 } = require("../utils/error-handling");
+const { formatTanggalIndonesia } = require("../utils/formated-waktu");
 
 class profilService {
   static async getProfil(user) {
@@ -28,6 +29,7 @@ class profilService {
       role: foundUser.role,
     };
   }
+
   static async updateProfil({ nama, email, id }) {
     if (!id) {
       throw new UnauthorizedError("Unauthorization. silahkan login kembali");

@@ -5,5 +5,7 @@ route.post("/", penjadwalanController.addJadwalKerja);
 route.get("/", penjadwalanController.getJadwalKerja);
 route.put("/:id", penjadwalanController.updateJadwalKerja);
 route.delete("/:id", penjadwalanController.deleteJadwalKerja)
+route.get("/:id", penjadwalanController.getById);
+
 
 module.exports = route;

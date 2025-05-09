@@ -11,6 +11,7 @@ class ProfilController {
       return response.error(res, error);
     }
   }
+ 
 
   static async updateProfil(req, res) {
     try {
@@ -23,10 +24,14 @@ class ProfilController {
     }
   }
 
-  static async getAllKaryawan(req,res){
+  static async getAllKaryawan(req, res) {
     try {
-      const data = await profilService.getAll()
-      return response.success(res, data, "berhasil menampilkan semua list karyawan")
+      const data = await profilService.getAll();
+      return response.success(
+        res,
+        data,
+        "berhasil menampilkan semua list karyawan"
+      );
     } catch (error) {
       return response.error(res, error);
     }
