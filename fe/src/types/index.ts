@@ -7,6 +7,15 @@ export type User = {
   createdAt: string;
 };
 
+export type Profile = {
+  id: string;
+  nama: string;
+  email: string;
+  role: "ADMIN" | "EMPLOYEE";
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type Schedule = {
   id: string;
   title: string;
@@ -14,9 +23,20 @@ export type Schedule = {
   start: string;
   end: string;
   employeeId: string;
-  employeeName: string;
-  status: "pending" | "completed" | "cancelled";
+  employeeName?: string; // optional kalau tidak selalu tersedia
+  status?: string; // tambahkan jika memang ada
 };
+
+export const mapSchedule = (item: any): Schedule => ({
+  id: item.id,
+  title: item.title,
+  description: item.deskripsi,
+  start: item.tanggal_mulai,
+  end: item.tanggal_selesai,
+  employeeId: item.id_user,
+  employeeName: item.nama_karyawan || undefined,
+  status: item.status || undefined,
+});
 
 export type Attendance = {
   id: string;
@@ -46,18 +66,23 @@ export const API_ENDPOINTS = {
     updateProfile: "http://localhost:3000/api/v1/autentifikasi/update-profile",
   },
   employee: {
-    list: "http://localhost:3000/api/v1/employees",
-    create: "http://localhost:3000/api/v1/employees",
-    update: (id: string) => `http://localhost:3000/api/v1/employees/${id}`,
-    delete: (id: string) => `http://localhost:3000/api/v1/employees/${id}`,
+    list: "http://localhost:3000/api/v1/profil/all-karyawan",
+    create: "http://localhost:3000/api/v1/profil/all-karyawan",
+    update: (id: string) =>
+      `http://localhost:3000/api/v1/profil/all-karyawan/${id}`,
+    delete: (id: string) =>
+      `http://localhost:3000/api/v1/profil/all-karyawan/${id}`,
+  },
+  profile: {
+    all: "http://localhost:3000/api/v1/profil",
+    update: "http://localhost:3000/api/v1/profil",
   },
   schedule: {
-    list: "http://localhost:3000/api/v1/schedules",
-    create: "http://localhost:3000/api/v1/schedules",
-    update: (id: string) => `http://localhost:3000/api/v1/schedules/${id}`,
-    delete: (id: string) => `http://localhost:3000/api/v1/schedules/${id}`,
-    employee: (id: string) =>
-      `http://localhost:3000/api/v1/schedules/employee/${id}`,
+    list: "http://localhost:3000/api/v1/penjadwalan",
+    create: "http://localhost:3000/api/v1/penjadwalan",
+    update: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
+    delete: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
+    getById: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
   },
   attendance: {
     list: "http://localhost:3000/api/v1/attendance",

@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "../types";
+import { API_ENDPOINTS, mapSchedule, Schedule } from "../types";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("durianAppToken");
@@ -55,16 +55,81 @@ export const api = {
       headers: getAuthHeaders(),
     });
     if (!response.ok) throw new Error("Failed to fetch schedules");
+
+    const result = await response.json();
+
+    return {
+      ...result,
+      data: result.data.map(mapSchedule),
+    };
+  },
+
+  getScheduleById: async (id: string) => {
+    const response = await fetch(API_ENDPOINTS.schedule.getById(id), {
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to fetch schedule");
     return response.json();
   },
 
-  createSchedule: async (data: Omit<Schedule, "id">) => {
+  createSchedule: async (data: {
+    title: string;
+    description: string;
+    start: string;
+    end: string;
+    employeeId: string;
+  }) => {
+    // Transform data to match API expectations
+    const transformedData = {
+      title: data.title,
+      deskripsi: data.description,
+      tanggal_mulai: new Date(data.start).toISOString(),
+      tanggal_selesai: new Date(data.end).toISOString(),
+      user: {
+        id: data.employeeId,
+      },
+    };
+
     const response = await fetch(API_ENDPOINTS.schedule.create, {
       method: "POST",
       headers: getAuthHeaders(),
-      body: JSON.stringify(data),
+      body: JSON.stringify(transformedData),
     });
     if (!response.ok) throw new Error("Failed to create schedule");
+    return response.json();
+  },
+
+  updateSchedule: async (id: string, data: Partial<Schedule>) => {
+    // Transform data to match API expectations
+    const transformedData: any = {};
+
+    if (data.title) transformedData.title = data.title;
+    if (data.description) transformedData.deskripsi = data.description;
+    if (data.start)
+      transformedData.tanggal_mulai = new Date(data.start).toISOString();
+    if (data.end)
+      transformedData.tanggal_selesai = new Date(data.end).toISOString();
+    if (data.employeeId) {
+      transformedData.user = {
+        id: data.employeeId,
+      };
+    }
+
+    const response = await fetch(API_ENDPOINTS.schedule.update(id), {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(transformedData),
+    });
+    if (!response.ok) throw new Error("Failed to update schedule");
+    return response.json();
+  },
+
+  deleteSchedule: async (id: string) => {
+    const response = await fetch(API_ENDPOINTS.schedule.delete(id), {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to delete schedule");
     return response.json();
   },
 
@@ -107,6 +172,32 @@ export const api = {
       headers: getAuthHeaders(),
     });
     if (!response.ok) throw new Error("Failed to fetch prediction history");
+    return response.json();
+  },
+  // Profiles
+  getAllProfiles: async () => {
+    const response = await fetch(API_ENDPOINTS.profile.all, {
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to fetch profiles");
+    return response.json();
+  },
+
+  getEmployeeProfiles: async () => {
+    const response = await fetch(API_ENDPOINTS.profile.employees, {
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to fetch employee profiles");
+    return response.json();
+  },
+
+  updateProfile: async (data: any) => {
+    const response = await fetch(API_ENDPOINTS.profile.update, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) throw new Error("Failed to update profile");
     return response.json();
   },
 };

@@ -43,12 +43,12 @@ class PenjadwalanService {
 
   static async getJadwalKerja() {
     const data = await prisma.jadwal.findMany();
-    const formatData = data.map((item) => ({
-      ...item,
-      tanggal_mulai: formatTanggalIndonesia(item.tanggal_mulai),
-      tanggal_selesai: formatTanggalIndonesia(item.tanggal_selesai),
-    }));
-    return formatData;
+    // const formatData = data.map((item) => ({
+    //   ...item,
+    //   tanggal_mulai: formatTanggalIndonesia(item.tanggal_mulai),
+    //   tanggal_selesai: formatTanggalIndonesia(item.tanggal_selesai),
+    // }));
+    return data;
   }
 
   static async getById(id) {

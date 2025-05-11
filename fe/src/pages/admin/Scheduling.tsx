@@ -1,147 +1,309 @@
-import React, { useState } from 'react';
-import { Calendar, Plus, Search, Edit, Trash } from 'lucide-react';
-import { format } from 'date-fns';
-import { Card } from '../../components/common/Card';
-import { Button } from '../../components/common/Button';
-import { Input } from '../../components/common/Input';
-import { Schedule } from '../../types';
+import React, { useState, useEffect } from "react";
+import { Calendar, Plus, Search, Edit, Trash } from "lucide-react";
+import { format } from "date-fns";
+import { Card } from "../../components/common/Card";
+import { Button } from "../../components/common/Button";
+import { Input } from "../../components/common/Input";
+import { Schedule } from "../../types";
+import { api } from "../../utils/api";
 
 export const AdminScheduling: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
-  
-  // Mock schedules data
-  const mockSchedules: Schedule[] = [
-    {
-      id: '1',
-      title: 'Morning Harvesting',
-      description: 'Collect ripe durians from the east orchard',
-      start: '2025-05-10T07:00:00',
-      end: '2025-05-10T11:00:00',
-      employeeId: '3',
-      employeeName: 'Budi Santoso',
-      status: 'pending',
-    },
-    {
-      id: '2',
-      title: 'Sorting and Cleaning',
-      description: 'Sort and clean harvested durians',
-      start: '2025-05-10T13:00:00',
-      end: '2025-05-10T17:00:00',
-      employeeId: '4',
-      employeeName: 'Sarah Wijaya',
-      status: 'pending',
-    },
-    {
-      id: '3',
-      title: 'Quality Inspection',
-      description: 'Inspect durians for quality assurance',
-      start: '2025-05-11T09:00:00',
-      end: '2025-05-11T12:00:00',
-      employeeId: '6',
-      employeeName: 'Ahmad Rahman',
-      status: 'pending',
-    },
-    {
-      id: '4',
-      title: 'Packaging and Storage',
-      description: 'Package quality durians and store in cold room',
-      start: '2025-05-11T14:00:00',
-      end: '2025-05-11T18:00:00',
-      employeeId: '3',
-      employeeName: 'Budi Santoso',
-      status: 'pending',
-    },
-    {
-      id: '5',
-      title: 'Market Delivery',
-      description: 'Deliver packaged durians to local market',
-      start: '2025-05-12T06:00:00',
-      end: '2025-05-12T10:00:00',
-      employeeId: '4',
-      employeeName: 'Sarah Wijaya',
-      status: 'pending',
-    },
-  ];
-  
-  // Filter schedules based on search term
-  const filteredSchedules = mockSchedules.filter(schedule => 
-    schedule.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    schedule.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    schedule.employeeName?.toLowerCase().includes(searchTerm.toLowerCase())
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [employees, setEmployees] = useState<{ id: string; nama: string }[]>(
+    []
   );
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingSchedule, setEditingSchedule] = useState<Schedule | null>(null);
+
+  useEffect(() => {
+    fetchSchedules();
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = async () => {
+    try {
+      const response = await api.getEmployees();
+      setEmployees(response.data || []);
+      setError(null);
+    } catch (err) {
+      setError("Failed to fetch employees");
+      console.error(err);
+    }
+  };
+
+  const fetchSchedules = async () => {
+    try {
+      setLoading(true);
+      const response = await api.getSchedules();
+      setSchedules(response.data || []);
+      setError(null);
+    } catch (err) {
+      setError("Failed to fetch schedules");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Filter schedules based on search term
+  const filteredSchedules = schedules.filter(
+    (schedule) =>
+      schedule.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      schedule.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      schedule.employeeName?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Fungsi untuk memformat tanggal menjadi hanya tanggal
   const formatScheduleDate = (dateString: string) => {
-    return format(new Date(dateString), 'MMM d, yyyy');
+    const date = new Date(dateString);
+    return format(date, "dd MMM yyyy"); // Format tanggal
   };
-  
+
+  // Fungsi untuk memformat waktu
   const formatScheduleTime = (dateString: string) => {
-    return format(new Date(dateString), 'h:mm a');
+    const date = new Date(dateString);
+    return format(date, "HH:mm"); // Format jam
   };
-  
+
+  const handleCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+
+      const scheduleData = {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        start: formData.get("start") as string,
+        end: formData.get("end") as string,
+        employeeId: formData.get("employeeId") as string,
+      };
+
+      await api.createSchedule(scheduleData);
+      await fetchSchedules();
+      setShowAddForm(false);
+      setError(null);
+    } catch (err) {
+      console.error("Failed to create schedule:", err);
+      setError("Failed to create schedule. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleUpdateSchedule = async (id: string, data: Partial<Schedule>) => {
+    try {
+      setIsSubmitting(true);
+      await api.updateSchedule(id, data);
+      await fetchSchedules();
+      setEditingSchedule(null);
+      setError(null);
+    } catch (err) {
+      console.error("Failed to update schedule:", err);
+      setError("Failed to update schedule. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteSchedule = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this schedule?")) {
+      try {
+        setIsSubmitting(true);
+        await api.deleteSchedule(id);
+        await fetchSchedules();
+        setError(null);
+      } catch (err) {
+        console.error("Failed to delete schedule:", err);
+        setError("Failed to delete schedule. Please try again.");
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
+  const EditScheduleForm = ({ schedule }: { schedule: Schedule }) => {
+    // Format date string to datetime-local input format
+    const formatDateForInput = (dateString: string) => {
+      const date = new Date(dateString);
+      return format(date, "yyyy-MM-dd'T'HH:mm");
+    };
+
+    return (
+      <Card className="mb-6 border-2 border-durian-500 animate-fadeIn">
+        <h2 className="text-lg font-semibold mb-4">Edit Schedule</h2>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+
+            handleUpdateSchedule(schedule.id, {
+              title: formData.get("title") as string,
+              description: formData.get("description") as string,
+              start: formData.get("start") as string,
+              end: formData.get("end") as string,
+              employeeId: formData.get("employeeId") as string,
+            });
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Title"
+              name="title"
+              placeholder="Schedule title"
+              defaultValue={schedule.title}
+              required
+            />
+
+            <div className="md:col-span-2">
+              <Input
+                label="Description"
+                name="description"
+                placeholder="Schedule description"
+                defaultValue={schedule.description}
+              />
+            </div>
+
+            <Input
+              label="Start Date & Time"
+              name="start"
+              type="datetime-local"
+              defaultValue={formatDateForInput(schedule.start)}
+              required
+            />
+
+            <Input
+              label="End Date & Time"
+              name="end"
+              type="datetime-local"
+              defaultValue={formatDateForInput(schedule.end)}
+              required
+            />
+
+            <Input
+              label="Assign Employee"
+              name="employeeId"
+              as="select"
+              defaultValue={schedule.employeeId}
+              required
+            >
+              <option value="">Select Employee</option>
+              {employees.map((employee) => (
+                <option key={employee.id} value={employee.id}>
+                  {employee.nama}
+                </option>
+              ))}
+            </Input>
+          </div>
+
+          <div className="flex justify-end space-x-2 mt-6">
+            <Button
+              variant="outline"
+              onClick={() => setEditingSchedule(null)}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Updating..." : "Update Schedule"}
+            </Button>
+          </div>
+        </form>
+      </Card>
+    );
+  };
+
   const AddScheduleForm = () => (
     <Card className="mb-6">
       <h2 className="text-lg font-semibold mb-4">Add New Schedule</h2>
-      <form>
+      <form onSubmit={handleCreateSchedule}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             label="Title"
+            name="title"
             placeholder="Schedule title"
             required
           />
-          
+
           <div className="md:col-span-2">
             <Input
               label="Description"
+              name="description"
               placeholder="Schedule description"
             />
           </div>
-          
+
           <Input
             label="Start Date & Time"
+            name="start"
             type="datetime-local"
             required
           />
-          
+
           <Input
             label="End Date & Time"
+            name="end"
             type="datetime-local"
             required
           />
-          
-          <Input
-            label="Assign Employee"
-            placeholder="Select employee"
-            required
-          />
+
+          <Input label="Assign Employee" name="employeeId" as="select" required>
+            <option value="">Select Employee</option>
+            {employees.map((employee) => (
+              <option key={employee.id} value={employee.id}>
+                {employee.nama}
+              </option>
+            ))}
+          </Input>
         </div>
-        
+
         <div className="flex justify-end space-x-2 mt-6">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={() => setShowAddForm(false)}
+            disabled={isSubmitting}
           >
             Cancel
           </Button>
-          <Button 
-            variant="primary"
-            type="submit"
-          >
-            Create Schedule
+          <Button variant="primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Creating..." : "Create Schedule"}
           </Button>
         </div>
       </form>
     </Card>
   );
-  
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-durian-600"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Scheduling</h1>
-        <p className="text-gray-600">Create and manage work schedules for employees.</p>
+        <p className="text-gray-600">
+          Create and manage work schedules for employees.
+        </p>
       </div>
-      
-      {showAddForm ? (
+
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md text-red-700">
+          {error}
+        </div>
+      )}
+
+      {editingSchedule ? (
+        <EditScheduleForm schedule={editingSchedule} />
+      ) : showAddForm ? (
         <AddScheduleForm />
       ) : (
         <div className="flex justify-end mb-6">
@@ -154,7 +316,7 @@ export const AdminScheduling: React.FC = () => {
           </Button>
         </div>
       )}
-      
+
       <div className="mb-6">
         <Input
           placeholder="Search schedules..."
@@ -163,11 +325,14 @@ export const AdminScheduling: React.FC = () => {
           icon={<Search size={18} />}
         />
       </div>
-      
+
       <div className="space-y-4">
         {filteredSchedules.length > 0 ? (
           filteredSchedules.map((schedule) => (
-            <Card key={schedule.id} className="hover:shadow-md transition-shadow">
+            <Card
+              key={schedule.id}
+              className="hover:shadow-md transition-shadow duration-300"
+            >
               <div className="flex flex-col md:flex-row justify-between">
                 <div className="flex-1">
                   <div className="flex items-start">
@@ -175,18 +340,36 @@ export const AdminScheduling: React.FC = () => {
                       <Calendar className="h-5 w-5 text-durian-600" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-800">{schedule.title}</h3>
-                      <p className="text-gray-600 text-sm mb-2">{schedule.description}</p>
+                      <h3 className="text-lg font-semibold text-gray-800">
+                        {schedule.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-2">
+                        {schedule.description}
+                      </p>
                       <div className="flex flex-wrap gap-2 mt-2">
                         <span className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700">
                           {formatScheduleDate(schedule.start)}
                         </span>
                         <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
-                          {formatScheduleTime(schedule.start)} - {formatScheduleTime(schedule.end)}
+                          {formatScheduleTime(schedule.start)} -{" "}
+                          {formatScheduleTime(schedule.end)}
                         </span>
                         {schedule.employeeName && (
                           <span className="inline-flex items-center rounded-full bg-durian-yellow-50 px-2 py-1 text-xs font-medium text-durian-yellow-700">
                             {schedule.employeeName}
+                          </span>
+                        )}
+                        {schedule.status && (
+                          <span
+                            className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+                              schedule.status === "completed"
+                                ? "bg-green-50 text-green-700"
+                                : schedule.status === "pending"
+                                ? "bg-yellow-50 text-yellow-700"
+                                : "bg-gray-100 text-gray-700"
+                            }`}
+                          >
+                            {schedule.status}
                           </span>
                         )}
                       </div>
@@ -198,7 +381,8 @@ export const AdminScheduling: React.FC = () => {
                     variant="outline"
                     size="sm"
                     icon={<Edit size={16} />}
-                    onClick={() => console.log(`Edit schedule ${schedule.id}`)}
+                    onClick={() => setEditingSchedule(schedule)}
+                    disabled={isSubmitting}
                   >
                     Edit
                   </Button>
@@ -206,7 +390,8 @@ export const AdminScheduling: React.FC = () => {
                     variant="danger"
                     size="sm"
                     icon={<Trash size={16} />}
-                    onClick={() => console.log(`Delete schedule ${schedule.id}`)}
+                    onClick={() => handleDeleteSchedule(schedule.id)}
+                    disabled={isSubmitting}
                   >
                     Delete
                   </Button>
@@ -218,14 +403,19 @@ export const AdminScheduling: React.FC = () => {
           <Card>
             <div className="text-center py-8">
               <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900">No schedules found</h3>
+              <h3 className="text-lg font-medium text-gray-900">
+                No schedules found
+              </h3>
               <p className="mt-1 text-sm text-gray-500">
-                Try adjusting your search or create a new schedule.
+                {searchTerm
+                  ? "Try adjusting your search criteria."
+                  : "Create your first schedule to get started."}
               </p>
               <div className="mt-6">
                 <Button
                   variant="primary"
                   onClick={() => setShowAddForm(true)}
+                  disabled={isSubmitting}
                 >
                   Create New Schedule
                 </Button>
