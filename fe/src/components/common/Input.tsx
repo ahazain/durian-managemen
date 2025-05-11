@@ -17,7 +17,7 @@ export const Input: React.FC<InputProps> = ({
   ...props
 }) => {
   const inputClasses =
-    "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50";
+    "w-full rounded-md shadow-sm border py-2 px-3 focus:outline-none focus:ring-durian-500 focus:border-durian-500";
 
   return (
     <div className="w-full">

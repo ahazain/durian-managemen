@@ -50,18 +50,51 @@ class profilService {
     });
     return updateData;
   }
-  static async getAll() {
-    const karyawanYgAda = await prisma.user.findMany({
-      where: { role: Role.KARYAWAN },
+  static async getAllKaryawan(role) {
+    let filter = {};
+    if (role === Role.ADMIN) {
+      filter = { role: Role.ADMIN };
+    } else if (role === Role.KARYAWAN) {
+      filter = { role: Role.KARYAWAN };
+    } else {
+      filter = {
+        OR: [{ role: Role.ADMIN }, { role: Role.KARYAWAN }],
+      };
+    }
+
+    const users = await prisma.user.findMany({
+      where: filter,
       select: {
         id: true,
         nama: true,
+        role: true,
       },
     });
-    if (!karyawanYgAda || karyawanYgAda.length === 0) {
-      throw new NotFoundError("List karyawan kosong.");
+
+    if (!users || users.length === 0) {
+      throw new NotFoundError("List pengguna kosong.");
     }
-    return karyawanYgAda;
+
+    const countAdmin = await prisma.user.count({
+      where: { role: Role.ADMIN },
+    });
+
+    const countKaryawan = await prisma.user.count({
+      where: { role: Role.KARYAWAN },
+    });
+
+    return {
+      total_admin: countAdmin,
+      total_karyawan: countKaryawan,
+      users,
+    };
+  }
+  static async getById(id) {
+    if (!id) {
+      throw new BadRequestError("id diperlukan");
+    }
+    const data = await prisma.user.findUnique({ where: { id } });
+    return data;
   }
 }
 

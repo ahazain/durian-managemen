@@ -11,7 +11,6 @@ class ProfilController {
       return response.error(res, error);
     }
   }
- 
 
   static async updateProfil(req, res) {
     try {
@@ -26,12 +25,22 @@ class ProfilController {
 
   static async getAllKaryawan(req, res) {
     try {
-      const data = await profilService.getAll();
+      const { role } = req.query;
+      const data = await profilService.getAllKaryawan(role);
       return response.success(
         res,
         data,
         "berhasil menampilkan semua list karyawan"
       );
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
+  static async getById(req, res) {
+    try {
+      const { id } = req.user;
+      const data = await profilService.getById(id);
+      return response.success(res, data, "berhasil menampilkan detail profil");
     } catch (error) {
       return response.error(res, error);
     }

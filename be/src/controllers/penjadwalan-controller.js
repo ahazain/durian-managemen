@@ -1,11 +1,11 @@
 const response = require("../utils/response");
-const PenjadwalanService = require("../service/penjadwalan-service");
+const penjadwalanService = require("../service/penjadwalan-service");
 class PenjadwalanController {
   static async addJadwalKerja(req, res) {
     try {
       const { title, deskripsi, tanggal_mulai, tanggal_selesai, user } =
         req.body;
-      const data = await PenjadwalanService.addJadwalKerja({
+      const data = await penjadwalanService.addJadwalKerja({
         title,
         deskripsi,
         tanggal_mulai,
@@ -24,7 +24,7 @@ class PenjadwalanController {
   static async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await PenjadwalanService.getById(id);
+      const data = await penjadwalanService.getById(id);
       return response.success(res, data, "berhasil menampilkan data by id");
     } catch (error) {
       return response.error(res, error);
@@ -33,7 +33,7 @@ class PenjadwalanController {
 
   static async getJadwalKerja(req, res) {
     try {
-      const data = await PenjadwalanService.getJadwalKerja();
+      const data = await penjadwalanService.getJadwalKerja();
       return response.success(
         res,
         data,
@@ -48,7 +48,7 @@ class PenjadwalanController {
       const { id } = req.params;
       const { title, deskripsi, tanggal_mulai, tanggal_selesai, user } =
         req.body;
-      const data = await PenjadwalanService.updateJadwalKerja({
+      const data = await penjadwalanService.updateJadwalKerja({
         title,
         deskripsi,
         tanggal_mulai,
@@ -70,8 +70,17 @@ class PenjadwalanController {
   static async deleteJadwalKerja(req, res) {
     try {
       const { id } = req.params;
-      const data = await PenjadwalanService.deleteJadwalKerja(id);
+      const data = await penjadwalanService.deleteJadwalKerja(id);
       return response.success(res, data, "berhasil menghapus jadwal kerja");
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
+  static async getByKaryawan(req, res) {
+    try {
+      const { id } = req.user;
+      const data = await penjadwalanService.getByKaryawan(id);
+      return response.success(res, data, "berhasil menampilka jadwal karyawan");
     } catch (error) {
       return response.error(res, error);
     }

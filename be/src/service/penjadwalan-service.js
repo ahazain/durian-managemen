@@ -121,5 +121,21 @@ class PenjadwalanService {
     });
     return deleteData;
   }
+
+  static async getByKaryawan(id) {
+    if (!id) {
+      throw new BadRequestError("id diperlukan");
+    }
+    const userYgAda = await prisma.user.findUnique({ where: { id } });
+    if (!userYgAda) {
+      throw new NotFoundError("data id tidak ditemukan");
+    }
+
+    const datajadwal = await prisma.jadwal.findMany({
+      where: { id_user: id },
+    });
+
+    return datajadwal;
+  }
 }
 module.exports = PenjadwalanService;
