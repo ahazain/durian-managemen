@@ -1,4 +1,3 @@
-// src/pages/admin/Accounts.tsx
 import React, { useState, useEffect } from "react";
 import { Edit2, Search, UserPlus, Users } from "lucide-react";
 import { Card } from "../../components/common/Card";
@@ -9,22 +8,23 @@ import { api } from "../../utils/api";
 
 export const AdminAccounts: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentTab, setCurrentTab] = useState<"all" | "admin" | "employee">(
+  const [currentTab, setCurrentTab] = useState<"all" | "ADMIN" | "KARYAWAN">(
     "all"
   );
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState({ total_admin: 0, total_karyawan: 0 });
 
-  useEffect(() => {
-    fetchProfiles();
-  }, []);
-
-  const fetchProfiles = async () => {
+  const fetchProfiles = async (role?: string) => {
     try {
       setLoading(true);
-      const response = await api.getAllProfiles();
-      setProfiles(response.data || []);
+      const response = await api.getAllProfiles(role);
+      setProfiles(response.data.users || []);
+      setStats({
+        total_admin: response.data.total_admin,
+        total_karyawan: response.data.total_karyawan,
+      });
       setError(null);
     } catch (err) {
       setError("Failed to fetch accounts");
@@ -34,20 +34,23 @@ export const AdminAccounts: React.FC = () => {
     }
   };
 
-  // Filter profiles based on search term and tab
-  const filteredProfiles = profiles.filter((profile) => {
-    const matchesSearch =
-      profile.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      profile.email.toLowerCase().includes(searchTerm.toLowerCase());
+  useEffect(() => {
+    if (currentTab === "all") {
+      fetchProfiles();
+    } else {
+      fetchProfiles(currentTab);
+    }
+  }, [currentTab]);
 
-    if (currentTab === "all") return matchesSearch;
-    return matchesSearch && profile.role.toLowerCase() === currentTab;
-  });
+  // Filter profiles based on search term
+  const filteredProfiles = profiles.filter((profile) =>
+    profile.nama.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleEditProfile = async (id: string, data: Partial<Profile>) => {
     try {
       await api.updateProfile({ id, ...data });
-      await fetchProfiles();
+      await fetchProfiles(currentTab === "all" ? undefined : currentTab);
     } catch (err) {
       console.error("Failed to update profile:", err);
     }
@@ -65,7 +68,10 @@ export const AdminAccounts: React.FC = () => {
     <div className="animate-fade-in">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Account Management</h1>
-        <p className="text-gray-600">Manage employee and admin accounts.</p>
+        <p className="text-gray-600">
+          Manage employee and admin accounts. Total Admins: {stats.total_admin},
+          Total Employees: {stats.total_karyawan}
+        </p>
       </div>
 
       {error && (
@@ -85,16 +91,16 @@ export const AdminAccounts: React.FC = () => {
                 All
               </Button>
               <Button
-                variant={currentTab === "admin" ? "primary" : "outline"}
-                onClick={() => setCurrentTab("admin")}
+                variant={currentTab === "ADMIN" ? "primary" : "outline"}
+                onClick={() => setCurrentTab("ADMIN")}
               >
-                Admins
+                Admins ({stats.total_admin})
               </Button>
               <Button
-                variant={currentTab === "employee" ? "primary" : "outline"}
-                onClick={() => setCurrentTab("employee")}
+                variant={currentTab === "KARYAWAN" ? "primary" : "outline"}
+                onClick={() => setCurrentTab("KARYAWAN")}
               >
-                Employees
+                Employees ({stats.total_karyawan})
               </Button>
             </div>
           </div>
@@ -128,13 +134,7 @@ export const AdminAccounts: React.FC = () => {
                   Name
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Role
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Created At
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -158,11 +158,6 @@ export const AdminAccounts: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {profile.email}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           profile.role === "ADMIN"
@@ -170,13 +165,8 @@ export const AdminAccounts: React.FC = () => {
                             : "bg-durian-100 text-durian-800"
                         }`}
                       >
-                        {profile.role}
+                        {profile.role === "KARYWAN" ? "Employee" : profile.role}
                       </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {new Date(profile.createdAt).toLocaleDateString()}
-                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <div className="flex space-x-2">
@@ -193,7 +183,7 @@ export const AdminAccounts: React.FC = () => {
               ) : (
                 <tr>
                   <td
-                    colSpan={5}
+                    colSpan={3}
                     className="px-6 py-4 text-center text-gray-500"
                   >
                     No accounts found matching your criteria

@@ -74,7 +74,7 @@ export const API_ENDPOINTS = {
       `http://localhost:3000/api/v1/profil/all-karyawan/${id}`,
   },
   profile: {
-    all: "http://localhost:3000/api/v1/profil",
+    all: "http://localhost:3000/api/v1/profil/all",
     update: "http://localhost:3000/api/v1/profil",
   },
   schedule: {

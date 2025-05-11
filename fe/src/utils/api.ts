@@ -175,8 +175,12 @@ export const api = {
     return response.json();
   },
   // Profiles
-  getAllProfiles: async () => {
-    const response = await fetch(API_ENDPOINTS.profile.all, {
+  getAllProfiles: async (role?: string) => {
+    const url = new URL(API_ENDPOINTS.profile.all);
+    if (role) {
+      url.searchParams.append("role", role);
+    }
+    const response = await fetch(url.toString(), {
       headers: getAuthHeaders(),
     });
     if (!response.ok) throw new Error("Failed to fetch profiles");
