@@ -9,27 +9,6 @@ const {
 const { formatTanggalIndonesia } = require("../utils/formated-waktu");
 
 class profilService {
-  static async getProfil(user) {
-    if (!user || !user.id) {
-      throw new UnauthorizedError("Unauthorized. Silakan login kembali.");
-    }
-
-    const foundUser = await prisma.user.findUnique({
-      where: { id: user.id },
-    });
-
-    if (!foundUser) {
-      throw new NotFoundError("User tidak ditemukan.");
-    }
-
-    return {
-      id: foundUser.id,
-      nama: foundUser.nama,
-      email: foundUser.email,
-      role: foundUser.role,
-    };
-  }
-
   static async updateProfil({ nama, email, id }) {
     if (!id) {
       throw new UnauthorizedError("Unauthorization. silahkan login kembali");
@@ -50,7 +29,23 @@ class profilService {
     });
     return updateData;
   }
-  static async getAllKaryawan(role) {
+
+  static async getAllKaryawan() {
+    const karyawanYgAda = await prisma.user.findMany({
+      where: { role: Role.KARYAWAN },
+      orderBy: { nama: "asc" },
+      select: {
+        id: true,
+        nama: true,
+      },
+    });
+    if (!karyawanYgAda || karyawanYgAda.length === 0) {
+      throw new NotFoundError("List karyawan kosong.");
+    }
+    return karyawanYgAda;
+  }
+
+  static async getAll(role) {
     let filter = {};
     if (role === Role.ADMIN) {
       filter = { role: Role.ADMIN };

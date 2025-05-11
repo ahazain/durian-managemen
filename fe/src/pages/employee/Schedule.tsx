@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Calendar, Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { format, addDays, isSameDay } from "date-fns";
-import { Card } from "../../components/common/Card";
-import { Input } from "../../components/common/Input";
+import { format, addDays, startOfWeek, isSameDay } from "date-fns";
 import { Schedule } from "../../types";
 import { api } from "../../utils/api";
+import { Card } from "../../components/common/Card";
+import { Input } from "../../components/common/Input";
 
 export const EmployeeSchedule: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [currentWeekStart, setCurrentWeekStart] = useState(
+    startOfWeek(new Date())
+  );
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const today = new Date();
-
   useEffect(() => {
     fetchSchedules();
   }, []);
+
+  // Generate current week days based on the currentWeekStart
+  const currentWeekDays = Array.from({ length: 7 }, (_, i) =>
+    addDays(currentWeekStart, i)
+  );
 
   const fetchSchedules = async () => {
     try {
@@ -54,16 +60,17 @@ export const EmployeeSchedule: React.FC = () => {
     isSameDay(new Date(schedule.start), selectedDate)
   );
 
-  // Generate next 7 days for the date picker
-  const next7Days = Array.from({ length: 7 }, (_, i) => addDays(today, i));
-
   // Navigate between weeks
   const navigatePreviousWeek = () => {
-    setSelectedDate((prevDate) => addDays(prevDate, -7));
+    const newWeekStart = addDays(currentWeekStart, -7);
+    setCurrentWeekStart(newWeekStart);
+    setSelectedDate(newWeekStart); // Select the first day of the new week
   };
 
   const navigateNextWeek = () => {
-    setSelectedDate((prevDate) => addDays(prevDate, 7));
+    const newWeekStart = addDays(currentWeekStart, 7);
+    setCurrentWeekStart(newWeekStart);
+    setSelectedDate(newWeekStart); // Select the first day of the new week
   };
 
   if (loading) {
@@ -92,23 +99,25 @@ export const EmployeeSchedule: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
           <button
             onClick={navigatePreviousWeek}
-            className="p-2 rounded-full hover:bg-gray-100"
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Previous week"
           >
             <ChevronLeft size={20} />
           </button>
           <h3 className="text-lg font-semibold">
-            {format(selectedDate, "MMMM yyyy")}
+            {format(currentWeekStart, "MMMM yyyy")}
           </h3>
           <button
             onClick={navigateNextWeek}
-            className="p-2 rounded-full hover:bg-gray-100"
+            className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Next week"
           >
             <ChevronRight size={20} />
           </button>
         </div>
 
         <div className="flex overflow-x-auto space-x-2 pb-2">
-          {next7Days.map((date, index) => (
+          {currentWeekDays.map((date, index) => (
             <button
               key={index}
               className={`flex-shrink-0 flex flex-col items-center p-3 rounded-lg transition-colors ${

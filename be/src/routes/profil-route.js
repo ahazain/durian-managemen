@@ -5,8 +5,9 @@ const {
   verifyJWT,
   verifyRole,
 } = require("../middlewares/verify-jwt-middleware");
-route.get("/profil-all", verifyJWT, profilController.getProfil);
+// route.get("/profil-all", verifyJWT, profilController.getProfil);
 route.put("/profil", verifyJWT, profilController.updateProfil);
+route.get("/profil/all", profilController.getAll);
 route.get("/profil/all-karyawan", profilController.getAllKaryawan);
 route.get("/profil", verifyJWT, profilController.getById);
 
