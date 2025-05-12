@@ -165,7 +165,7 @@ export const AdminAccounts: React.FC = () => {
                             : "bg-durian-100 text-durian-800"
                         }`}
                       >
-                        {profile.role === "KARYWAN" ? "Employee" : profile.role}
+                        {profile.role === "KARYWAN"? "Employee" : profile.role}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
