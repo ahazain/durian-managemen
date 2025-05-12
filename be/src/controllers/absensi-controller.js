@@ -25,14 +25,14 @@ class AbsensiController {
     }
   }
 
-  static async getByKaryawan(req, res) {
+  static async getHistoriKaryawan(req, res) {
     try {
       const { id } = req.user;
-      const data = await absensiService.getByKaryawan(id);
+      const data = await absensiService.getHistoriKaryawan(id);
       return response.success(
         res,
         data,
-        "Data absensi karyawan berhasil ditampilkan"
+        "Data history absensi karyawan berhasil ditampilkan"
       );
     } catch (error) {
       return response.error(res, error);

@@ -94,11 +94,17 @@ class AbsensiService {
     });
   }
 
-  static async getByKaryawan(id) {
-    return prisma.absensi.findMany({
-      where: { id },
+  static async getHistoriKaryawan(id) {
+    const absensi = await prisma.absensi.findMany({
+      where: {
+        user_id: id,
+      },
       orderBy: { tanggal: "desc" },
     });
+
+    if (!absensi) throw new NotFoundError("Absensi tidak ditemukan");
+
+    return absensi;
   }
 
   static async verifikasiAbsensi(id) {

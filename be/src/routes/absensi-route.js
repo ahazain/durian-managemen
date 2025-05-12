@@ -8,7 +8,7 @@ const {
 
 route.post("/checkin", verifyJWT, absensiController.checkin);
 route.get("/all", absensiController.getAllAbsensi);
-route.get("/karyawan", verifyJWT, absensiController.getByKaryawan);
+route.get("/histori-karyawan", verifyJWT, absensiController.getHistoriKaryawan);
 route.put(
   "/verifikasi/:id",
   // verifyJWT,
