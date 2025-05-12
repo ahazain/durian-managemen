@@ -10,8 +10,8 @@ route.post("/checkin", verifyJWT, absensiController.checkin);
 route.get("/karyawan", verifyJWT, absensiController.getByKaryawan);
 route.put(
   "/verifikasi/:id",
-  verifyJWT,
-  verifyRole("ADMIN"),
+  // verifyJWT,
+  // verifyRole("ADMIN"),
   absensiController.verifikasiAbsensi
 );
 

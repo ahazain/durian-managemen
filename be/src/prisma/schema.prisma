@@ -36,6 +36,7 @@ model Jadwal{
   tanggal_selesai DateTime
   id_user String
   user User @relation(fields: [id_user], references: [id])
+  absensi Absensi[]
 
 }
 
@@ -45,6 +46,8 @@ model Absensi{
   status AbsensiStatus
   verifikasi Boolean @default(false)
   user_id String
+  jadwal_id String
+  jadwal Jadwal @relation(fields: [jadwal_id], references: [id])
   user User @relation(fields: [user_id], references: [id])
 }
 
