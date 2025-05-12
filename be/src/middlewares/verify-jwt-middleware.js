@@ -27,7 +27,7 @@ function verifyRole(...roles) {
     }
     const userRole = req.user.role;
     if (!roles.includes(userRole)) {
-      return next(new UnauthorizedError("Akses ditolak"));
+      return next(new UnauthorizedError("Akses ditolak, role tidak sesuai"));
     }
     next();
   };

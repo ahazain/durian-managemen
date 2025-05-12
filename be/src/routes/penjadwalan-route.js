@@ -6,7 +6,12 @@ const {
   verifyRole,
 } = require("../middlewares/verify-jwt-middleware");
 
-route.post("/", penjadwalanController.addJadwalKerja); //admin
+route.post(
+  "/",
+  // verifyJWT,
+  // verifyRole("ADMIN"),
+  penjadwalanController.addJadwalKerja
+); //admin
 route.get("/", penjadwalanController.getJadwalKerja); //admin
 route.get("/karyawan", verifyJWT, penjadwalanController.getByKaryawan); //karyawan
 route.put("/:id", penjadwalanController.updateJadwalKerja); //admin

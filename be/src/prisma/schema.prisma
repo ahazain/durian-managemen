@@ -59,9 +59,8 @@ model Prediksi{
 }
 enum AbsensiStatus {
   HADIR
-  ALFA
-  IZIN
-  SAKIT
+  ALPHA
+  TERLAMBAT
 }
 enum Role {
   ADMIN
