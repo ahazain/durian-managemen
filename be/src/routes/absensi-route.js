@@ -7,6 +7,7 @@ const {
 } = require("../middlewares/verify-jwt-middleware");
 
 route.post("/checkin", verifyJWT, absensiController.checkin);
+route.get("/all", absensiController.getAllAbsensi);
 route.get("/karyawan", verifyJWT, absensiController.getByKaryawan);
 route.put(
   "/verifikasi/:id",

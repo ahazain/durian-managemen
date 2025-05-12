@@ -84,6 +84,15 @@ class AbsensiService {
     // Jika tidak ada absensi yang cocok, lempar error
     throw new NotFoundError("Tidak ada jadwal yang cocok untuk waktu saat ini");
   }
+  static async getAllAbsensi() {
+    return prisma.absensi.findMany({
+      include: {
+        user: true,
+        jadwal: true,
+      },
+      orderBy: { tanggal: "desc" },
+    });
+  }
 
   static async getByKaryawan(id) {
     return prisma.absensi.findMany({

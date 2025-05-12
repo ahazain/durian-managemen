@@ -16,6 +16,14 @@ class AbsensiController {
       return response.error(res, error);
     }
   }
+  static async getAllAbsensi(req, res) {
+    try {
+      const data = await absensiService.getAllAbsensi();
+      return response.success(res, data, "Data absensi berhasil ditampilkan");
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
 
   static async getByKaryawan(req, res) {
     try {
