@@ -118,6 +118,26 @@ class AbsensiService {
       data: { verifikasi: true },
     });
   }
+  static async filterAbsensi(status) {
+    let whereClause = {};
+
+    if (status === "verified") {
+      whereClause.verifikasi = true;
+    } else if (status === "unverified") {
+      whereClause.verifikasi = false;
+    }
+
+    return prisma.absensi.findMany({
+      where: whereClause,
+      include: {
+        user: true,
+        jadwal: true,
+      },
+      orderBy: {
+        tanggal: "desc",
+      },
+    });
+  }
 }
 
 module.exports = AbsensiService;

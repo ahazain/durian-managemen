@@ -48,6 +48,17 @@ class AbsensiController {
       return response.error(res, error);
     }
   }
+
+  static async filterAbsensi(req, res) {
+    try {
+        const {status} = req.query;
+        const data = await absensiService.filterAbsensi(status);
+        return response.success(res, data, "Data absensi berhasil difilter");
+    } catch (error) {
+      return response.error(res, error);
+        
+    }
+  }
 }
 
 module.exports = AbsensiController;

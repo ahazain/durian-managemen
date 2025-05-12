@@ -9,11 +9,12 @@ const {
 route.post("/checkin", verifyJWT, absensiController.checkin);
 route.get("/all", absensiController.getAllAbsensi);
 route.get("/histori-karyawan", verifyJWT, absensiController.getHistoriKaryawan);
-route.put(
+route.patch(
   "/verifikasi/:id",
   // verifyJWT,
   // verifyRole("ADMIN"),
   absensiController.verifikasiAbsensi
 );
+route.get("/filter", absensiController.filterAbsensi);
 
 module.exports = route;
