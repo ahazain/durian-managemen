@@ -1,115 +1,102 @@
-import React, { useState } from 'react';
-import { CheckCircle, Search, Filter, Calendar } from 'lucide-react';
-import { format } from 'date-fns';
-import { Card } from '../../components/common/Card';
-import { Button } from '../../components/common/Button';
-import { Input } from '../../components/common/Input';
-import { Attendance } from '../../types';
+import React, { useState, useEffect } from "react";
+import { CheckCircle, Search } from "lucide-react";
+import { format } from "date-fns";
+import { Card } from "../../components/common/Card";
+import { Button } from "../../components/common/Button";
+import { Input } from "../../components/common/Input";
+import { Attendance } from "../../types";
+import { api } from "../../utils/api";
 
 export const AdminAttendance: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState<'all' | 'verified' | 'unverified'>('all');
-  
-  // Mock attendance data
-  const mockAttendance: Attendance[] = [
-    {
-      id: '1',
-      employeeId: '3',
-      employeeName: 'Budi Santoso',
-      date: '2025-05-10',
-      checkInTime: '07:45:00',
-      verified: false,
-      notes: '',
-    },
-    {
-      id: '2',
-      employeeId: '4',
-      employeeName: 'Sarah Wijaya',
-      date: '2025-05-10',
-      checkInTime: '07:52:00',
-      verified: false,
-      notes: '',
-    },
-    {
-      id: '3',
-      employeeId: '6',
-      employeeName: 'Ahmad Rahman',
-      date: '2025-05-10',
-      checkInTime: '08:05:00',
-      verified: true,
-      notes: 'Late due to traffic',
-    },
-    {
-      id: '4',
-      employeeId: '3',
-      employeeName: 'Budi Santoso',
-      date: '2025-05-09',
-      checkInTime: '07:40:00',
-      verified: true,
-      notes: '',
-    },
-    {
-      id: '5',
-      employeeId: '4',
-      employeeName: 'Sarah Wijaya',
-      date: '2025-05-09',
-      checkInTime: '07:48:00',
-      verified: true,
-      notes: '',
-    },
-  ];
-  
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState<"all" | "verified" | "unverified">(
+    "all"
+  );
+  const [attendances, setAttendances] = useState<Attendance[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchAttendances();
+  }, []);
+
+  const fetchAttendances = async () => {
+    try {
+      const response = await api.getAttendances();
+      setAttendances(response.data);
+      setError(null);
+    } catch (err) {
+      setError("Failed to fetch attendance data");
+      console.error("Error fetching attendances:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Filter attendance records
-  const filteredAttendance = mockAttendance.filter(record => {
-    const matchesSearch = 
-      record.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      record.date.includes(searchTerm) ||
-      record.notes?.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    if (filter === 'all') return matchesSearch;
-    if (filter === 'verified') return matchesSearch && record.verified;
-    if (filter === 'unverified') return matchesSearch && !record.verified;
+  const filteredAttendance = attendances.filter((record) => {
+    const matchesSearch =
+      record.user.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      record.tanggal.includes(searchTerm);
+
+    if (filter === "all") return matchesSearch;
+    if (filter === "verified") return matchesSearch && record.verifikasi;
+    if (filter === "unverified") return matchesSearch && !record.verifikasi;
     return matchesSearch;
   });
-  
+
   const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'MMMM d, yyyy');
+    return format(new Date(dateString), "MMMM d, yyyy HH:mm");
   };
-  
-  const handleVerify = (id: string) => {
-    console.log(`Verify attendance with ID: ${id}`);
-    // In a real app, this would call an API to verify the attendance
+
+  const handleVerify = async (id: string) => {
+    try {
+      await api.verifyAttendance(id);
+      await fetchAttendances(); // Refresh the list
+    } catch (err) {
+      console.error("Error verifying attendance:", err);
+    }
   };
-  
+
+  if (loading) {
+    return <div className="text-center py-8">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-600 py-8">{error}</div>;
+  }
+
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Attendance Verification</h1>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Attendance Verification
+        </h1>
         <p className="text-gray-600">Verify employee attendance records.</p>
       </div>
-      
+
       <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0 mb-6">
         <div className="flex space-x-2">
-          <Button 
-            variant={filter === 'all' ? 'primary' : 'outline'} 
-            onClick={() => setFilter('all')}
+          <Button
+            variant={filter === "all" ? "primary" : "outline"}
+            onClick={() => setFilter("all")}
           >
             All
           </Button>
-          <Button 
-            variant={filter === 'verified' ? 'primary' : 'outline'} 
-            onClick={() => setFilter('verified')}
+          <Button
+            variant={filter === "verified" ? "primary" : "outline"}
+            onClick={() => setFilter("verified")}
           >
             Verified
           </Button>
-          <Button 
-            variant={filter === 'unverified' ? 'primary' : 'outline'} 
-            onClick={() => setFilter('unverified')}
+          <Button
+            variant={filter === "unverified" ? "primary" : "outline"}
+            onClick={() => setFilter("unverified")}
           >
             Unverified
           </Button>
         </div>
-        
+
         <div className="w-full md:w-64">
           <Input
             placeholder="Search by name or date..."
@@ -119,7 +106,7 @@ export const AdminAttendance: React.FC = () => {
           />
         </div>
       </div>
-      
+
       <Card>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -132,13 +119,10 @@ export const AdminAttendance: React.FC = () => {
                   Date
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Check-in Time
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Notes
+                  Verification
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Action
@@ -150,28 +134,33 @@ export const AdminAttendance: React.FC = () => {
                 filteredAttendance.map((attendance) => (
                   <tr key={attendance.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-medium text-gray-900">{attendance.employeeName}</div>
+                      <div className="font-medium text-gray-900">
+                        {attendance.user.nama}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{formatDate(attendance.date)}</div>
+                      <div className="text-sm text-gray-900">
+                        {formatDate(attendance.tanggal)}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{attendance.checkInTime}</div>
+                      <div className="text-sm text-gray-900">
+                        {attendance.status}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        attendance.verified
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {attendance.verified ? 'Verified' : 'Pending'}
+                      <span
+                        className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          attendance.verifikasi
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {attendance.verifikasi ? "Verified" : "Pending"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{attendance.notes || '-'}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {!attendance.verified && (
+                      {!attendance.verifikasi && (
                         <Button
                           variant="success"
                           size="sm"
@@ -186,7 +175,10 @@ export const AdminAttendance: React.FC = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                  <td
+                    colSpan={5}
+                    className="px-6 py-4 text-center text-gray-500"
+                  >
                     No attendance records found matching your criteria
                   </td>
                 </tr>

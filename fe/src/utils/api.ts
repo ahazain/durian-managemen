@@ -1,5 +1,18 @@
 import { API_ENDPOINTS, mapSchedule, Schedule } from "../types";
-import { createAuthHeaders, getAuthToken } from "./authUtils";
+import { createAuthHeaders, handleTokenExpiration } from "./authUtils";
+
+// Helper function to handle API responses
+const handleResponse = async (response: Response) => {
+  if (response.status === 401) {
+    // Token is invalid or expired
+    handleTokenExpiration();
+    throw new Error("Session expired. Please login again.");
+  }
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
+  return response.json();
+};
 
 export const api = {
   // Auth
@@ -9,8 +22,7 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-    if (!response.ok) throw new Error("Login failed");
-    return response.json();
+    return handleResponse(response);
   },
 
   register: async (data: { nama: string; email: string; password: string }) => {
@@ -19,8 +31,7 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error("Registration failed");
-    return response.json();
+    return handleResponse(response);
   },
 
   resetPassword: async (email: string) => {
@@ -29,8 +40,7 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
-    if (!response.ok) throw new Error("Password reset failed");
-    return response.json();
+    return handleResponse(response);
   },
 
   // Employees
@@ -38,8 +48,7 @@ export const api = {
     const response = await fetch(API_ENDPOINTS.employee.list, {
       headers: createAuthHeaders(),
     });
-    if (!response.ok) throw new Error("Failed to fetch employees");
-    return response.json();
+    return handleResponse(response);
   },
 
   // Schedules
@@ -47,10 +56,7 @@ export const api = {
     const response = await fetch(API_ENDPOINTS.schedule.list, {
       headers: createAuthHeaders(),
     });
-    if (!response.ok) throw new Error("Failed to fetch schedules");
-
-    const result = await response.json();
-
+    const result = await handleResponse(response);
     return {
       ...result,
       data: result.data.map(mapSchedule),
@@ -61,8 +67,20 @@ export const api = {
     const response = await fetch(API_ENDPOINTS.schedule.getById(id), {
       headers: createAuthHeaders(),
     });
-    if (!response.ok) throw new Error("Failed to fetch schedule");
-    return response.json();
+    return handleResponse(response);
+  },
+  getEmployeeSchedules: async () => {
+    const response = await fetch(API_ENDPOINTS.schedule.listByEmploye, {
+      headers: createAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to fetch employee schedules");
+
+    const result = await response.json();
+
+    return {
+      ...result,
+      data: result.data.map(mapSchedule),
+    };
   },
 
   createSchedule: async (data: {
@@ -87,8 +105,7 @@ export const api = {
       headers: createAuthHeaders(),
       body: JSON.stringify(transformedData),
     });
-    if (!response.ok) throw new Error("Failed to create schedule");
-    return response.json();
+    return handleResponse(response);
   },
 
   updateSchedule: async (id: string, data: Partial<Schedule>) => {
@@ -111,8 +128,7 @@ export const api = {
       headers: createAuthHeaders(),
       body: JSON.stringify(transformedData),
     });
-    if (!response.ok) throw new Error("Failed to update schedule");
-    return response.json();
+    return handleResponse(response);
   },
 
   deleteSchedule: async (id: string) => {
@@ -120,56 +136,58 @@ export const api = {
       method: "DELETE",
       headers: createAuthHeaders(),
     });
-    if (!response.ok) throw new Error("Failed to delete schedule");
-    return response.json();
+    return handleResponse(response);
   },
 
   // Attendance
-  checkIn: async (employeeId: string) => {
+  getAttendances: async () => {
+    const response = await fetch(API_ENDPOINTS.attendance.list, {
+      headers: createAuthHeaders(),
+    });
+    return handleResponse(response);
+  },
+  checkIn: async () => {
     const response = await fetch(API_ENDPOINTS.attendance.checkIn, {
       method: "POST",
       headers: createAuthHeaders(),
-      body: JSON.stringify({ employeeId }),
     });
-    if (!response.ok) throw new Error("Check-in failed");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Check-in failed");
+    }
     return response.json();
   },
 
-  verifyAttendance: async (attendanceId: string) => {
-    const response = await fetch(
-      API_ENDPOINTS.attendance.verify(attendanceId),
-      {
-        method: "PUT",
-        headers: createAuthHeaders(),
-      }
-    );
-    if (!response.ok) throw new Error("Verification failed");
+  getAttendanceHistory: async () => {
+    const response = await fetch(API_ENDPOINTS.attendance.employeeHistory, {
+      headers: createAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to fetch attendance history");
     return response.json();
   },
 
+  verifyAttendance: async (id: string) => {
+    const response = await fetch(API_ENDPOINTS.attendance.verify(id), {
+      method: "PATCH",
+      headers: createAuthHeaders(),
+    });
+    return handleResponse(response);
+  },
   // Predictions
   predictDurian: async (formData: FormData) => {
-    // For FormData, we don't set Content-Type header
-    const token = getAuthToken();
-    const headers: HeadersInit = token
-      ? { Authorization: `Bearer ${token}` }
-      : {};
-
     const response = await fetch(API_ENDPOINTS.prediction.predict, {
       method: "POST",
-      headers: headers,
+      headers: createAuthHeaders(),
       body: formData,
     });
-    if (!response.ok) throw new Error("Prediction failed");
-    return response.json();
+    return handleResponse(response);
   },
 
   getPredictionHistory: async () => {
     const response = await fetch(API_ENDPOINTS.prediction.history, {
       headers: createAuthHeaders(),
     });
-    if (!response.ok) throw new Error("Failed to fetch prediction history");
-    return response.json();
+    return handleResponse(response);
   },
 
   // Profiles
@@ -181,16 +199,14 @@ export const api = {
     const response = await fetch(url.toString(), {
       headers: createAuthHeaders(),
     });
-    if (!response.ok) throw new Error("Failed to fetch profiles");
-    return response.json();
+    return handleResponse(response);
   },
 
   getEmployeeProfiles: async () => {
     const response = await fetch(API_ENDPOINTS.profile.employees, {
       headers: createAuthHeaders(),
     });
-    if (!response.ok) throw new Error("Failed to fetch employee profiles");
-    return response.json();
+    return handleResponse(response);
   },
 
   updateProfile: async (data: any) => {
@@ -199,214 +215,6 @@ export const api = {
       headers: createAuthHeaders(),
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error("Failed to update profile");
-    return response.json();
+    return handleResponse(response);
   },
 };
-
-// import { API_ENDPOINTS, mapSchedule, Schedule } from "../types";
-
-// const getAuthHeaders = () => {
-//   const token = localStorage.getItem("durianAppUser");
-//   return {
-//     "Content-Type": "application/json",
-//     ...(token ? { Authorization: `Bearer ${token}` } : {}),
-//   };
-// };
-
-// export const api = {
-//   // Auth
-//   login: async (email: string, password: string) => {
-//     const response = await fetch(API_ENDPOINTS.auth.login, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ email, password }),
-//     });
-//     if (!response.ok) throw new Error("Login failed");
-//     return response.json();
-//   },
-
-//   register: async (data: { nama: string; email: string; password: string }) => {
-//     const response = await fetch(API_ENDPOINTS.auth.register, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(data),
-//     });
-//     if (!response.ok) throw new Error("Registration failed");
-//     return response.json();
-//   },
-
-//   resetPassword: async (email: string) => {
-//     const response = await fetch(API_ENDPOINTS.auth.resetPassword, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify({ email }),
-//     });
-//     if (!response.ok) throw new Error("Password reset failed");
-//     return response.json();
-//   },
-
-//   // Employees
-//   getEmployees: async () => {
-//     const response = await fetch(API_ENDPOINTS.employee.list, {
-//       headers: getAuthHeaders(),
-//     });
-//     if (!response.ok) throw new Error("Failed to fetch employees");
-//     return response.json();
-//   },
-
-//   // Schedules
-//   getSchedules: async () => {
-//     const response = await fetch(API_ENDPOINTS.schedule.list, {
-//       headers: getAuthHeaders(),
-//     });
-//     if (!response.ok) throw new Error("Failed to fetch schedules");
-
-//     const result = await response.json();
-
-//     return {
-//       ...result,
-//       data: result.data.map(mapSchedule),
-//     };
-//   },
-
-//   getScheduleById: async (id: string) => {
-//     const response = await fetch(API_ENDPOINTS.schedule.getById(id), {
-//       headers: getAuthHeaders(),
-//     });
-//     if (!response.ok) throw new Error("Failed to fetch schedule");
-//     return response.json();
-//   },
-
-//   createSchedule: async (data: {
-//     title: string;
-//     description: string;
-//     start: string;
-//     end: string;
-//     employeeId: string;
-//   }) => {
-//     const transformedData = {
-//       title: data.title,
-//       deskripsi: data.description,
-//       tanggal_mulai: new Date(data.start).toISOString(),
-//       tanggal_selesai: new Date(data.end).toISOString(),
-//       user: {
-//         id: data.employeeId,
-//       },
-//     };
-
-//     const response = await fetch(API_ENDPOINTS.schedule.create, {
-//       method: "POST",
-//       headers: getAuthHeaders(),
-//       body: JSON.stringify(transformedData),
-//     });
-//     if (!response.ok) throw new Error("Failed to create schedule");
-//     return response.json();
-//   },
-
-//   updateSchedule: async (id: string, data: Partial<Schedule>) => {
-//     // Transform data to match API expectations
-//     const transformedData: any = {};
-
-//     if (data.title) transformedData.title = data.title;
-//     if (data.description) transformedData.deskripsi = data.description;
-//     if (data.start)
-//       transformedData.tanggal_mulai = new Date(data.start).toISOString();
-//     if (data.end)
-//       transformedData.tanggal_selesai = new Date(data.end).toISOString();
-//     if (data.employeeId) {
-//       transformedData.user = {
-//         id: data.employeeId,
-//       };
-//     }
-
-//     const response = await fetch(API_ENDPOINTS.schedule.update(id), {
-//       method: "PUT",
-//       headers: getAuthHeaders(),
-//       body: JSON.stringify(transformedData),
-//     });
-//     if (!response.ok) throw new Error("Failed to update schedule");
-//     return response.json();
-//   },
-
-//   deleteSchedule: async (id: string) => {
-//     const response = await fetch(API_ENDPOINTS.schedule.delete(id), {
-//       method: "DELETE",
-//       headers: getAuthHeaders(),
-//     });
-//     if (!response.ok) throw new Error("Failed to delete schedule");
-//     return response.json();
-//   },
-
-//   // Attendance
-//   checkIn: async (employeeId: string) => {
-//     const response = await fetch(API_ENDPOINTS.attendance.checkIn, {
-//       method: "POST",
-//       headers: getAuthHeaders(),
-//       body: JSON.stringify({ employeeId }),
-//     });
-//     if (!response.ok) throw new Error("Check-in failed");
-//     return response.json();
-//   },
-
-//   verifyAttendance: async (attendanceId: string) => {
-//     const response = await fetch(
-//       API_ENDPOINTS.attendance.verify(attendanceId),
-//       {
-//         method: "PUT",
-//         headers: getAuthHeaders(),
-//       }
-//     );
-//     if (!response.ok) throw new Error("Verification failed");
-//     return response.json();
-//   },
-
-//   // Predictions
-//   predictDurian: async (formData: FormData) => {
-//     const response = await fetch(API_ENDPOINTS.prediction.predict, {
-//       method: "POST",
-//       headers: getAuthHeaders(),
-//       body: formData,
-//     });
-//     if (!response.ok) throw new Error("Prediction failed");
-//     return response.json();
-//   },
-
-//   getPredictionHistory: async () => {
-//     const response = await fetch(API_ENDPOINTS.prediction.history, {
-//       headers: getAuthHeaders(),
-//     });
-//     if (!response.ok) throw new Error("Failed to fetch prediction history");
-//     return response.json();
-//   },
-//   // Profiles
-//   getAllProfiles: async (role?: string) => {
-//     const url = new URL(API_ENDPOINTS.profile.all);
-//     if (role) {
-//       url.searchParams.append("role", role);
-//     }
-//     const response = await fetch(url.toString(), {
-//       headers: getAuthHeaders(),
-//     });
-//     if (!response.ok) throw new Error("Failed to fetch profiles");
-//     return response.json();
-//   },
-
-//   getEmployeeProfiles: async () => {
-//     const response = await fetch(API_ENDPOINTS.profile.employees, {
-//       headers: getAuthHeaders(),
-//     });
-//     if (!response.ok) throw new Error("Failed to fetch employee profiles");
-//     return response.json();
-//   },
-
-//   updateProfile: async (data: any) => {
-//     const response = await fetch(API_ENDPOINTS.profile.update, {
-//       method: "PUT",
-//       headers: getAuthHeaders(),
-//       body: JSON.stringify(data),
-//     });
-//     if (!response.ok) throw new Error("Failed to update profile");
-//     return response.json();
-//   },
-// };

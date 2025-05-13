@@ -37,17 +37,28 @@ export const mapSchedule = (item: any): Schedule => ({
   employeeName: item.nama_karyawan || undefined,
   status: item.status || undefined,
 });
-
 export type Attendance = {
   id: string;
-  employeeId: string;
-  employeeName: string;
-  date: string;
-  checkInTime: string;
-  verified: boolean;
-  notes?: string;
+  tanggal: string;
+  status: string;
+  verifikasi: boolean;
+  user_id: string;
+  jadwal_id: string;
+  user: {
+    id: string;
+    nama: string;
+    email: string;
+    role: string;
+  };
+  jadwal: {
+    id: string;
+    deskripsi: string;
+    title: string;
+    tanggal_mulai: string;
+    tanggal_selesai: string;
+    id_user: string;
+  };
 };
-
 export type DurianPrediction = {
   id: string;
   imageUrl: string;
@@ -80,17 +91,17 @@ export const API_ENDPOINTS = {
   schedule: {
     list: "http://localhost:3000/api/v1/penjadwalan",
     create: "http://localhost:3000/api/v1/penjadwalan",
+    listByEmploye:"http://localhost:3000/api/v1/penjadwalan/karyawan",
     update: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
     delete: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
     getById: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
   },
   attendance: {
-    list: "http://localhost:3000/api/v1/attendance",
-    checkIn: "http://localhost:3000/api/v1/attendance/check-in",
+    list: "http://localhost:3000/api/v1/absensi/all",
+    checkIn: "http://localhost:3000/api/v1/absensi/checkin",
     verify: (id: string) =>
-      `http://localhost:3000/api/v1/attendance/${id}/verify`,
-    employee: (id: string) =>
-      `http://localhost:3000/api/v1/attendance/employee/${id}`,
+      `http://localhost:3000/api/v1/absensi/verifikasi/${id}`,
+    employeeHistory: "http://localhost:3000/api/v1/absensi/histori-karyawan",
   },
   prediction: {
     predict: "http://localhost:3000/api/v1/prediction",

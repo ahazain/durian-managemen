@@ -28,7 +28,7 @@ export const EmployeeSchedule: React.FC = () => {
   const fetchSchedules = async () => {
     try {
       setLoading(true);
-      const response = await api.getSchedules();
+      const response = await api.getEmployeeSchedules();
       setSchedules(response.data || []);
       setError(null);
     } catch (err) {
