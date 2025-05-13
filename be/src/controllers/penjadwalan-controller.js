@@ -21,15 +21,15 @@ class PenjadwalanController {
       return response.error(res, error);
     }
   }
-  static async getById(req, res) {
-    try {
-      const { id } = req.params;
-      const data = await penjadwalanService.getById(id);
-      return response.success(res, data, "berhasil menampilkan data by id");
-    } catch (error) {
-      return response.error(res, error);
-    }
-  }
+  // static async getById(req, res) {
+  //   try {
+  //     const userId = req.params.id;
+  //     const data = await penjadwalanService.getById(userId);
+  //     return response.success(res, data, "berhasil menampilkan data by id");
+  //   } catch (error) {
+  //     return response.error(res, error);
+  //   }
+  // }
 
   static async getJadwalKerja(req, res) {
     try {
@@ -78,8 +78,8 @@ class PenjadwalanController {
   }
   static async getByKaryawan(req, res) {
     try {
-      const { id } = req.user;
-      const data = await penjadwalanService.getByKaryawan(id);
+      const userId = req.user.id;
+      const data = await penjadwalanService.getByKaryawan(userId);
       return response.success(res, data, "berhasil menampilka jadwal karyawan");
     } catch (error) {
       return response.error(res, error);

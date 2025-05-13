@@ -8,14 +8,40 @@ const {
 
 route.post(
   "/",
-  // verifyJWT,
-  // verifyRole("ADMIN"),
+  verifyJWT,
+  verifyRole("ADMIN"),
   penjadwalanController.addJadwalKerja
 ); //admin
-route.get("/", penjadwalanController.getJadwalKerja); //admin
-route.get("/karyawan", verifyJWT, penjadwalanController.getByKaryawan); //karyawan
-route.put("/:id", penjadwalanController.updateJadwalKerja); //admin
-route.delete("/:id", penjadwalanController.deleteJadwalKerja); //admin
-route.get("/:id", penjadwalanController.getById); //opsional-sepertinya tidak perlu
+route.get(
+  "/",
+  verifyJWT,
+  verifyRole("ADMIN"),
+  penjadwalanController.getJadwalKerja
+); //admin
+route.get(
+  "/karyawan",
+  verifyJWT,
+  verifyRole("KARYAWAN"),
+  verifyJWT,
+  penjadwalanController.getByKaryawan
+); //karyawan
+route.put(
+  "/:id",
+  verifyJWT,
+  verifyRole("ADMIN"),
+  penjadwalanController.updateJadwalKerja
+); //admin
+route.delete(
+  "/:id",
+  verifyJWT,
+  verifyRole("ADMIN"),
+  penjadwalanController.deleteJadwalKerja
+); //admin
+// route.get(
+//   "/:id",
+//   verifyJWT,
+//   verifyRole("ADMIN"),
+//   penjadwalanController.getById
+// );
 
 module.exports = route;

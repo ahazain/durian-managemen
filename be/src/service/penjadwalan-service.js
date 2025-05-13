@@ -22,7 +22,9 @@ class PenjadwalanService {
       !deskripsi ||
       !tanggal_mulai ||
       !tanggal_selesai ||
-      !user?.id
+      !Array.isArray(user) ||
+      user.length === 0 ||
+      user.some((u) => !u.id)
     ) {
       throw new BadRequestError("semua field harus di isi");
     }
@@ -32,16 +34,35 @@ class PenjadwalanService {
       );
     }
 
-    const createdJadwal = await prisma.jadwal.create({
+    const userIds = [...new Set(user.map((u) => u.id))];
+    const existingUsers = await prisma.user.findMany({
+      where: {
+        id: { in: userIds },
+      },
+    });
+
+    console.log(
+      "User ditemukan:",
+      existingUsers.map((u) => u.id)
+    );
+
+    if (existingUsers.length !== userIds.length) {
+      throw new NotFoundError("Beberapa user tidak ditemukan di database");
+    }
+    const addJadwal = await prisma.jadwal.create({
       data: {
         title,
         deskripsi,
         tanggal_mulai,
         tanggal_selesai,
-        user: {
-          connect: { id: user.id },
-        },
       },
+    });
+
+    const createdJadwal = await prisma.jadwalUser.createMany({
+      data: userIds.map((userId) => ({
+        userId,
+        jadwalId: addJadwal.id,
+      })),
     });
 
     return {
@@ -56,21 +77,9 @@ class PenjadwalanService {
     return data;
   }
 
-  static async getById(id) {
-    if (!id) {
-      throw new BadRequestError("id harus di isi");
-    }
-    const dataYgAda = await prisma.jadwal.findUnique({ where: { id } });
-    if (!dataYgAda) {
-      throw new NotFoundError("id jadwal kerja tidak ada");
-    }
-
-    return {
-      ...dataYgAda,
-      tanggal_mulai: formatTanggalIndonesia(dataYgAda.tanggal_mulai),
-      tanggal_selesai: formatTanggalIndonesia(dataYgAda.tanggal_selesai),
-    };
-  }
+  // static async getById(userId) {
+   
+  // }
 
   static async updateJadwalKerja({
     title,
@@ -133,20 +142,21 @@ class PenjadwalanService {
     return deleteData;
   }
 
-  static async getByKaryawan(id) {
-    if (!id) {
-      throw new BadRequestError("id diperlukan");
-    }
-    const userYgAda = await prisma.user.findUnique({ where: { id } });
-    if (!userYgAda) {
-      throw new NotFoundError("data id tidak ditemukan");
-    }
-
-    const datajadwal = await prisma.jadwal.findMany({
-      where: { id_user: id },
+  static async getByKaryawan(userId) {
+    const datajadwal = await prisma.jadwalUser.findMany({
+      where: {
+        userId: userId, 
+      },
+      include: {
+        jadwal: true,
+      },
     });
 
-    return datajadwal;
+    if (datajadwal.length === 0) {
+      throw new NotFoundError("Jadwal tidak ditemukan untuk user ini");
+    }
+
+    return datajadwal.map((item) => item.jadwal); // hanya ambil isi jadwalnya
   }
 }
 module.exports = PenjadwalanService;

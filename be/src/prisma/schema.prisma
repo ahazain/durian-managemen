@@ -23,10 +23,18 @@ model User{
 
   prediksi Prediksi[]
   absensi Absensi[]
-  jadwal Jadwal[]
+  jadwal JadwalUser[]
 
 }
 
+model JadwalUser{
+  userId String
+  jadwalId String
+  user     User    @relation(fields: [userId], references: [id])
+  jadwal   Jadwal  @relation(fields: [jadwalId], references: [id])
+
+  @@id([userId, jadwalId])
+}
 
 model Jadwal{
   id String @id @default(uuid())
@@ -34,8 +42,7 @@ model Jadwal{
   title String
   tanggal_mulai DateTime
   tanggal_selesai DateTime
-  id_user String
-  user User @relation(fields: [id_user], references: [id])
+  users JadwalUser[]
   absensi Absensi[]
 
 }
