@@ -27,11 +27,7 @@ class ProfilController {
     try {
       const { role } = req.query;
       const data = await profilService.getAll(role);
-      return response.success(
-        res,
-        data,
-        "berhasil menampilkan semua list"
-      );
+      return response.success(res, data, "berhasil menampilkan semua list");
     } catch (error) {
       return response.error(res, error);
     }
@@ -53,6 +49,19 @@ class ProfilController {
       const { id } = req.user;
       const data = await profilService.getById(id);
       return response.success(res, data, "berhasil menampilkan detail profil");
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
+  static async updatePassword(req, res) {
+    const user = req.user;
+    const { oldPassword, newPassword } = req.body;
+    try {
+      const result = await profilService.updatePassword( {user,
+        oldPassword,
+        newPassword,
+      });
+      return response.success(res, result, "Password berhasil diubah");
     } catch (error) {
       return response.error(res, error);
     }

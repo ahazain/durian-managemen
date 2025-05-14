@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const { Role } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
 const {
   NotFoundError,
   UnauthorizedError,
@@ -90,6 +91,43 @@ class profilService {
     }
     const data = await prisma.user.findUnique({ where: { id } });
     return data;
+  }
+  static async updatePassword({ user, oldPassword, newPassword }) {
+    if (!user || !user.email) {
+      throw new UnauthorizedError(
+        "Tidak terautentikasi. Silakan login kembali."
+      );
+    }
+
+    if (!oldPassword || !newPassword) {
+      throw new BadRequestError("Password lama dan password baru harus diisi.");
+    }
+
+    if (newPassword.length < 8) {
+      throw new BadRequestError("Password baru harus minimal 8 karakter.");
+    }
+
+    const foundUser = await prisma.user.findUnique({
+      where: { email: user.email },
+      select: { password: true },
+    });
+
+    const isPasswordValid = await bcrypt.compare(
+      oldPassword,
+      foundUser.password
+    );
+    if (!isPasswordValid) {
+      throw new BadRequestError("Password lama tidak valid.");
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await prisma.user.update({
+      where: { email: user.email },
+      data: { password: hashedPassword },
+    });
+
+    return null;
   }
 }
 
