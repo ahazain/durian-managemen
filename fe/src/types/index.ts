@@ -15,17 +15,18 @@ export type Profile = {
   createdAt: string;
   updatedAt: string;
 };
-
-export type Schedule = {
+export interface Schedule {
   id: string;
   title: string;
   description: string;
   start: string;
   end: string;
-  employeeId: string;
-  employeeName?: string; // optional kalau tidak selalu tersedia
-  status?: string; // tambahkan jika memang ada
-};
+  employeeId?: string;
+  employeeIds?: string[];
+  employeeName?: string;
+  employeeNames?: string[];
+  status?: string;
+}
 
 export const mapSchedule = (item: any): Schedule => ({
   id: item.id,
@@ -33,8 +34,8 @@ export const mapSchedule = (item: any): Schedule => ({
   description: item.deskripsi,
   start: item.tanggal_mulai,
   end: item.tanggal_selesai,
-  employeeId: item.id_user,
-  employeeName: item.nama_karyawan || undefined,
+  employeeIds: item.user?.map((u: any) => u.id) || [],
+  employeeNames: item.user?.map((u: any) => u.nama) || [],
   status: item.status || undefined,
 });
 export type Attendance = {
@@ -91,7 +92,7 @@ export const API_ENDPOINTS = {
   schedule: {
     list: "http://localhost:3000/api/v1/penjadwalan",
     create: "http://localhost:3000/api/v1/penjadwalan",
-    listByEmploye:"http://localhost:3000/api/v1/penjadwalan/karyawan",
+    listByEmploye: "http://localhost:3000/api/v1/penjadwalan/karyawan",
     update: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
     delete: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
     getById: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,

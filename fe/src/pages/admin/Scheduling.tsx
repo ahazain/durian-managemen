@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { Card } from "../../components/common/Card";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
+import { MultiSelect } from "../../components/common/MultiSelect";
 import { Schedule } from "../../types";
 import { api } from "../../utils/api";
 
@@ -54,19 +55,19 @@ export const AdminScheduling: React.FC = () => {
     (schedule) =>
       schedule.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       schedule.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      schedule.employeeName?.toLowerCase().includes(searchTerm.toLowerCase())
+      schedule.employeeNames?.some((name) =>
+        name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
   );
 
-  // Fungsi untuk memformat tanggal menjadi hanya tanggal
   const formatScheduleDate = (dateString: string) => {
     const date = new Date(dateString);
-    return format(date, "dd MMM yyyy"); // Format tanggal
+    return format(date, "dd MMM yyyy");
   };
 
-  // Fungsi untuk memformat waktu
   const formatScheduleTime = (dateString: string) => {
     const date = new Date(dateString);
-    return format(date, "HH:mm"); // Format jam
+    return format(date, "HH:mm");
   };
 
   const handleCreateSchedule = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -75,13 +76,15 @@ export const AdminScheduling: React.FC = () => {
 
     try {
       const formData = new FormData(e.currentTarget);
+      const employeeIds =
+        formData.get("employeeIds")?.toString().split(",") || [];
 
       const scheduleData = {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
         start: formData.get("start") as string,
         end: formData.get("end") as string,
-        employeeId: formData.get("employeeId") as string,
+        employeeIds,
       };
 
       await api.createSchedule(scheduleData);
@@ -128,26 +131,31 @@ export const AdminScheduling: React.FC = () => {
   };
 
   const EditScheduleForm = ({ schedule }: { schedule: Schedule }) => {
-    // Format date string to datetime-local input format
+    const [selectedEmployees, setSelectedEmployees] = useState<string[]>(
+      schedule.employeeIds || []
+    );
+
     const formatDateForInput = (dateString: string) => {
       const date = new Date(dateString);
       return format(date, "yyyy-MM-dd'T'HH:mm");
     };
 
     return (
-      <Card className="mb-6 border-2 border-durian-500 animate-fadeIn">
+      <Card className="mb-6 border-2 border-blue-200 animate-fadeIn">
         <h2 className="text-lg font-semibold mb-4">Edit Schedule</h2>
         <form
           onSubmit={(e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
+            const employeeIds =
+              formData.get("employeeIds")?.toString().split(",") || [];
 
             handleUpdateSchedule(schedule.id, {
               title: formData.get("title") as string,
               description: formData.get("description") as string,
               start: formData.get("start") as string,
               end: formData.get("end") as string,
-              employeeId: formData.get("employeeId") as string,
+              employeeIds,
             });
           }}
         >
@@ -185,20 +193,19 @@ export const AdminScheduling: React.FC = () => {
               required
             />
 
-            <Input
-              label="Assign Employee"
-              name="employeeId"
-              as="select"
-              defaultValue={schedule.employeeId}
-              required
-            >
-              <option value="">Select Employee</option>
-              {employees.map((employee) => (
-                <option key={employee.id} value={employee.id}>
-                  {employee.nama}
-                </option>
-              ))}
-            </Input>
+            <div className="md:col-span-2">
+              <MultiSelect
+                label="Pilih Pegawai"
+                name="employeeIds"
+                options={employees.map((emp) => ({
+                  id: emp.id,
+                  label: emp.nama,
+                }))}
+                value={selectedEmployees}
+                onChange={setSelectedEmployees}
+                required
+              />
+            </div>
           </div>
 
           <div className="flex justify-end space-x-2 mt-6">
@@ -218,70 +225,79 @@ export const AdminScheduling: React.FC = () => {
     );
   };
 
-  const AddScheduleForm = () => (
-    <Card className="mb-6">
-      <h2 className="text-lg font-semibold mb-4">Add New Schedule</h2>
-      <form onSubmit={handleCreateSchedule}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input
-            label="Title"
-            name="title"
-            placeholder="Schedule title"
-            required
-          />
+  const AddScheduleForm = () => {
+    const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
 
-          <div className="md:col-span-2">
+    return (
+      <Card className="mb-6">
+        <h2 className="text-lg font-semibold mb-4">Add New Schedule</h2>
+        <form onSubmit={handleCreateSchedule}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              label="Description"
-              name="description"
-              placeholder="Schedule description"
+              label="Title"
+              name="title"
+              placeholder="Schedule title"
+              required
             />
+
+            <div className="md:col-span-2">
+              <Input
+                label="Description"
+                name="description"
+                placeholder="Schedule description"
+              />
+            </div>
+
+            <Input
+              label="Start Date & Time"
+              name="start"
+              type="datetime-local"
+              required
+            />
+
+            <Input
+              label="End Date & Time"
+              name="end"
+              type="datetime-local"
+              required
+            />
+
+            <div className="md:col-span-2">
+              <MultiSelect
+                label="Pilih Pegawai"
+                name="employeeIds"
+                options={employees.map((emp) => ({
+                  id: emp.id,
+                  label: emp.nama,
+                }))}
+                value={selectedEmployees}
+                onChange={setSelectedEmployees}
+                required
+              />
+            </div>
           </div>
 
-          <Input
-            label="Start Date & Time"
-            name="start"
-            type="datetime-local"
-            required
-          />
-
-          <Input
-            label="End Date & Time"
-            name="end"
-            type="datetime-local"
-            required
-          />
-
-          <Input label="Assign Employee" name="employeeId" as="select" required>
-            <option value="">Select Employee</option>
-            {employees.map((employee) => (
-              <option key={employee.id} value={employee.id}>
-                {employee.nama}
-              </option>
-            ))}
-          </Input>
-        </div>
-
-        <div className="flex justify-end space-x-2 mt-6">
-          <Button
-            variant="outline"
-            onClick={() => setShowAddForm(false)}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </Button>
-          <Button variant="primary" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : "Create Schedule"}
-          </Button>
-        </div>
-      </form>
-    </Card>
-  );
+          <div className="flex justify-end space-x-2 mt-6">
+            <Button
+              variant="outline"
+              onClick={() => setShowAddForm(false)}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Creating..." : "Create Schedule"}
+            </Button>
+          </div>
+        </form>
+      </Card>
+    );
+  };
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-durian-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -336,8 +352,8 @@ export const AdminScheduling: React.FC = () => {
               <div className="flex flex-col md:flex-row justify-between">
                 <div className="flex-1">
                   <div className="flex items-start">
-                    <div className="mr-4 p-2 bg-durian-100 rounded-md">
-                      <Calendar className="h-5 w-5 text-durian-600" />
+                    <div className="mr-4 p-2 bg-blue-50 rounded-md">
+                      <Calendar className="h-5 w-5 text-blue-600" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-800">
@@ -354,11 +370,14 @@ export const AdminScheduling: React.FC = () => {
                           {formatScheduleTime(schedule.start)} -{" "}
                           {formatScheduleTime(schedule.end)}
                         </span>
-                        {schedule.employeeName && (
-                          <span className="inline-flex items-center rounded-full bg-durian-yellow-50 px-2 py-1 text-xs font-medium text-durian-yellow-700">
-                            {schedule.employeeName}
+                        {schedule.employeeNames?.map((name, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center rounded-full bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700"
+                          >
+                            {name}
                           </span>
-                        )}
+                        ))}
                         {schedule.status && (
                           <span
                             className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${

@@ -88,16 +88,15 @@ export const api = {
     description: string;
     start: string;
     end: string;
-    employeeId: string;
+    employeeIds: string[];
   }) => {
+    // Transform the employeeIds array into the format expected by the API
     const transformedData = {
       title: data.title,
       deskripsi: data.description,
       tanggal_mulai: new Date(data.start).toISOString(),
       tanggal_selesai: new Date(data.end).toISOString(),
-      user: {
-        id: data.employeeId,
-      },
+      user: data.employeeIds.map((id) => ({ id })),
     };
 
     const response = await fetch(API_ENDPOINTS.schedule.create, {
@@ -117,10 +116,8 @@ export const api = {
       transformedData.tanggal_mulai = new Date(data.start).toISOString();
     if (data.end)
       transformedData.tanggal_selesai = new Date(data.end).toISOString();
-    if (data.employeeId) {
-      transformedData.user = {
-        id: data.employeeId,
-      };
+    if (data.employeeIds && data.employeeIds.length > 0) {
+      transformedData.user = data.employeeIds.map((id) => ({ id }));
     }
 
     const response = await fetch(API_ENDPOINTS.schedule.update(id), {
@@ -130,7 +127,6 @@ export const api = {
     });
     return handleResponse(response);
   },
-
   deleteSchedule: async (id: string) => {
     const response = await fetch(API_ENDPOINTS.schedule.delete(id), {
       method: "DELETE",
