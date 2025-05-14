@@ -88,6 +88,7 @@ export const API_ENDPOINTS = {
   profile: {
     all: "http://localhost:3000/api/v1/profil/all",
     update: "http://localhost:3000/api/v1/profil",
+    ubahPassword: "http://localhost:3000/api/v1/profil/update-password",
   },
   schedule: {
     list: "http://localhost:3000/api/v1/penjadwalan",

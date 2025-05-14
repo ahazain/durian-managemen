@@ -4,11 +4,14 @@ import { Card } from "../../components/common/Card";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { useAuth } from "../../contexts/AuthContext";
+import { api } from "../../utils/api";
 
 export const EmployeeAccount: React.FC = () => {
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Personal Info Form State
   const [formData, setFormData] = useState({
@@ -29,26 +32,20 @@ export const EmployeeAccount: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-
-    // Clear errors when field is edited
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
-    }
+    clearError(name);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPasswordData((prev) => ({ ...prev, [name]: value }));
+    clearError(name);
+  };
 
-    // Clear errors when field is edited
-    if (errors[name]) {
+  const clearError = (fieldName: string) => {
+    if (errors[fieldName]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
-        delete newErrors[name];
+        delete newErrors[fieldName];
         return newErrors;
       });
     }
@@ -111,7 +108,7 @@ export const EmployeeAccount: React.FC = () => {
     setIsEditing(false);
   };
 
-  const handleSubmitPasswordChange = (e: React.FormEvent) => {
+  const handleSubmitPasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const formErrors = validatePasswordChange();
@@ -120,14 +117,35 @@ export const EmployeeAccount: React.FC = () => {
       return;
     }
 
-    // In a real app, this would submit to an API
-    console.log("Password change request:", passwordData);
-    setShowPasswordForm(false);
-    setPasswordData({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
+    setIsLoading(true);
+    try {
+      const response = await api.ubahPassword({
+        oldPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
+
+      if (response.success) {
+        setSuccessMessage("Password has been successfully updated");
+        setShowPasswordForm(false);
+        setPasswordData({
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      } else {
+        setErrors({
+          currentPassword:
+            "Failed to update password. Please check your current password.",
+        });
+      }
+    } catch (error) {
+      setErrors({
+        currentPassword:
+          "An error occurred while updating password. Please try again.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!user) return null;
@@ -140,6 +158,12 @@ export const EmployeeAccount: React.FC = () => {
           View and update your account information.
         </p>
       </div>
+
+      {successMessage && (
+        <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-lg">
+          {successMessage}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Card */}
@@ -298,12 +322,15 @@ export const EmployeeAccount: React.FC = () => {
                   <Button
                     variant="outline"
                     className="mr-2"
-                    onClick={() => setShowPasswordForm(false)}
+                    onClick={() => {
+                      setShowPasswordForm(false);
+                      setErrors({});
+                    }}
                   >
                     Cancel
                   </Button>
-                  <Button variant="primary" type="submit">
-                    Update Password
+                  <Button variant="primary" type="submit" disabled={isLoading}>
+                    {isLoading ? "Updating..." : "Update Password"}
                   </Button>
                 </div>
               </form>

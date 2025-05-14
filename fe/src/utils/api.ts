@@ -222,8 +222,8 @@ export const api = {
     return handleResponse(response);
   },
 
-  updateProfile: async (data: any) => {
-    const response = await fetch(API_ENDPOINTS.profile.update, {
+  ubahPassword: async (data: any) => {
+    const response = await fetch(API_ENDPOINTS.profile.ubahPassword, {
       method: "PUT",
       headers: createAuthHeaders(),
       body: JSON.stringify(data),
