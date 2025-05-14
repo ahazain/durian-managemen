@@ -13,11 +13,26 @@ class AbsensiService {
     const nowWib = nowUtc.tz("Asia/Jakarta");
     console.log("NOW WIB:", nowWib.format());
 
+    // Dapatkan rentang hari ini dalam WIB, lalu convert ke UTC
+    const startOfDayWIB = dayjs()
+      .tz("Asia/Jakarta")
+      .startOf("day")
+      .utc()
+      .toDate();
+    const endOfDayWIB = dayjs().tz("Asia/Jakarta").endOf("day").utc().toDate();
+
+    console.log("StartOfDay UTC:", startOfDayWIB);
+    console.log("EndOfDay UTC:", endOfDayWIB);
+
     const jadwalHariIni = await prisma.jadwal.findMany({
       where: {
-        id_user: id,
-        tanggal_mulai: { lte: nowUtc.toDate() },
-        tanggal_selesai: { gte: nowUtc.toDate() },
+        users: {
+          some: {
+            userId: id,
+          },
+        },
+        tanggal_mulai: { lte: endOfDayWIB },
+        tanggal_selesai: { gte: startOfDayWIB },
       },
     });
 
@@ -26,13 +41,6 @@ class AbsensiService {
     if (jadwalHariIni.length === 0) {
       throw new NotFoundError("Tidak ada jadwal kerja untuk hari ini");
     }
-
-    const startOfDayWIB = dayjs()
-      .tz("Asia/Jakarta")
-      .startOf("day")
-      .utc()
-      .toDate();
-    const endOfDayWIB = dayjs().tz("Asia/Jakarta").endOf("day").utc().toDate();
 
     for (let jadwal of jadwalHariIni) {
       const sudahAbsen = await prisma.absensi.findFirst({
@@ -84,6 +92,7 @@ class AbsensiService {
     // Jika tidak ada absensi yang cocok, lempar error
     throw new NotFoundError("Tidak ada jadwal yang cocok untuk waktu saat ini");
   }
+
   static async getAllAbsensi() {
     return prisma.absensi.findMany({
       include: {
@@ -127,16 +136,36 @@ class AbsensiService {
       whereClause.verifikasi = false;
     }
 
-    return prisma.absensi.findMany({
-      where: whereClause,
-      include: {
-        user: true,
-        jadwal: true,
+    const [data, totalVerified, totalUnverified] = await Promise.all([
+      prisma.absensi.findMany({
+        where: whereClause,
+        include: {
+          user: true,
+          jadwal: true,
+        },
+        orderBy: {
+          tanggal: "desc",
+        },
+      }),
+      prisma.absensi.count({
+        where: {
+          verifikasi: true,
+        },
+      }),
+      prisma.absensi.count({
+        where: {
+          verifikasi: false,
+        },
+      }),
+    ]);
+
+    return {
+      data,
+      count: {
+        verifikasi: totalVerified,
+        pending: totalUnverified,
       },
-      orderBy: {
-        tanggal: "desc",
-      },
-    });
+    };
   }
 }
 

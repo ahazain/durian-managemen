@@ -1,6 +1,7 @@
 const response = require("../utils/response");
 const absensiService = require("../service/absensi-service");
-
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 class AbsensiController {
   static async checkin(req, res) {
     try {
@@ -51,12 +52,46 @@ class AbsensiController {
 
   static async filterAbsensi(req, res) {
     try {
-        const {status} = req.query;
-        const data = await absensiService.filterAbsensi(status);
-        return response.success(res, data, "Data absensi berhasil difilter");
+      const { status } = req.query;
+      const data = await absensiService.filterAbsensi(status);
+      return response.success(res, data, "Data absensi berhasil difilter");
     } catch (error) {
       return response.error(res, error);
-        
+    }
+  }
+
+  static async getRecentCheckIns(req, res) {
+    try {
+      const data = await prisma.absensi.findMany({
+        where: {
+          status: { in: ["HADIR", "TERLAMBAT"] },
+          verifikasi: true,
+        },
+        orderBy: {
+          tanggal: "desc",
+        },
+        take: 5,
+        include: {
+          user: {
+            select: { nama: true },
+          },
+        },
+      });
+
+      const result = data.map((absen) => ({
+        nama: absen.user.nama,
+        tanggal: absen.tanggal,
+        status: absen.status,
+      }));
+
+      return response.success(
+        res,
+        result,
+        "Berhasil ambil data check-in terbaru"
+      );
+    } catch (error) {
+      console.error(error);
+      return response.error(res, error, "Gagal mengambil data check-in", 500);
     }
   }
 }

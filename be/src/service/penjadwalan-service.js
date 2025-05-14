@@ -78,7 +78,7 @@ class PenjadwalanService {
   }
 
   // static async getById(userId) {
-   
+
   // }
 
   static async updateJadwalKerja({
@@ -131,21 +131,33 @@ class PenjadwalanService {
   }
 
   static async deleteJadwalKerja(id) {
-    const dataJadwalKerja = await prisma.jadwal.findUnique({ where: { id } });
+    // Cek apakah jadwalnya ada
+    const dataJadwalKerja = await prisma.jadwal.findUnique({
+      where: { id },
+    });
+
     if (!dataJadwalKerja) {
-      throw new NotFoundError("data jadwal kerja tidak ada di database");
+      throw new NotFoundError("Data jadwal kerja tidak ada di database");
     }
+
+    // Hapus relasi dari tabel JadwalUser (many-to-many)
+    await prisma.jadwalUser.deleteMany({
+      where: { jadwalId: id },
+    });
+
+    // Hapus data utama dari tabel Jadwal
     const deleteData = await prisma.jadwal.delete({
       where: { id },
       select: { id: true, title: true },
     });
+
     return deleteData;
   }
 
   static async getByKaryawan(userId) {
     const datajadwal = await prisma.jadwalUser.findMany({
       where: {
-        userId: userId, 
+        userId: userId,
       },
       include: {
         jadwal: true,
