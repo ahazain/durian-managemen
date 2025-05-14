@@ -134,14 +134,6 @@ export const api = {
     });
     return handleResponse(response);
   },
-
-  // Attendance
-  getAttendances: async () => {
-    const response = await fetch(API_ENDPOINTS.attendance.list, {
-      headers: createAuthHeaders(),
-    });
-    return handleResponse(response);
-  },
   checkIn: async () => {
     const response = await fetch(API_ENDPOINTS.attendance.checkIn, {
       method: "POST",
@@ -152,6 +144,20 @@ export const api = {
       throw new Error(errorData.message || "Check-in failed");
     }
     return response.json();
+  },
+
+  // Attendance
+  getAttendances: async (filterStatus?: "verified" | "unverified") => {
+    let endpoint = API_ENDPOINTS.attendance.filter;
+
+    if (filterStatus) {
+      endpoint = `${endpoint}?status=${filterStatus}`;
+    }
+
+    const response = await fetch(endpoint, {
+      headers: createAuthHeaders(),
+    });
+    return handleResponse(response);
   },
 
   getAttendanceHistory: async () => {

@@ -13,17 +13,40 @@ export const AdminAttendance: React.FC = () => {
     "all"
   );
   const [attendances, setAttendances] = useState<Attendance[]>([]);
+  const [stats, setStats] = useState({ verified: 0, pending: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAttendances();
-  }, []);
+  }, [filter]); // Re-fetch when filter changes
 
   const fetchAttendances = async () => {
+    setLoading(true);
     try {
-      const response = await api.getAttendances();
-      setAttendances(response.data);
+      let filterParam: "verified" | "unverified" | undefined;
+
+      if (filter === "verified") filterParam = "verified";
+      if (filter === "unverified") filterParam = "unverified";
+
+      const response = await api.getAttendances(filterParam);
+
+      // Handle the new response structure
+      if (response.data && response.data.data) {
+        setAttendances(response.data.data);
+
+        // Set statistics if available
+        if (response.data.count) {
+          setStats({
+            verified: response.data.count.verifikasi || 0,
+            pending: response.data.count.pending || 0,
+          });
+        }
+      } else {
+        // Fallback if response structure is different
+        setAttendances(response.data || []);
+      }
+
       setError(null);
     } catch (err) {
       setError("Failed to fetch attendance data");
@@ -33,16 +56,13 @@ export const AdminAttendance: React.FC = () => {
     }
   };
 
-  // Filter attendance records
+  // Filter attendance records by search term only
+  // (Status filtering is now handled by the API)
   const filteredAttendance = attendances.filter((record) => {
-    const matchesSearch =
+    return (
       record.user.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      record.tanggal.includes(searchTerm);
-
-    if (filter === "all") return matchesSearch;
-    if (filter === "verified") return matchesSearch && record.verifikasi;
-    if (filter === "unverified") return matchesSearch && !record.verifikasi;
-    return matchesSearch;
+      record.tanggal.includes(searchTerm)
+    );
   });
 
   const formatDate = (dateString: string) => {
@@ -81,19 +101,19 @@ export const AdminAttendance: React.FC = () => {
             variant={filter === "all" ? "primary" : "outline"}
             onClick={() => setFilter("all")}
           >
-            All
+            All ({stats.verified + stats.pending})
           </Button>
           <Button
             variant={filter === "verified" ? "primary" : "outline"}
             onClick={() => setFilter("verified")}
           >
-            Verified
+            Verified ({stats.verified})
           </Button>
           <Button
             variant={filter === "unverified" ? "primary" : "outline"}
             onClick={() => setFilter("unverified")}
           >
-            Unverified
+            Unverified ({stats.pending})
           </Button>
         </div>
 
@@ -132,7 +152,10 @@ export const AdminAttendance: React.FC = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredAttendance.length > 0 ? (
                 filteredAttendance.map((attendance) => (
-                  <tr key={attendance.id} className="hover:bg-gray-50">
+                  <tr
+                    key={attendance.id}
+                    className="hover:bg-gray-50 transition-colors duration-150"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="font-medium text-gray-900">
                         {attendance.user.nama}
@@ -166,6 +189,7 @@ export const AdminAttendance: React.FC = () => {
                           size="sm"
                           icon={<CheckCircle size={16} />}
                           onClick={() => handleVerify(attendance.id)}
+                          className="transition-all duration-150 hover:scale-105"
                         >
                           Verify
                         </Button>

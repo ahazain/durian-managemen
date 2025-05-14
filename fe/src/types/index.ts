@@ -97,8 +97,9 @@ export const API_ENDPOINTS = {
     delete: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
     getById: (id: string) => `http://localhost:3000/api/v1/penjadwalan/${id}`,
   },
+  // list: "http://localhost:3000/api/v1/absensi/all",
   attendance: {
-    list: "http://localhost:3000/api/v1/absensi/all",
+    filter : "http://localhost:3000/api/v1/absensi/filter",
     checkIn: "http://localhost:3000/api/v1/absensi/checkin",
     verify: (id: string) =>
       `http://localhost:3000/api/v1/absensi/verifikasi/${id}`,
