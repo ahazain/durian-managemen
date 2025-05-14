@@ -167,6 +167,17 @@ export const api = {
     if (!response.ok) throw new Error("Failed to fetch attendance history");
     return response.json();
   },
+  getRecentCheckIn: async () => {
+    const response = await fetch(API_ENDPOINTS.attendance.recentCheckIn, {
+      headers: createAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch recent check-in");
+    }
+
+    return response.json();
+  },
 
   verifyAttendance: async (id: string) => {
     const response = await fetch(API_ENDPOINTS.attendance.verify(id), {

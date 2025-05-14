@@ -99,11 +99,13 @@ export const API_ENDPOINTS = {
   },
   // list: "http://localhost:3000/api/v1/absensi/all",
   attendance: {
-    filter : "http://localhost:3000/api/v1/absensi/filter",
+    filter: "http://localhost:3000/api/v1/absensi/filter",
     checkIn: "http://localhost:3000/api/v1/absensi/checkin",
     verify: (id: string) =>
       `http://localhost:3000/api/v1/absensi/verifikasi/${id}`,
     employeeHistory: "http://localhost:3000/api/v1/absensi/histori-karyawan",
+    recentCheckIn:
+      "http://localhost:3000/api/v1/absensi/dashboard/recent-checkin",
   },
   prediction: {
     predict: "http://localhost:3000/api/v1/prediction",
