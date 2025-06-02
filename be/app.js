@@ -6,11 +6,13 @@ const autentifikasiRoute = require("./src/routes/autentifikasi-route");
 const profilRoute = require("./src/routes/profil-route");
 const penjadwalanRoute = require("./src/routes/penjadwalan-route")
 const absensiRoute = require("./src/routes/absensi-route");
+const predictRoute = require("./src/routes/predict-route");
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api/v1/predict", predictRoute);
 app.use("/api/v1/autentifikasi", autentifikasiRoute);
 app.use("/api/v1", profilRoute),
 app.use("/api/v1/penjadwalan", penjadwalanRoute)

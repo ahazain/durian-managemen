@@ -1,11 +1,11 @@
 // predict.route.js
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const { predictDurian } = require("../controllers/predict.controller");
+const predictDurian = require("../controllers/predict-controller");
+const { verifyJWT } = require("../middlewares/verify-jwt-middleware");
 
-const upload = multer({ dest: "uploads/" });
+const upload = require("../middlewares/multer-middleware");
 
-router.post("/predict", upload.single("image"), predictDurian);
+router.post("/", verifyJWT, upload.single("image"), predictDurian.predict);
 
 module.exports = router;
