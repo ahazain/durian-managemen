@@ -1,7 +1,17 @@
-import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Users, Calendar, Home, LogOut, User, Citrus as Fruit, Menu, X, CheckCircle } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import {
+  Users,
+  Calendar,
+  Home,
+  LogOut,
+  User,
+  Citrus as Fruit,
+  Menu,
+  X,
+  CheckCircle,
+} from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface SidebarProps {
   isMobile: boolean;
@@ -22,22 +32,50 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
   if (!user) return null;
 
   const adminLinks = [
-    { to: '/admin', icon: <Home size={20} />, label: 'Dashboard' },
-    { to: '/admin/accounts', icon: <Users size={20} />, label: 'Account Management' },
-    { to: '/admin/scheduling', icon: <Calendar size={20} />, label: 'Scheduling' },
-    { to: '/admin/attendance', icon: <CheckCircle size={20} />, label: 'Attendance Verification' },
-    { to: '/admin/prediction', icon: <Fruit size={20} />, label: 'Durian Prediction' },
+    { to: "/admin", icon: <Home size={20} />, label: "Dashboard" },
+    {
+      to: "/admin/accounts",
+      icon: <Users size={20} />,
+      label: "Account Management",
+    },
+    {
+      to: "/admin/scheduling",
+      icon: <Calendar size={20} />,
+      label: "Scheduling",
+    },
+    {
+      to: "/admin/attendance",
+      icon: <CheckCircle size={20} />,
+      label: "Attendance Verification",
+    },
+    {
+      to: "/admin/prediction",
+      icon: <Fruit size={20} />,
+      label: "Durian Prediction",
+    },
   ];
 
   const employeeLinks = [
-    { to: '/employee', icon: <Home size={20} />, label: 'Dashboard' },
-    { to: '/employee/account', icon: <User size={20} />, label: 'My Account' },
-    { to: '/employee/schedule', icon: <Calendar size={20} />, label: 'My Schedule' },
-    { to: '/employee/attendance', icon: <CheckCircle size={20} />, label: 'Attendance' },
-    { to: '/employee/prediction', icon: <Fruit size={20} />, label: 'Durian Prediction' },
+    { to: "/employee", icon: <Home size={20} />, label: "Dashboard" },
+    { to: "/employee/account", icon: <User size={20} />, label: "Akun" },
+    {
+      to: "/employee/schedule",
+      icon: <Calendar size={20} />,
+      label: "Jadwal",
+    },
+    {
+      to: "/employee/attendance",
+      icon: <CheckCircle size={20} />,
+      label: "Absensi",
+    },
+    {
+      to: "/employee/prediction",
+      icon: <Fruit size={20} />,
+      label: "Prediksi Durian",
+    },
   ];
 
-  const links = user.role === 'admin' ? adminLinks : employeeLinks;
+  const links = user.role === "admin" ? adminLinks : employeeLinks;
 
   return (
     <>
@@ -54,8 +92,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } ${isMobile ? 'lg:translate-x-0' : ''}`}
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } ${isMobile ? "lg:translate-x-0" : ""}`}
       >
         <div className="h-full flex flex-col">
           {/* Logo/Header */}
@@ -63,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
             <div className="flex items-center space-x-2">
               <Fruit className="h-8 w-8 text-durian-600" />
               <h1 className="text-xl font-bold text-durian-800">
-                Durian Management
+                 Manajemen Durian
               </h1>
             </div>
           </div>
@@ -79,11 +117,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
                     className={({ isActive }) =>
                       `flex items-center px-4 py-3 text-gray-700 rounded-lg transition-colors ${
                         isActive
-                          ? 'bg-durian-100 text-durian-700 font-medium'
-                          : 'hover:bg-gray-100'
+                          ? "bg-durian-100 text-durian-700 font-medium"
+                          : "hover:bg-gray-100"
                       }`
                     }
-                    end={link.to === '/admin' || link.to === '/employee'}
+                    end={link.to === "/admin" || link.to === "/employee"}
                   >
                     <span className="mr-3 text-gray-500">{link.icon}</span>
                     <span>{link.label}</span>
@@ -98,13 +136,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
             <div className="flex items-center mb-4">
               <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                 <img
-                  src={user.avatar || 'https://images.pexels.com/photos/2726111/pexels-photo-2726111.jpeg?auto=compress&cs=tinysrgb&w=150'}
+                  src={
+                    user.avatar ||
+                    "https://static.vecteezy.com/system/resources/previews/021/548/095/original/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg"
+                  }
                   alt={user.fullName}
                   className="h-full w-full object-cover"
                 />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-700">{user.fullName}</p>
+                <p className="text-sm font-medium text-gray-700">
+                  {user.fullName}
+                </p>
                 <p className="text-xs text-gray-500 capitalize">{user.role}</p>
               </div>
             </div>

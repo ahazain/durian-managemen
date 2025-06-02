@@ -2,6 +2,7 @@ export type User = {
   id: string;
   nama: string;
   email: string;
+  phoneNumber: string;
   role: "admin" | "employee";
   token?: string;
   createdAt: string;
@@ -11,9 +12,8 @@ export type Profile = {
   id: string;
   nama: string;
   email: string;
+  phoneNumber: string;
   role: "ADMIN" | "EMPLOYEE";
-  createdAt: string;
-  updatedAt: string;
 };
 export interface Schedule {
   id: string;
@@ -60,15 +60,46 @@ export type Attendance = {
     id_user: string;
   };
 };
-export type DurianPrediction = {
+export interface DurianPrediction {
   id: string;
   imageUrl: string;
-  quality: "A" | "B" | "C" | "D";
+  quality: string;
   predictedPrice: number;
   submittedBy: string;
   submittedAt: string;
-};
+  confidence?: number;
+  label?: string;
+  bbox?: {
+    xmin: number;
+    ymin: number;
+    xmax: number;
+    ymax: number;
+  };
+}
 
+export interface ApiPredictionResult {
+  confidence: number;
+  grade: string;
+  harga: number;
+  label: string;
+  xmax: number;
+  xmin: number;
+  ymax: number;
+  ymin: number;
+}
+
+export interface ApiPredictionResponse {
+  success: boolean;
+  data: ApiPredictionResult[];
+}
+
+export interface PredictionSchema {
+  id: string;
+  imageUrl: string;
+  user_id: string;
+  kualitas: string | null;
+  harga: number | null;
+}
 // API endpoints configuration
 export const API_ENDPOINTS = {
   auth: {
@@ -87,7 +118,8 @@ export const API_ENDPOINTS = {
   },
   profile: {
     all: "http://localhost:3000/api/v1/profil/all",
-    update: "http://localhost:3000/api/v1/profil",
+    profilToken : "http://localhost:3000/api/v1/profil",
+    updateProfil: "http://localhost:3000/api/v1/profil/update-profil",
     ubahPassword: "http://localhost:3000/api/v1/profil/update-password",
   },
   schedule: {
@@ -109,9 +141,9 @@ export const API_ENDPOINTS = {
       "http://localhost:3000/api/v1/absensi/dashboard/recent-checkin",
   },
   prediction: {
-    predict: "http://localhost:3000/api/v1/prediction",
-    history: "http://localhost:3000/api/v1/prediction/history",
-    employee: (id: string) =>
-      `http://localhost:3000/api/v1/prediction/employee/${id}`,
+    predict: "http://localhost:3000/api/v1/predict",
+    // history: "http://localhost:3000/api/v1/prediction/history",
+    // employee: (id: string) =>
+    //   `http://localhost:3000/api/v1/prediction/employee/${id}`,
   },
 };

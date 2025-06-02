@@ -1,143 +1,231 @@
-import React, { useState } from 'react';
-import { ImageIcon, RefreshCw } from 'lucide-react';
-import { Card } from '../../components/common/Card';
-import { Button } from '../../components/common/Button';
-import { ImageUpload } from '../../components/common/ImageUpload';
-import { DurianPrediction } from '../../types';
-import { format } from 'date-fns';
+import React, { useState, useEffect } from "react";
+import { RefreshCw, AlertCircle, CheckCircle } from "lucide-react";
+import { Card } from "../../components/common/Card";
+import { Button } from "../../components/common/Button";
+import { ImageUpload } from "../../components/common/ImageUpload";
+import { DurianPredictionResult } from "./DurianPredictionResult";
+import { DurianPredictionHistory } from "./DurianPredictionHistory";
+import { api } from "../../utils/api";
+import { formatQuality } from "../../utils/formatters";
+import { DurianPrediction, ApiPredictionResponse } from "../../types";
 
 export const EmployeeDurianPrediction: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [prediction, setPrediction] = useState<DurianPrediction | null>(null);
   const [predictions, setPredictions] = useState<DurianPrediction[]>([]);
-  
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+
   // Mock prediction history
   const mockPredictionHistory: DurianPrediction[] = [
     {
-      id: '1',
-      imageUrl: 'https://images.pexels.com/photos/7474297/pexels-photo-7474297.jpeg?auto=compress&cs=tinysrgb&w=800',
-      quality: 'A',
+      id: "1",
+      imageUrl:
+        "https://images.pexels.com/photos/7474297/pexels-photo-7474297.jpeg?auto=compress&cs=tinysrgb&w=800",
+      quality: "A",
       predictedPrice: 85000,
-      submittedBy: 'Sample Employee',
-      submittedAt: '2025-05-09T14:30:00',
+      submittedBy: "Sample Employee",
+      submittedAt: "2025-05-09T14:30:00",
     },
     {
-      id: '2',
-      imageUrl: 'https://images.pexels.com/photos/7474297/pexels-photo-7474297.jpeg?auto=compress&cs=tinysrgb&w=800',
-      quality: 'B',
+      id: "2",
+      imageUrl:
+        "https://images.pexels.com/photos/7474297/pexels-photo-7474297.jpeg?auto=compress&cs=tinysrgb&w=800",
+      quality: "B",
       predictedPrice: 65000,
-      submittedBy: 'Sample Employee',
-      submittedAt: '2025-05-08T11:20:00',
+      submittedBy: "Sample Employee",
+      submittedAt: "2025-05-08T11:20:00",
     },
     {
-      id: '3',
-      imageUrl: 'https://images.pexels.com/photos/7474297/pexels-photo-7474297.jpeg?auto=compress&cs=tinysrgb&w=800',
-      quality: 'C',
+      id: "3",
+      imageUrl:
+        "https://images.pexels.com/photos/7474297/pexels-photo-7474297.jpeg?auto=compress&cs=tinysrgb&w=800",
+      quality: "C",
       predictedPrice: 45000,
-      submittedBy: 'Sample Employee',
-      submittedAt: '2025-05-07T09:45:00',
+      submittedBy: "Sample Employee",
+      submittedAt: "2025-05-07T09:45:00",
     },
   ];
-  
+
   // Set initial history
-  React.useEffect(() => {
+  useEffect(() => {
     setPredictions(mockPredictionHistory);
   }, []);
-  
-  const handleUpload = (file: File) => {
+
+  // Fungsi validasi file sebelum upload
+
+  const handleUpload = async (file: File) => {
+    // Reset state
     setLoading(true);
+    setError(null);
     setPrediction(null);
-    
-    // Simulate API call with delay
-    setTimeout(() => {
-      // Generate random quality
-      const qualities = ['A', 'B', 'C', 'D'];
-      const quality = qualities[Math.floor(Math.random() * qualities.length)] as 'A' | 'B' | 'C' | 'D';
-      
-      // Generate price based on quality
-      let price;
-      switch (quality) {
-        case 'A':
-          price = Math.floor(Math.random() * 20000) + 70000;
-          break;
-        case 'B':
-          price = Math.floor(Math.random() * 20000) + 50000;
-          break;
-        case 'C':
-          price = Math.floor(Math.random() * 20000) + 30000;
-          break;
-        case 'D':
-          price = Math.floor(Math.random() * 20000) + 10000;
-          break;
+    setUploadProgress(0);
+
+    try {
+      setUploadProgress(25);
+
+      // Call the API with the uploaded image
+      const response = await api.postDurian(file);
+
+      setUploadProgress(75);
+
+      console.log("API Response received:", response);
+
+      // Handle API response dengan validasi yang lebih ketat
+      if (!response) {
+        throw new Error("Response kosong dari server");
       }
-      
-      // Create prediction
+
+      if (!response.success) {
+        throw new Error(response.message || "Prediksi gagal tanpa pesan error");
+      }
+
+      if (
+        !response.data ||
+        !Array.isArray(response.data) ||
+        response.data.length === 0
+      ) {
+        throw new Error("Tidak ada hasil prediksi yang ditemukan");
+      }
+
+      const result = response.data[0];
+
+      // Validasi struktur result
+      if (!result || typeof result !== "object") {
+        throw new Error("Format hasil prediksi tidak valid");
+      }
+
+      // Create URL for preview dengan cleanup
+      const imageUrl = URL.createObjectURL(file);
+
+      // Create a prediction from the API result
       const newPrediction: DurianPrediction = {
         id: String(Date.now()),
-        imageUrl: URL.createObjectURL(file),
-        quality,
-        predictedPrice: price,
-        submittedBy: 'Sample Employee',
+        imageUrl,
+        quality: formatQuality(result.grade, result.label),
+        predictedPrice: result.harga || 0,
+        submittedBy: "Current User",
         submittedAt: new Date().toISOString(),
+        confidence: result.confidence,
+        label: result.label,
+        bbox:
+          result.xmin !== undefined
+            ? {
+                xmin: result.xmin,
+                ymin: result.ymin,
+                xmax: result.xmax,
+                ymax: result.ymax,
+              }
+            : undefined,
       };
-      
+
+      setUploadProgress(100);
       setPrediction(newPrediction);
-      setPredictions(prev => [newPrediction, ...prev]);
+      setPredictions((prev) => [newPrediction, ...prev]);
+
+      console.log("Prediction successful:", newPrediction);
+    } catch (err) {
+      console.error("Error during prediction:", err);
+
+      // Handle different types of errors
+      if (err instanceof Error) {
+        if (err.message.includes("Failed to fetch")) {
+          setError(
+            "Tidak dapat terhubung ke server. Periksa koneksi internet Anda."
+          );
+        } else if (err.message.includes("500")) {
+          setError(
+            "Server sedang bermasalah. Silakan coba lagi dalam beberapa menit."
+          );
+        } else if (err.message.includes("415")) {
+          setError("Format file tidak didukung oleh server.");
+        } else if (err.message.includes("timeout")) {
+          setError(
+            "Proses prediksi memakan waktu terlalu lama. Silakan coba lagi."
+          );
+        } else {
+          setError(err.message || "Terjadi kesalahan tidak dikenal.");
+        }
+      } else {
+        setError("Terjadi kesalahan tidak dikenal saat melakukan prediksi.");
+      }
+    } finally {
       setLoading(false);
-    }, 2000);
+      setUploadProgress(0);
+    }
   };
-  
+
   const resetPrediction = () => {
+    // Cleanup object URL untuk mencegah memory leak
+    if (prediction?.imageUrl && prediction.imageUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(prediction.imageUrl);
+    }
+
     setPrediction(null);
+    setError(null);
+    setUploadProgress(0);
   };
-  
-  const formatDateTime = (dateString: string) => {
-    return format(new Date(dateString), 'MMM d, yyyy h:mm a');
-  };
-  
+
+  // Cleanup URLs saat komponen unmount
+  useEffect(() => {
+    return () => {
+      predictions.forEach((pred) => {
+        if (pred.imageUrl && pred.imageUrl.startsWith("blob:")) {
+          URL.revokeObjectURL(pred.imageUrl);
+        }
+      });
+    };
+  }, [predictions]);
+
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Durian Quality Prediction</h1>
-        <p className="text-gray-600">Upload durian images to predict quality and estimate price.</p>
+        <h1 className="text-2xl font-bold text-gray-800">
+          Durian Quality Prediction
+        </h1>
+        <p className="text-gray-600">
+          Upload durian images to predict quality and estimate price.
+        </p>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Upload and Prediction */}
         <Card title="Upload Durian Image">
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md flex items-start gap-2">
+              <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-medium">Error:</p>
+                <p>{error}</p>
+              </div>
+            </div>
+          )}
+
+          {loading && uploadProgress > 0 && (
+            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 text-blue-700 rounded-md">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle size={16} />
+                <span>Processing... {uploadProgress}%</span>
+              </div>
+              <div className="w-full bg-blue-200 rounded-full h-2">
+                <div
+                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
+            </div>
+          )}
+
           {!prediction ? (
             <ImageUpload onUpload={handleUpload} loading={loading} />
           ) : (
-            <div className="space-y-6">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold mb-2">Prediction Result</h3>
-                <div className="w-full rounded-lg overflow-hidden mb-4 max-h-64">
-                  <img 
-                    src={prediction.imageUrl} 
-                    alt="Uploaded durian" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                
-                <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-left">
-                      <p className="text-sm text-gray-500">Quality Grade</p>
-                      <p className="text-2xl font-bold text-durian-800">{prediction.quality}</p>
-                    </div>
-                    <div className="text-left">
-                      <p className="text-sm text-gray-500">Estimated Price</p>
-                      <p className="text-2xl font-bold text-durian-yellow-600">
-                        Rp {prediction.predictedPrice.toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
+            <div>
+              <DurianPredictionResult prediction={prediction} />
+
               <Button
                 variant="primary"
                 fullWidth
+                className="mt-4"
                 icon={<RefreshCw size={16} />}
                 onClick={resetPrediction}
               >
@@ -146,54 +234,10 @@ export const EmployeeDurianPrediction: React.FC = () => {
             </div>
           )}
         </Card>
-        
+
         {/* Prediction History */}
         <Card title="Prediction History">
-          <div className="space-y-4">
-            {predictions.length > 0 ? (
-              predictions.map((pred) => (
-                <div key={pred.id} className="flex border-b border-gray-200 pb-4 last:border-0 last:pb-0">
-                  <div className="mr-3 w-20 h-20 rounded-md overflow-hidden flex-shrink-0">
-                    <img
-                      src={pred.imageUrl}
-                      alt="Durian"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <div className="flex items-center">
-                          <span className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${
-                            pred.quality === 'A' ? 'bg-green-100 text-green-800' :
-                            pred.quality === 'B' ? 'bg-blue-100 text-blue-800' :
-                            pred.quality === 'C' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
-                            Quality {pred.quality}
-                          </span>
-                          <span className="ml-2 text-sm text-durian-yellow-600 font-medium">
-                            Rp {pred.predictedPrice.toLocaleString()}
-                          </span>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {formatDateTime(pred.submittedAt)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-8">
-                <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900">No predictions yet</h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Upload a durian image to get quality predictions.
-                </p>
-              </div>
-            )}
-          </div>
+          <DurianPredictionHistory predictions={predictions} />
         </Card>
       </div>
     </div>

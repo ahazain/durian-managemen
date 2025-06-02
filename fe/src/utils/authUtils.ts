@@ -27,19 +27,23 @@ export const getAuthToken = (): string | null => {
  * Creates authentication headers with Bearer token
  * @returns Headers object with Content-Type and Authorization (if token exists)
  */
-export const createAuthHeaders = (): HeadersInit => {
+export const createAuthHeaders = (isFormData = false): HeadersInit => {
   const token = getAuthToken();
 
-  // Check if token is expired before adding it to headers
   if (token && isTokenExpired(token)) {
     handleTokenExpiration();
-    return { "Content-Type": "application/json" };
+    return isFormData ? {} : { "Content-Type": "application/json" };
   }
 
-  return {
-    "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
+  const headers: HeadersInit = token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
+
+  if (!isFormData) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  return headers;
 };
 
 /**

@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AppLayout } from "./components/layout/AppLayout";
 
@@ -30,6 +31,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <Toaster position="top-center" reverseOrder={true} />
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />

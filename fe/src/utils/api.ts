@@ -215,6 +215,13 @@ export const api = {
     return handleResponse(response);
   },
 
+  getProfileById: async (id: string) => {
+    const response = await fetch(API_ENDPOINTS.profile.profilToken(id), {
+      headers: createAuthHeaders(),
+    });
+    return handleResponse(response);
+  },
+
   getEmployeeProfiles: async () => {
     const response = await fetch(API_ENDPOINTS.profile.employees, {
       headers: createAuthHeaders(),
@@ -222,12 +229,100 @@ export const api = {
     return handleResponse(response);
   },
 
-  ubahPassword: async (data: any) => {
+  // ubahProfil: async (data: any) => {
+  //   const response = await fetch(API_ENDPOINTS.profile.updateProfil, {
+  //     method: "PUT",
+  //     headers: createAuthHeaders(),
+  //     body: JSON.stringify(data),
+  //   });
+  //   return handleResponse(response);
+  // },
+  ubahProfil: async (data: {
+    nama: string;
+    email: string;
+    phoneNumber?: string;
+  }) => {
+    // Transform data to match backend expectations
+    const requestData = {
+      nama: data.nama,
+      email: data.email,
+      ...(data.phoneNumber && { phoneNumber: data.phoneNumber }), // Only include if not empty
+    };
+
+    console.log("Sending profile update data:", requestData); // Debug log
+
+    const response = await fetch(API_ENDPOINTS.profile.updateProfil, {
+      method: "PUT",
+      headers: {
+        ...createAuthHeaders(),
+        "Content-Type": "application/json", // Ensure Content-Type is set
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    // Enhanced error handling for profile update
+    if (response.status === 400) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Profile update 400 error:", errorData);
+      throw new Error(
+        errorData.message || "Invalid data provided. Please check your input."
+      );
+    }
+
+    return handleResponse(response);
+  },
+
+  ubahPassword: async (data: { oldPassword: string; newPassword: string }) => {
+    // Ensure data structure matches backend expectations
+    const requestData = {
+      oldPassword: data.oldPassword,
+      newPassword: data.newPassword,
+    };
+
+    console.log("Sending password update request"); // Debug log (don't log passwords)
+
     const response = await fetch(API_ENDPOINTS.profile.ubahPassword, {
       method: "PUT",
-      headers: createAuthHeaders(),
-      body: JSON.stringify(data),
+      headers: {
+        ...createAuthHeaders(),
+        "Content-Type": "application/json", // Ensure Content-Type is set
+      },
+      body: JSON.stringify(requestData),
     });
+
+    // Enhanced error handling for password update
+    if (response.status === 400) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Password update 400 error:", errorData);
+      throw new Error(
+        errorData.message ||
+          "Invalid password data. Please check your current password."
+      );
+    }
+
+    return handleResponse(response);
+  },
+
+  // ubahPassword: async (data: any) => {
+  //   const response = await fetch(API_ENDPOINTS.profile.ubahPassword, {
+  //     method: "PUT",
+  //     headers: createAuthHeaders(),
+  //     body: JSON.stringify(data),
+  //   });
+  //   return handleResponse(response);
+  // },
+
+  //durian
+  postDurian: async (file: File) => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const response = await fetch(API_ENDPOINTS.prediction.predict, {
+      method: "POST",
+      headers: createAuthHeaders(true),
+      body: formData,
+    });
+
     return handleResponse(response);
   },
 };
