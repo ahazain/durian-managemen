@@ -7,23 +7,27 @@ import {
   Loader2,
 } from "lucide-react";
 import { format } from "date-fns";
+import { id } from "date-fns/locale";
+import toast from "react-hot-toast"; // Changed: Use react-hot-toast instead of custom Toast
 import { Card } from "../../components/common/Card";
 import { Button } from "../../components/common/Button";
 import { useAuth } from "../../contexts/AuthContext";
-import { api } from "../../utils/api"; // Adjust this path if needed
-import { Toast } from "../../components/common/Toast"; // Adjust this path if needed
+import { api } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 export const EmployeeDashboard: React.FC = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const today = new Date();
 
   // State for check-in functionality
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [toast, setToast] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
+  // Removed: toast state since we're using react-hot-toast
+
+  // State for schedule functionality
+  const [todaySchedules, setTodaySchedules] = useState<any[]>([]);
+  const [scheduleLoading, setScheduleLoading] = useState(true);
 
   // Check if user has already checked in (could be extended to fetch from API)
   useEffect(() => {
@@ -31,7 +35,33 @@ export const EmployeeDashboard: React.FC = () => {
     const checkedInToday =
       localStorage.getItem("checkedInDate") === format(today, "yyyy-MM-dd");
     setIsCheckedIn(checkedInToday);
+
+    // Fetch today's schedules
+    fetchTodaySchedules();
   }, []);
+
+  // Fetch today's schedules
+  const fetchTodaySchedules = async () => {
+    try {
+      setScheduleLoading(true);
+      const response = await api.getEmployeeSchedules();
+      const schedules = response.data || [];
+
+      // Filter schedules for today
+      const todayFormatted = format(today, "yyyy-MM-dd");
+      const todaySchedulesList = schedules.filter((schedule: any) => {
+        const scheduleDate = format(new Date(schedule.start), "yyyy-MM-dd");
+        return scheduleDate === todayFormatted;
+      });
+
+      setTodaySchedules(todaySchedulesList);
+    } catch (error) {
+      console.error("Failed to fetch schedules:", error);
+      setTodaySchedules([]);
+    } finally {
+      setScheduleLoading(false);
+    }
+  };
 
   // Handle check-in
   const handleCheckIn = async () => {
@@ -45,33 +75,64 @@ export const EmployeeDashboard: React.FC = () => {
       setIsCheckedIn(true);
       localStorage.setItem("checkedInDate", format(today, "yyyy-MM-dd"));
 
-      // Show success message
-      setToast({ message: "Successfully checked in!", type: "success" });
-    } catch (error) {
-      // Show error message
-      setToast({
-        message:
-          error instanceof Error
-            ? error.message
-            : "Failed to check in. Please try again.",
-        type: "error",
-      });
+      // Changed: Use react-hot-toast instead of custom toast state
+      toast.success("Berhasil melakukan check in!");
+    } catch (error: any) {
+      // Changed: Use react-hot-toast with better error handling
+      let errorMessage = "Gagal melakukan check in. Silakan coba lagi.";
+
+      if (error.message) {
+        errorMessage = error.message;
+      } else if (error.status === 400) {
+        errorMessage =
+          "Data check in tidak valid. Periksa kembali informasi Anda.";
+      } else if (error.status === 409) {
+        errorMessage = "Anda sudah melakukan check in hari ini.";
+      } else if (error.status === 500) {
+        errorMessage = "Terjadi kesalahan server. Silakan coba lagi nanti.";
+      } else if (error.status === 401) {
+        errorMessage = "Sesi Anda telah berakhir. Silakan login kembali.";
+      }
+
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Mock data
-  const nextSchedule = {
-    title: "Morning Harvesting",
-    date: format(
-      new Date(today.getTime() + 24 * 60 * 60 * 1000),
-      "MMMM d, yyyy"
-    ),
-    startTime: "07:00 AM",
-    endTime: "11:00 AM",
+  // Navigation handlers
+  const handleNavigateToSchedule = () => {
+    navigate("schedule");
   };
 
+  const handleNavigateToAttendance = () => {
+    navigate("attendance");
+  };
+
+  const handleNavigateToPrediction = () => {
+    navigate("prediction");
+  };
+
+  const handleNavigateToAccount = () => {
+    navigate("account");
+  };
+
+  // Helper functions untuk format waktu Indonesia
+  const formatScheduleTime = (dateString: string) => {
+    const date = new Date(dateString);
+    // Convert to Indonesia timezone (UTC+7)
+    const indonesiaTime = new Date(date.getTime() + 7 * 60 * 60 * 1000);
+    return format(indonesiaTime, "HH:mm", { locale: id });
+  };
+
+  const getCurrentIndonesiaTime = () => {
+    const now = new Date();
+    // Convert to Indonesia timezone (UTC+7)
+    const indonesiaTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
+    return indonesiaTime;
+  };
+
+  // Mock data
   const attendanceStats = {
     present: 18,
     absent: 2,
@@ -80,20 +141,17 @@ export const EmployeeDashboard: React.FC = () => {
 
   return (
     <div className="animate-fade-in">
-      {/* Toast notification */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
+      {/* Removed: Custom Toast component */}
 
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">
-          Welcome, {user?.fullName}
+          Selamat datang, {user?.nama}
         </h1>
-        <p className="text-gray-600">{format(today, "EEEE, MMMM d, yyyy")}</p>
+        <p className="text-gray-600">
+          {format(getCurrentIndonesiaTime(), "EEEE, d MMMM yyyy", {
+            locale: id,
+          })}
+        </p>
       </div>
 
       {/* Check-in Section */}
@@ -101,11 +159,12 @@ export const EmployeeDashboard: React.FC = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-4 md:mb-0">
             <h2 className="text-lg font-semibold text-gray-800">
-              Today's Attendance
+              Kehadiran Hari Ini
             </h2>
             <p className="text-gray-600">
-              {format(today, "MMMM d, yyyy")} | Current time:{" "}
-              {format(today, "h:mm a")}
+              {format(getCurrentIndonesiaTime(), "d MMMM yyyy", { locale: id })}{" "}
+              | Waktu saat ini:{" "}
+              {format(getCurrentIndonesiaTime(), "HH:mm", { locale: id })} WIB
             </p>
           </div>
           <Button
@@ -133,32 +192,66 @@ export const EmployeeDashboard: React.FC = () => {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        {/* Next Schedule */}
+        {/* Today's Schedule */}
         <Card className="col-span-2">
           <div className="flex items-start">
             <div className="mr-4 p-2 bg-durian-yellow-100 rounded-full">
               <Calendar className="h-6 w-6 text-durian-yellow-600" />
             </div>
-            <div>
+            <div className="flex-1">
               <h3 className="text-lg font-medium text-gray-800">
-                Next Schedule
+                Jadwal Hari ini
               </h3>
-              <div className="mt-2">
-                <h4 className="font-semibold text-durian-800">
-                  {nextSchedule.title}
-                </h4>
-                <p className="text-gray-600 text-sm">{nextSchedule.date}</p>
-                <p className="text-gray-600 text-sm">
-                  {nextSchedule.startTime} - {nextSchedule.endTime}
-                </p>
-              </div>
+
+              {scheduleLoading ? (
+                <div className="mt-2 flex items-center">
+                  <Loader2 size={16} className="animate-spin mr-2" />
+                  <span className="text-sm text-gray-600">
+                    Memuat jadwal...
+                  </span>
+                </div>
+              ) : todaySchedules.length > 0 ? (
+                <div className="mt-2 space-y-2">
+                  {todaySchedules.slice(0, 2).map((schedule, index) => (
+                    <div
+                      key={schedule.id || index}
+                      className="border-l-2 border-durian-400 pl-3"
+                    >
+                      <h4 className="font-semibold text-durian-800">
+                        {schedule.title}
+                      </h4>
+                      <p className="text-gray-600 text-sm">
+                        {formatScheduleTime(schedule.start)} -{" "}
+                        {formatScheduleTime(schedule.end)}
+                      </p>
+                      {schedule.description && (
+                        <p className="text-gray-500 text-xs mt-1">
+                          {schedule.description}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                  {todaySchedules.length > 2 && (
+                    <p className="text-xs text-gray-500 mt-2">
+                      +{todaySchedules.length - 2} jadwal lainnya
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="mt-2">
+                  <p className="text-gray-600 text-sm">
+                    Tidak ada jadwal untuk hari ini
+                  </p>
+                </div>
+              )}
+
               <div className="mt-3">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => console.log("View all schedules")}
+                  onClick={handleNavigateToSchedule}
                 >
-                  View All Schedules
+                  Lihat Semua Jadwal
                 </Button>
               </div>
             </div>
@@ -168,7 +261,7 @@ export const EmployeeDashboard: React.FC = () => {
         {/* Monthly Attendance */}
         <Card>
           <h3 className="text-lg font-medium text-gray-800 mb-3">
-            Monthly Attendance
+            Kehadiran Bulanan
           </h3>
           <div className="space-y-2">
             <div className="flex justify-between items-center">
@@ -214,49 +307,49 @@ export const EmployeeDashboard: React.FC = () => {
       </div>
 
       {/* Quick Access */}
-      <Card title="Quick Access">
+      <Card title="Akses Cepat" className="mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div
             className="p-4 bg-durian-50 hover:bg-durian-100 rounded-lg transition-colors cursor-pointer"
-            onClick={() => console.log("Navigate to attendance")}
+            onClick={handleNavigateToAttendance}
           >
             <div className="flex flex-col items-center text-center">
               <div className="p-3 bg-white rounded-full shadow-sm mb-3">
                 <CheckCircle className="h-6 w-6 text-durian-600" />
               </div>
-              <h4 className="font-medium text-gray-800">Attendance</h4>
+              <h4 className="font-medium text-gray-800">Absensi</h4>
               <p className="text-xs text-gray-600 mt-1">
-                Mark attendance & view history
+                Tandai kehadiran & lihat riwayat
               </p>
             </div>
           </div>
 
           <div
             className="p-4 bg-durian-yellow-50 hover:bg-durian-yellow-100 rounded-lg transition-colors cursor-pointer"
-            onClick={() => console.log("Navigate to schedule")}
+            onClick={handleNavigateToSchedule}
           >
             <div className="flex flex-col items-center text-center">
               <div className="p-3 bg-white rounded-full shadow-sm mb-3">
                 <Calendar className="h-6 w-6 text-durian-yellow-600" />
               </div>
-              <h4 className="font-medium text-gray-800">My Schedule</h4>
+              <h4 className="font-medium text-gray-800">Jadwal Kerja</h4>
               <p className="text-xs text-gray-600 mt-1">
-                View upcoming schedules
+                Lihat jadwal yang akan datang
               </p>
             </div>
           </div>
 
           <div
             className="p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors cursor-pointer"
-            onClick={() => console.log("Navigate to durian prediction")}
+            onClick={handleNavigateToPrediction}
           >
             <div className="flex flex-col items-center text-center">
               <div className="p-3 bg-white rounded-full shadow-sm mb-3">
                 <Fruit className="h-6 w-6 text-green-600" />
               </div>
-              <h4 className="font-medium text-gray-800">Durian Quality</h4>
+              <h4 className="font-medium text-gray-800">Kualitas Durian</h4>
               <p className="text-xs text-gray-600 mt-1">
-                Predict durian quality
+                Prediksi kualitas durian menggunakan AI
               </p>
             </div>
           </div>

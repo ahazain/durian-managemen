@@ -401,7 +401,7 @@ export const EmployeeAccount: React.FC = () => {
               <form onSubmit={handleSubmitPasswordChange}>
                 <div className="space-y-4">
                   <Input
-                    label="Current Password"
+                    label="Password Lama"
                     name="currentPassword"
                     type="password"
                     value={passwordData.currentPassword}
@@ -413,7 +413,7 @@ export const EmployeeAccount: React.FC = () => {
                   />
 
                   <Input
-                    label="New Password"
+                    label="Password Baru"
                     name="newPassword"
                     type="password"
                     value={passwordData.newPassword}
@@ -425,7 +425,7 @@ export const EmployeeAccount: React.FC = () => {
                   />
 
                   <Input
-                    label="Confirm New Password"
+                    label="Konfirmasi Password Baru"
                     name="confirmPassword"
                     type="password"
                     value={passwordData.confirmPassword}
@@ -455,7 +455,7 @@ export const EmployeeAccount: React.FC = () => {
             ) : (
               <div>
                 <p className="text-gray-600 mb-4">
-                  Change your password to keep your account secure.
+                  Ubah kata sandi Anda untuk menjaga keamanan akun Anda.
                 </p>
                 <Button
                   variant="outline"
@@ -463,7 +463,7 @@ export const EmployeeAccount: React.FC = () => {
                   onClick={() => setShowPasswordForm(true)}
                   type="button"
                 >
-                  Change Password
+                  Ubah Password
                 </Button>
               </div>
             )}

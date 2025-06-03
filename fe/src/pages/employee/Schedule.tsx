@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Calendar, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { format, addDays, startOfWeek, isSameDay } from "date-fns";
+import { id } from "date-fns/locale";
 import { Schedule } from "../../types";
 import { api } from "../../utils/api";
 import { Card } from "../../components/common/Card";
@@ -20,7 +21,6 @@ export const EmployeeSchedule: React.FC = () => {
     fetchSchedules();
   }, []);
 
-  // Generate current week days based on the currentWeekStart
   const currentWeekDays = Array.from({ length: 7 }, (_, i) =>
     addDays(currentWeekStart, i)
   );
@@ -39,13 +39,13 @@ export const EmployeeSchedule: React.FC = () => {
     }
   };
 
-  // Helper functions
+  // Helper functions dengan format Indonesia
   const formatScheduleDate = (dateString: string) => {
-    return format(new Date(dateString), "EEEE, MMMM d, yyyy");
+    return format(new Date(dateString), "EEEE, d MMMM yyyy", { locale: id });
   };
 
   const formatScheduleTime = (dateString: string) => {
-    return format(new Date(dateString), "h:mm a");
+    return format(new Date(dateString), "H:mm");
   };
 
   // Filter schedules based on search term
@@ -84,8 +84,10 @@ export const EmployeeSchedule: React.FC = () => {
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">My Schedule</h1>
-        <p className="text-gray-600">View your upcoming work schedule.</p>
+        <h1 className="text-2xl font-bold text-gray-800">Jadwal Saya</h1>
+        <p className="text-gray-600">
+          Lihat jadwal kerja Anda yang akan datang
+        </p>
       </div>
 
       {error && (
@@ -105,7 +107,7 @@ export const EmployeeSchedule: React.FC = () => {
             <ChevronLeft size={20} />
           </button>
           <h3 className="text-lg font-semibold">
-            {format(currentWeekStart, "MMMM yyyy")}
+            {format(currentWeekStart, "MMMM yyyy", { locale: id })}
           </h3>
           <button
             onClick={navigateNextWeek}
@@ -127,7 +129,9 @@ export const EmployeeSchedule: React.FC = () => {
               }`}
               onClick={() => setSelectedDate(date)}
             >
-              <span className="text-xs font-medium">{format(date, "EEE")}</span>
+              <span className="text-xs font-medium">
+                {format(date, "EEE", { locale: id })}
+              </span>
               <span className="text-lg font-bold">{format(date, "d")}</span>
             </button>
           ))}
@@ -137,7 +141,7 @@ export const EmployeeSchedule: React.FC = () => {
       {/* Search */}
       <div className="mb-6">
         <Input
-          placeholder="Search schedules..."
+          placeholder="Cari jadwal..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           icon={<Search size={18} />}
@@ -196,11 +200,11 @@ export const EmployeeSchedule: React.FC = () => {
             <div className="text-center py-8">
               <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900">
-                No schedules for this day
+                Tidak ada jadwal untuk hari ini
               </h3>
               <p className="mt-1 text-sm text-gray-500">
-                You don't have any scheduled tasks for{" "}
-                {format(selectedDate, "MMMM d, yyyy")}.
+                Anda tidak memiliki tugas terjadwal untuk{" "}
+                {format(selectedDate, "d MMMM yyyy", { locale: id })}.
               </p>
             </div>
           </Card>
@@ -209,3 +213,6 @@ export const EmployeeSchedule: React.FC = () => {
     </div>
   );
 };
+
+// Default export untuk mengatasi error import
+export default EmployeeSchedule;

@@ -40,6 +40,15 @@ export const DurianPredictionHistory: React.FC<
                     >
                       {pred.quality}
                     </span>
+                    <span
+                      className={`inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${getQualityColorClass(
+                        pred.label.toLowerCase() === "not durian"
+                          ? "bg-gray-100 text-gray-800"
+                          : getQualityColorClass(pred.quality)
+                      )}`}
+                    >
+                      {pred.label}
+                    </span>
                     <span className="ml-2 text-sm text-blue-600 font-medium">
                       {formatRupiah(pred.predictedPrice)}
                     </span>
