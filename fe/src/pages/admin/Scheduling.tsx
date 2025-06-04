@@ -142,7 +142,7 @@ export const AdminScheduling: React.FC = () => {
 
     return (
       <Card className="mb-6 border-2 border-blue-200 animate-fadeIn">
-        <h2 className="text-lg font-semibold mb-4">Edit Schedule</h2>
+        <h2 className="text-lg font-semibold mb-4">Edit Jadwal</h2>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -161,7 +161,7 @@ export const AdminScheduling: React.FC = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              label="Title"
+              label="Judul"
               name="title"
               placeholder="Schedule title"
               defaultValue={schedule.title}
@@ -170,7 +170,7 @@ export const AdminScheduling: React.FC = () => {
 
             <div className="md:col-span-2">
               <Input
-                label="Description"
+                label="Deskripsi"
                 name="description"
                 placeholder="Schedule description"
                 defaultValue={schedule.description}
@@ -178,7 +178,7 @@ export const AdminScheduling: React.FC = () => {
             </div>
 
             <Input
-              label="Start Date & Time"
+              label="Tanggal & Waktu Mulai"
               name="start"
               type="datetime-local"
               defaultValue={formatDateForInput(schedule.start)}
@@ -186,7 +186,7 @@ export const AdminScheduling: React.FC = () => {
             />
 
             <Input
-              label="End Date & Time"
+              label="Tanggal & Waktu Berakhir"
               name="end"
               type="datetime-local"
               defaultValue={formatDateForInput(schedule.end)}
@@ -217,7 +217,7 @@ export const AdminScheduling: React.FC = () => {
               Cancel
             </Button>
             <Button variant="primary" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Updating..." : "Update Schedule"}
+              {isSubmitting ? "Updating..." : "Update Jadwal"}
             </Button>
           </div>
         </form>

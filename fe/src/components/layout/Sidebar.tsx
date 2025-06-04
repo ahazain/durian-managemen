@@ -88,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
       {isMobile && (
         <button
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50 p-2 bg-durian-600 text-white rounded-md shadow-md"
+          className="fixed top-4 right-4 z-50 p-2 bg-durian-600 text-white rounded-md shadow-md"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

@@ -159,7 +159,7 @@ export const EmployeeSchedule: React.FC = () => {
           </div>
           <button
             onClick={handleRefreshSchedules}
-            className="px-4 py-2 bg-durian-600 text-white rounded-lg hover:bg-durian-700 transition-colors"
+            className="px-4 py-2 mr-14 bg-durian-600 text-white rounded-lg hover:bg-durian-700 transition-colors"
             disabled={loading}
           >
             Refresh
