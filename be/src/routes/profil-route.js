@@ -6,7 +6,7 @@ const {
   verifyRole,
 } = require("../middlewares/verify-jwt-middleware");
 const { updateProfil } = require("../service/profil-service");
-route.put("/profil", verifyJWT, profilController.updateProfil);
+route.put("/profil/update-profil", verifyJWT, profilController.updateProfil);
 route.get("/profil/all", profilController.getAll);
 route.get("/profil/all-karyawan", profilController.getAllKaryawan);
 route.get("/profil", verifyJWT, profilController.getById);

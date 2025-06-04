@@ -4,8 +4,14 @@ const authService = require("../service/autentifikasi-service");
 class AutentifikasiController {
   static async register(req, res) {
     try {
-      const { nama, email, password, role } = req.body;
-      const data = await authService.register({ nama, email, password, role });
+      const { nama, phoneNumber, email, password, role } = req.body;
+      const data = await authService.register({
+        nama,
+        phoneNumber,
+        email,
+        password,
+        role,
+      });
       response.created(res, data, "berhasil register");
     } catch (error) {
       response.error(res, error);

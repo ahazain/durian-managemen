@@ -26,8 +26,9 @@ class PenjadwalanService {
       user.length === 0 ||
       user.some((u) => !u.id)
     ) {
-      throw new BadRequestError("semua field harus di isi");
+      throw new BadRequestError("Semua field harus diisi");
     }
+
     if (dayjs(tanggal_mulai).isAfter(dayjs(tanggal_selesai))) {
       throw new BadRequestError(
         "Tanggal mulai tidak boleh melebihi tanggal selesai"
@@ -35,20 +36,17 @@ class PenjadwalanService {
     }
 
     const userIds = [...new Set(user.map((u) => u.id))];
+
     const existingUsers = await prisma.user.findMany({
       where: {
         id: { in: userIds },
       },
     });
 
-    console.log(
-      "User ditemukan:",
-      existingUsers.map((u) => u.id)
-    );
-
     if (existingUsers.length !== userIds.length) {
       throw new NotFoundError("Beberapa user tidak ditemukan di database");
     }
+
     const addJadwal = await prisma.jadwal.create({
       data: {
         title,
@@ -58,7 +56,7 @@ class PenjadwalanService {
       },
     });
 
-    const createdJadwal = await prisma.jadwalUser.createMany({
+    await prisma.jadwalUser.createMany({
       data: userIds.map((userId) => ({
         userId,
         jadwalId: addJadwal.id,
@@ -66,9 +64,9 @@ class PenjadwalanService {
     });
 
     return {
-      ...createdJadwal,
-      tanggal_mulai: formatTanggalIndonesia(createdJadwal.tanggal_mulai),
-      tanggal_selesai: formatTanggalIndonesia(createdJadwal.tanggal_selesai),
+      ...addJadwal,
+      tanggal_mulai: formatTanggalIndonesia(addJadwal.tanggal_mulai),
+      tanggal_selesai: formatTanggalIndonesia(addJadwal.tanggal_selesai),
     };
   }
 
@@ -94,22 +92,24 @@ class PenjadwalanService {
       !deskripsi ||
       !tanggal_mulai ||
       !tanggal_selesai ||
-      !user ||
+      !user || // user bisa berupa array juga, cek sesuai kebutuhan
       !id
     ) {
-      throw new BadRequestError("semua field harus di isi");
+      throw new BadRequestError("Semua field harus diisi");
     }
 
     const dataJadwal = await prisma.jadwal.findUnique({ where: { id } });
     if (!dataJadwal) {
-      throw new NotFoundError("id jadwal kerja tidak ada di database");
+      throw new NotFoundError("ID jadwal kerja tidak ditemukan di database");
     }
+
     if (dayjs(tanggal_mulai).isAfter(dayjs(tanggal_selesai))) {
       throw new BadRequestError(
         "Tanggal mulai tidak boleh melebihi tanggal selesai"
       );
     }
 
+    // ✨ 1. Update data dasar jadwal
     const updateJadwal = await prisma.jadwal.update({
       where: { id },
       data: {
@@ -117,11 +117,28 @@ class PenjadwalanService {
         deskripsi,
         tanggal_mulai,
         tanggal_selesai,
-        user: {
-          connect: { id: user.id },
-        },
       },
     });
+
+    // ✨ 2. Hapus semua relasi user sebelumnya
+    await prisma.jadwalUser.deleteMany({
+      where: { jadwalId: id },
+    });
+
+    // ✨ 3. Tambahkan relasi user baru (bisa satu atau banyak user)
+    const userIds = Array.isArray(user) ? user : [user]; // handle kalau user dikirim satu atau array
+    for (const u of userIds) {
+      if (!u.id) {
+        throw new BadRequestError("User ID tidak valid dalam data user");
+      }
+
+      await prisma.jadwalUser.create({
+        data: {
+          jadwalId: id,
+          userId: u.id,
+        },
+      });
+    }
 
     return {
       ...updateJadwal,

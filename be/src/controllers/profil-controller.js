@@ -15,8 +15,8 @@ class ProfilController {
   static async updateProfil(req, res) {
     try {
       const { id } = req.user;
-      const { nama, email } = req.body;
-      const data = await profilService.updateProfil({ nama, email, id });
+      const { nama, email, phoneNumber } = req.body;
+      const data = await profilService.updateProfil({ nama, email, phoneNumber, id });
       return response.success(res, data, "berhasil melakukan perubahan");
     } catch (error) {
       return response.error(res, error);

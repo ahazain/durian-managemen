@@ -32,7 +32,17 @@ route.get(
   verifyRole("ADMIN"),
   absensiController.filterAbsensi
 );
-route.get("/dashboard/recent-checkin",  verifyJWT,
-  verifyRole("ADMIN"),absensiController.getRecentCheckIns)
+route.get(
+  "/dashboard/recent-checkin",
+  verifyJWT,
+  verifyRole("ADMIN"),
+  absensiController.getRecentCheckIns
+);
+
+route.get(
+  "/absensi-karyawan",
+  verifyJWT,
+  absensiController.getAbsensiKaryawanById
+);
 
 module.exports = route;

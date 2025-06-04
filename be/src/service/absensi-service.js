@@ -6,6 +6,7 @@ const timezone = require("dayjs/plugin/timezone");
 dayjs.extend(utc);
 dayjs.extend(timezone);
 const { NotFoundError, BadRequestError } = require("../utils/error-handling");
+const { startOfMonth, endOfMonth } = require("date-fns");
 
 class AbsensiService {
   static async checkin(id) {
@@ -165,6 +166,60 @@ class AbsensiService {
         verifikasi: totalVerified,
         pending: totalUnverified,
       },
+    };
+  }
+
+  static async getAbsensiKaryawanById(id) {
+    const now = new Date();
+    const awalBulan = startOfMonth(now);
+    const akhirBulan = endOfMonth(now);
+
+    const absensiBulanIni = await prisma.absensi.findMany({
+      where: {
+        user_id: id,
+        tanggal: {
+          gte: awalBulan,
+          lte: akhirBulan,
+        },
+      },
+      select: {
+        status: true, // enum: HADIR, ALPHA, TERLAMBAT
+      },
+    });
+
+    if (!absensiBulanIni || absensiBulanIni.length === 0) {
+      return {
+        bulan: now.toLocaleString("id-ID", { month: "long" }),
+        hadir: "0 hari",
+        absen: "0 hari",
+        telat: "0 hari",
+      };
+    }
+
+    // Hitung jumlah berdasarkan enum status
+    let hadir = 0,
+      absen = 0,
+      telat = 0;
+
+    for (const a of absensiBulanIni) {
+      switch (a.status) {
+        case "HADIR":
+          hadir++;
+          break;
+        case "ALPHA":
+          absen++;
+          break;
+        case "TERLAMBAT":
+          telat++;
+          break;
+      }
+    }
+
+    return {
+      bulan: now.toLocaleString("id-ID", { month: "long" }),
+      hadir: `${hadir} hari`,
+      absen: `${absen} hari`,
+      telat: `${telat} hari`,
     };
   }
 }

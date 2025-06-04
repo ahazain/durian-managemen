@@ -94,6 +94,20 @@ class AbsensiController {
       return response.error(res, error, "Gagal mengambil data check-in", 500);
     }
   }
+
+  static async getAbsensiKaryawanById(req, res) {
+    try {
+      const { id } = req.user;
+      const data = await absensiService.getAbsensiKaryawanById(id);
+      return response.success(
+        res,
+        data,
+        "Data absensi karyawan berhasil ditampilkan per bulan ini"
+      );
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
 }
 
 module.exports = AbsensiController;

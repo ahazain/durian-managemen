@@ -10,7 +10,7 @@ const {
 const { formatTanggalIndonesia } = require("../utils/formated-waktu");
 
 class profilService {
-  static async updateProfil({ nama, email, id }) {
+  static async updateProfil({ nama, email, id, phoneNumber }) {
     if (!id) {
       throw new UnauthorizedError("Unauthorization. silahkan login kembali");
     }
@@ -18,7 +18,7 @@ class profilService {
     if (!userYgTersedia) {
       throw new NotFoundError("User tidak tersedia");
     }
-    if (!nama || !email) {
+    if ((!nama || !email, !phoneNumber)) {
       throw new BadRequestError("semua field harus di isi");
     }
     const updateData = await prisma.user.update({
@@ -26,6 +26,7 @@ class profilService {
       data: {
         nama,
         email,
+        phoneNumber,
       },
     });
     return updateData;
@@ -103,8 +104,8 @@ class profilService {
       throw new BadRequestError("Password lama dan password baru harus diisi.");
     }
 
-    if (newPassword.length < 8) {
-      throw new BadRequestError("Password baru harus minimal 8 karakter.");
+    if (newPassword.length < 6) {
+      throw new BadRequestError("Password baru harus minimal 6 karakter.");
     }
 
     const foundUser = await prisma.user.findUnique({

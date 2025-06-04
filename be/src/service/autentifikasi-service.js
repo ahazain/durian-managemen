@@ -9,11 +9,16 @@ const {
   NotFoundError,
 } = require("../utils/error-handling");
 class authService {
-  static async register({ nama, email, password, role }) {
-    if (!nama || !email || !password) {
+  static async register({ nama, phoneNumber, email, password, role }) {
+    if ((!nama, !phoneNumber || !email || !password)) {
       throw new BadRequestError("semua field harus diisi");
     }
-    if (!nama.trim() || !email.trim() || !password.trim()) {
+    if (
+      !nama.trim() ||
+      !email.trim() ||
+      !phoneNumber.trim() ||
+      !password.trim()
+    ) {
       throw new BadRequestError(
         "Field tidak boleh kosong atau hanya berisi spasi"
       );
@@ -39,6 +44,7 @@ class authService {
       data: {
         nama,
         email,
+        phoneNumber,
         password: hashedPassword,
         role: Role[role] || Role.KARYAWAN,
       },
