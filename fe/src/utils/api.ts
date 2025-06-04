@@ -160,6 +160,20 @@ export const api = {
     return handleResponse(response);
   },
 
+  getRecapAbsensi: async (startDate: string, endDate: string) => {
+    const url = new URL(API_ENDPOINTS.attendance.recapBulanan);
+    url.searchParams.append("startDate", startDate);
+    url.searchParams.append("endDate", endDate);
+    const response = await fetch(url.toString(), {
+      headers: createAuthHeaders(),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch attendance recap");
+    }
+    return response.json();
+  },
+
   getAttendanceHistory: async () => {
     const response = await fetch(API_ENDPOINTS.attendance.employeeHistory, {
       headers: createAuthHeaders(),
@@ -302,15 +316,6 @@ export const api = {
 
     return handleResponse(response);
   },
-
-  // ubahPassword: async (data: any) => {
-  //   const response = await fetch(API_ENDPOINTS.profile.ubahPassword, {
-  //     method: "PUT",
-  //     headers: createAuthHeaders(),
-  //     body: JSON.stringify(data),
-  //   });
-  //   return handleResponse(response);
-  // },
 
   //durian
   postDurian: async (file: File) => {

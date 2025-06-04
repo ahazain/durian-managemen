@@ -118,7 +118,7 @@ export const API_ENDPOINTS = {
   },
   profile: {
     all: "http://localhost:3000/api/v1/profil/all",
-    profilToken : "http://localhost:3000/api/v1/profil",
+    profilToken: "http://localhost:3000/api/v1/profil",
     updateProfil: "http://localhost:3000/api/v1/profil/update-profil",
     ubahPassword: "http://localhost:3000/api/v1/profil/update-password",
   },
@@ -139,11 +139,9 @@ export const API_ENDPOINTS = {
     employeeHistory: "http://localhost:3000/api/v1/absensi/histori-karyawan",
     recentCheckIn:
       "http://localhost:3000/api/v1/absensi/dashboard/recent-checkin",
+    recapBulanan: "http://localhost:3000/api/v1/absensi/absensi-karyawan",
   },
   prediction: {
     predict: "http://localhost:3000/api/v1/predict",
-    // history: "http://localhost:3000/api/v1/prediction/history",
-    // employee: (id: string) =>
-    //   `http://localhost:3000/api/v1/prediction/employee/${id}`,
   },
 };

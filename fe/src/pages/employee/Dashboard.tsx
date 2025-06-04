@@ -6,9 +6,9 @@ import {
   Citrus as Fruit,
   Loader2,
 } from "lucide-react";
-import { format } from "date-fns";
+import { format, startOfMonth, endOfMonth } from "date-fns";
 import { id } from "date-fns/locale";
-import toast from "react-hot-toast"; // Changed: Use react-hot-toast instead of custom Toast
+import toast from "react-hot-toast";
 import { Card } from "../../components/common/Card";
 import { Button } from "../../components/common/Button";
 import { useAuth } from "../../contexts/AuthContext";
@@ -23,21 +23,29 @@ export const EmployeeDashboard: React.FC = () => {
   // State for check-in functionality
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // Removed: toast state since we're using react-hot-toast
 
   // State for schedule functionality
   const [todaySchedules, setTodaySchedules] = useState<any[]>([]);
   const [scheduleLoading, setScheduleLoading] = useState(true);
 
-  // Check if user has already checked in (could be extended to fetch from API)
+  // State for monthly attendance - Updated to use API data
+  const [attendanceStats, setAttendanceStats] = useState({
+    present: 0,
+    absent: 0,
+    late: 0,
+    month: "",
+  });
+  const [attendanceLoading, setAttendanceLoading] = useState(true);
+
+  // Check if user has already checked in
   useEffect(() => {
-    // You could check localStorage or make an API call to verify if user has checked in today
     const checkedInToday =
       localStorage.getItem("checkedInDate") === format(today, "yyyy-MM-dd");
     setIsCheckedIn(checkedInToday);
 
-    // Fetch today's schedules
+    // Fetch today's schedules and monthly attendance
     fetchTodaySchedules();
+    fetchMonthlyAttendance();
   }, []);
 
   // Fetch today's schedules
@@ -63,6 +71,59 @@ export const EmployeeDashboard: React.FC = () => {
     }
   };
 
+  // Fetch monthly attendance data - NEW FUNCTION
+  const fetchMonthlyAttendance = async () => {
+    try {
+      setAttendanceLoading(true);
+
+      // Get start and end date of current month
+      const currentMonth = new Date();
+      const startDate = format(startOfMonth(currentMonth), "yyyy-MM-dd");
+      const endDate = format(endOfMonth(currentMonth), "yyyy-MM-dd");
+
+      const response = await api.getRecapAbsensi(startDate, endDate);
+
+      if (response.success && response.data) {
+        // Parse the response data
+        const { bulan, hadir, absen, telat } = response.data;
+
+        // Extract numbers from strings like "1 hari" -> 1
+        const parseAttendanceValue = (value: string) => {
+          const match = value.match(/\d+/);
+          return match ? parseInt(match[0], 10) : 0;
+        };
+
+        setAttendanceStats({
+          present: parseAttendanceValue(hadir),
+          absent: parseAttendanceValue(absen),
+          late: parseAttendanceValue(telat),
+          month: bulan,
+        });
+      } else {
+        // Fallback to default values if API fails
+        setAttendanceStats({
+          present: 0,
+          absent: 0,
+          late: 0,
+          month: format(today, "MMMM", { locale: id }),
+        });
+      }
+    } catch (error) {
+      console.error("Failed to fetch monthly attendance:", error);
+      toast.error("Gagal memuat data kehadiran bulanan");
+
+      // Set default values on error
+      setAttendanceStats({
+        present: 0,
+        absent: 0,
+        late: 0,
+        month: format(today, "MMMM", { locale: id }),
+      });
+    } finally {
+      setAttendanceLoading(false);
+    }
+  };
+
   // Handle check-in
   const handleCheckIn = async () => {
     if (isCheckedIn) return;
@@ -75,10 +136,11 @@ export const EmployeeDashboard: React.FC = () => {
       setIsCheckedIn(true);
       localStorage.setItem("checkedInDate", format(today, "yyyy-MM-dd"));
 
-      // Changed: Use react-hot-toast instead of custom toast state
       toast.success("Berhasil melakukan check in!");
+
+      // Refresh monthly attendance after successful check-in
+      fetchMonthlyAttendance();
     } catch (error: any) {
-      // Changed: Use react-hot-toast with better error handling
       let errorMessage = "Gagal melakukan check in. Silakan coba lagi.";
 
       if (error.message) {
@@ -120,29 +182,23 @@ export const EmployeeDashboard: React.FC = () => {
   // Helper functions untuk format waktu Indonesia
   const formatScheduleTime = (dateString: string) => {
     const date = new Date(dateString);
-    // Convert to Indonesia timezone (UTC+7)
     const indonesiaTime = new Date(date.getTime() + 7 * 60 * 60 * 1000);
     return format(indonesiaTime, "HH:mm", { locale: id });
   };
 
   const getCurrentIndonesiaTime = () => {
     const now = new Date();
-    // Convert to Indonesia timezone (UTC+7)
     const indonesiaTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
     return indonesiaTime;
   };
 
-  // Mock data
-  const attendanceStats = {
-    present: 18,
-    absent: 2,
-    late: 3,
-  };
+  // Calculate total working days for percentage calculation
+  const totalWorkingDays =
+    attendanceStats.present + attendanceStats.absent + attendanceStats.late;
+  const maxDays = Math.max(totalWorkingDays, 23); // Use 23 as minimum for percentage calculation
 
   return (
     <div className="animate-fade-in">
-      {/* Removed: Custom Toast component */}
-
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">
           Selamat datang, {user?.nama}
@@ -258,50 +314,86 @@ export const EmployeeDashboard: React.FC = () => {
           </div>
         </Card>
 
-        {/* Monthly Attendance */}
+        {/* Monthly Attendance - Updated with API integration */}
         <Card>
-          <h3 className="text-lg font-medium text-gray-800 mb-3">
-            Kehadiran Bulanan
-          </h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-lg font-medium text-gray-800">
+              Kehadiran Bulanan
+            </h3>
+            {attendanceLoading && (
+              <Loader2 size={16} className="animate-spin text-gray-400" />
+            )}
+          </div>
+
+          {attendanceStats.month && (
+            <p className="text-sm text-gray-600 mb-3">
+              Bulan {attendanceStats.month}
+            </p>
+          )}
+
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Present</span>
+              <span className="text-sm text-gray-600">Hadir</span>
               <span className="font-semibold text-green-600">
-                {attendanceStats.present} days
+                {attendanceStats.present} hari
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div
                 className="bg-green-500 h-2.5 rounded-full transition-all duration-500"
-                style={{ width: `${(attendanceStats.present / 23) * 100}%` }}
+                style={{
+                  width: `${
+                    totalWorkingDays > 0
+                      ? (attendanceStats.present / maxDays) * 100
+                      : 0
+                  }%`,
+                }}
               ></div>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Absent</span>
+              <span className="text-sm text-gray-600">Absen</span>
               <span className="font-semibold text-red-600">
-                {attendanceStats.absent} days
+                {attendanceStats.absent} hari
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div
                 className="bg-red-500 h-2.5 rounded-full transition-all duration-500"
-                style={{ width: `${(attendanceStats.absent / 23) * 100}%` }}
+                style={{
+                  width: `${
+                    totalWorkingDays > 0
+                      ? (attendanceStats.absent / maxDays) * 100
+                      : 0
+                  }%`,
+                }}
               ></div>
             </div>
 
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">Late</span>
+              <span className="text-sm text-gray-600">Telat</span>
               <span className="font-semibold text-yellow-600">
-                {attendanceStats.late} days
+                {attendanceStats.late} hari
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div
                 className="bg-yellow-500 h-2.5 rounded-full transition-all duration-500"
-                style={{ width: `${(attendanceStats.late / 23) * 100}%` }}
+                style={{
+                  width: `${
+                    totalWorkingDays > 0
+                      ? (attendanceStats.late / maxDays) * 100
+                      : 0
+                  }%`,
+                }}
               ></div>
             </div>
+
+            {totalWorkingDays > 0 && (
+              <div className="text-xs text-gray-500 mt-2 pt-2 border-t">
+                Total: {totalWorkingDays} hari kerja
+              </div>
+            )}
           </div>
         </Card>
       </div>

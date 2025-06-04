@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Calendar, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { format, addDays, startOfWeek, isSameDay } from "date-fns";
 import { id } from "date-fns/locale";
+import toast from "react-hot-toast";
 import { Schedule } from "../../types";
 import { api } from "../../utils/api";
 import { Card } from "../../components/common/Card";
@@ -15,7 +16,6 @@ export const EmployeeSchedule: React.FC = () => {
   );
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchSchedules();
@@ -29,11 +29,70 @@ export const EmployeeSchedule: React.FC = () => {
     try {
       setLoading(true);
       const response = await api.getEmployeeSchedules();
-      setSchedules(response.data || []);
-      setError(null);
-    } catch (err) {
-      setError("Failed to fetch schedules");
-      console.error(err);
+
+      // Set schedules regardless of whether data exists or not
+      const scheduleData = response.data || [];
+      setSchedules(scheduleData);
+
+      // Show appropriate toast message
+      if (scheduleData.length > 0) {
+        toast.success("Jadwal berhasil dimuat");
+      } else {
+        toast("Tidak ada jadwal yang tersedia", {
+          icon: "📅",
+          duration: 3000,
+        });
+      }
+    } catch (err: any) {
+      setSchedules([]);
+
+      if (err.response) {
+        const { status, data } = err.response;
+
+        switch (status) {
+          case 404:
+            toast.error("Data jadwal tidak ditemukan", {
+              duration: 4000,
+            });
+            break;
+          case 401:
+            toast.error("Sesi Anda telah berakhir. Silakan login kembali", {
+              duration: 5000,
+            });
+            break;
+          case 403:
+            toast.error("Anda tidak memiliki akses untuk melihat jadwal", {
+              duration: 4000,
+            });
+            break;
+          case 500:
+            toast.error("Terjadi kesalahan pada server. Coba lagi nanti", {
+              duration: 5000,
+            });
+            break;
+          case 503:
+            toast.error("Layanan sedang dalam maintenance", {
+              duration: 5000,
+            });
+            break;
+          default:
+            toast.error(
+              data?.message || `Terjadi kesalahan (${status}). Coba lagi nanti`,
+              {
+                duration: 4000,
+              }
+            );
+        }
+      } else if (err.request) {
+        toast.error(
+          "Tidak dapat terhubung ke server. Periksa koneksi internet Anda",
+          {
+            duration: 5000,
+          }
+        );
+      }
+
+      console.error("Error fetching schedules:", err);
     } finally {
       setLoading(false);
     }
@@ -73,6 +132,13 @@ export const EmployeeSchedule: React.FC = () => {
     setSelectedDate(newWeekStart); // Select the first day of the new week
   };
 
+  // Refresh schedules function with toast feedback
+  const handleRefreshSchedules = async () => {
+    toast.loading("Memuat ulang jadwal...", { id: "refresh-schedules" });
+    await fetchSchedules();
+    toast.dismiss("refresh-schedules");
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -84,17 +150,22 @@ export const EmployeeSchedule: React.FC = () => {
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Jadwal Saya</h1>
-        <p className="text-gray-600">
-          Lihat jadwal kerja Anda yang akan datang
-        </p>
-      </div>
-
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md text-red-700">
-          {error}
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Jadwal Saya</h1>
+            <p className="text-gray-600">
+              Lihat jadwal kerja Anda yang akan datang
+            </p>
+          </div>
+          <button
+            onClick={handleRefreshSchedules}
+            className="px-4 py-2 bg-durian-600 text-white rounded-lg hover:bg-durian-700 transition-colors"
+            disabled={loading}
+          >
+            Refresh
+          </button>
         </div>
-      )}
+      </div>
 
       {/* Date Navigation */}
       <Card className="mb-6">
@@ -214,5 +285,4 @@ export const EmployeeSchedule: React.FC = () => {
   );
 };
 
-// Default export untuk mengatasi error import
 export default EmployeeSchedule;
