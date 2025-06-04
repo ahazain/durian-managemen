@@ -1,13 +1,17 @@
 const { PrismaClient } = require("@prisma/client");
 const { Role } = require("@prisma/client");
 const prisma = new PrismaClient();
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const {
   NotFoundError,
   UnauthorizedError,
   BadRequestError,
 } = require("../utils/error-handling");
-const { formatTanggalIndonesia } = require("../utils/formated-waktu");
+const {
+  sendSuccesPasswordEmail,
+  sendForgotPasswordEmail,
+} = require("../utils/mailer");
 
 class profilService {
   static async updateProfil({ nama, email, id, phoneNumber }) {
@@ -129,6 +133,61 @@ class profilService {
     });
 
     return null;
+  }
+  static async forgetPassword({ email }) {
+    const foundUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (!foundUser) {
+      throw new NotFoundError("User tidak ditemukan.");
+    }
+
+    const resetToken = jwt.sign({ email }, process.env.RESET_PASSWORD_SECRET, {
+      expiresIn: "15m",
+    });
+
+    const resetLink = `http://localhost:5173/reset-password?token=${resetToken}`;
+
+    await sendForgotPasswordEmail(email, resetLink);
+
+    return {
+      reset_link: resetLink,
+    };
+  }
+
+  static async resetPassword(token, { newPassw, confirmPassw }) {
+    if (!token || !newPassw || !confirmPassw) {
+      throw new BadRequestError(
+        "Token, password baru, dan konfirmasi password diperlukan."
+      );
+    }
+
+    if (newPassw !== confirmPassw) {
+      throw new BadRequestError(
+        "Konfirmasi password tidak sama dengan password baru."
+      );
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.RESET_PASSWORD_SECRET);
+    } catch (err) {
+      throw new UnauthorizedError("Token tidak valid atau sudah kadaluarsa.");
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassw, 10);
+
+    await prisma.user.update({
+      where: { email: decoded.email },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    await sendSuccesPasswordEmail(decoded.email);
+
+    return { message: "Password berhasil diperbarui." };
   }
 }
 

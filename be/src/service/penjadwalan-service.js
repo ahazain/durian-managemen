@@ -157,6 +157,11 @@ class PenjadwalanService {
       throw new NotFoundError("Data jadwal kerja tidak ada di database");
     }
 
+    // Hapus semua absensi yang terkait dengan jadwal ini
+    await prisma.absensi.deleteMany({
+      where: { jadwal_id: id },
+    });
+
     // Hapus relasi dari tabel JadwalUser (many-to-many)
     await prisma.jadwalUser.deleteMany({
       where: { jadwalId: id },
@@ -185,7 +190,7 @@ class PenjadwalanService {
       throw new NotFoundError("Jadwal tidak ditemukan untuk user ini");
     }
 
-    return datajadwal.map((item) => item.jadwal); // hanya ambil isi jadwalnya
+    return datajadwal.map((item) => item.jadwal);
   }
 }
 module.exports = PenjadwalanService;

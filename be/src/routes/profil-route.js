@@ -11,5 +11,7 @@ route.get("/profil/all", profilController.getAll);
 route.get("/profil/all-karyawan", profilController.getAllKaryawan);
 route.get("/profil", verifyJWT, profilController.getById);
 route.put("/profil/update-password", verifyJWT, profilController.updatePassword )
+route.post('/profil/send-email',profilController.forgetPassword);
+route.post('/profil/reset-password',  profilController.resetPassword);
 
 module.exports = route;

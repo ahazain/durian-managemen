@@ -16,7 +16,12 @@ class ProfilController {
     try {
       const { id } = req.user;
       const { nama, email, phoneNumber } = req.body;
-      const data = await profilService.updateProfil({ nama, email, phoneNumber, id });
+      const data = await profilService.updateProfil({
+        nama,
+        email,
+        phoneNumber,
+        id,
+      });
       return response.success(res, data, "berhasil melakukan perubahan");
     } catch (error) {
       return response.error(res, error);
@@ -57,11 +62,41 @@ class ProfilController {
     const user = req.user;
     const { oldPassword, newPassword } = req.body;
     try {
-      const result = await profilService.updatePassword( {user,
+      const result = await profilService.updatePassword({
+        user,
         oldPassword,
         newPassword,
       });
       return response.success(res, result, "Password berhasil diubah");
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
+  static async forgetPassword(req, res) {
+    const { email } = req.body;
+
+    try {
+      const result = await profilService.forgetPassword({ email });
+      return response.success(
+        res,
+        result,
+        "Link reset password telah dikirim ke email"
+      );
+    } catch (error) {
+      return response.error(res, error);
+    }
+  }
+
+  static async resetPassword(req, res) {
+    const token = req.query.token;
+    const { newPassw, confirmPassw } = req.body;
+
+    try {
+      const result = await profilService.resetPassword(token, {
+        newPassw,
+        confirmPassw,
+      });
+      return response.success(res, result, "Password berhasil direset");
     } catch (error) {
       return response.error(res, error);
     }
