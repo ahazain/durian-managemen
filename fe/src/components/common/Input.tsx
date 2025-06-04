@@ -4,6 +4,7 @@ interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement | HTMLSelectElement> {
   label?: string;
   icon?: React.ReactNode;
+  rightIcon?: React.ReactNode; // Tambahkan prop ini
   as?: "input" | "select";
   children?: React.ReactNode;
 }
@@ -11,6 +12,7 @@ interface InputProps
 export const Input: React.FC<InputProps> = ({
   label,
   icon,
+  rightIcon, // Tambahkan parameter ini
   as = "input",
   className = "",
   children,
@@ -32,16 +34,28 @@ export const Input: React.FC<InputProps> = ({
             {icon}
           </div>
         )}
+
+        {/* Tambahkan bagian rightIcon */}
+        {rightIcon && (
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+            {rightIcon}
+          </div>
+        )}
+
         {as === "select" ? (
           <select
-            className={`${inputClasses} ${icon ? "pl-10" : ""} ${className}`}
+            className={`${inputClasses} ${icon ? "pl-10" : ""} ${
+              rightIcon ? "pr-10" : ""
+            } ${className}`}
             {...(props as React.SelectHTMLAttributes<HTMLSelectElement>)}
           >
             {children}
           </select>
         ) : (
           <input
-            className={`${inputClasses} ${icon ? "pl-10" : ""} ${className}`}
+            className={`${inputClasses} ${icon ? "pl-10" : ""} ${
+              rightIcon ? "pr-10" : ""
+            } ${className}`}
             {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
           />
         )}

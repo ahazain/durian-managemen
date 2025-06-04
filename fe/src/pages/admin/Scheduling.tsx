@@ -335,7 +335,7 @@ export const AdminScheduling: React.FC = () => {
 
       <div className="mb-6">
         <Input
-          placeholder="Search schedules..."
+          placeholder="Cari jadwal..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           icon={<Search size={18} />}

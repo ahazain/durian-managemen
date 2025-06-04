@@ -90,9 +90,9 @@ export const AdminAttendance: React.FC = () => {
     <div className="animate-fade-in">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">
-          Attendance Verification
+          Verifikasi Kehadiran Karyawan
         </h1>
-        <p className="text-gray-600">Verify employee attendance records.</p>
+        <p className="text-gray-600">Verifikasi catatan kehadiran karyawan.</p>
       </div>
 
       <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0 mb-6">
@@ -101,7 +101,7 @@ export const AdminAttendance: React.FC = () => {
             variant={filter === "all" ? "primary" : "outline"}
             onClick={() => setFilter("all")}
           >
-            All ({stats.verified + stats.pending})
+            Semua ({stats.verified + stats.pending})
           </Button>
           <Button
             variant={filter === "verified" ? "primary" : "outline"}
@@ -119,7 +119,7 @@ export const AdminAttendance: React.FC = () => {
 
         <div className="w-full md:w-64">
           <Input
-            placeholder="Search by name or date..."
+            placeholder="Cari karyawan..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             icon={<Search size={18} />}
@@ -133,10 +133,10 @@ export const AdminAttendance: React.FC = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Employee
+                  Karyawan
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
+                  Tanggal
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -145,7 +145,7 @@ export const AdminAttendance: React.FC = () => {
                   Verification
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Action
+                  Aksi
                 </th>
               </tr>
             </thead>
@@ -203,7 +203,8 @@ export const AdminAttendance: React.FC = () => {
                     colSpan={5}
                     className="px-6 py-4 text-center text-gray-500"
                   >
-                    No attendance records found matching your criteria
+                    Tidak ditemukan catatan kehadiran yang sesuai dengan
+                    kriteria Anda
                   </td>
                 </tr>
               )}
