@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Calendar, Plus, Search, Edit, Trash } from "lucide-react";
+import {
+  Calendar,
+  Plus,
+  Search,
+  Edit,
+  Trash,
+  AlertTriangle,
+  X,
+} from "lucide-react";
 import { format } from "date-fns";
+import toast from "react-hot-toast";
 import { Card } from "../../components/common/Card";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
@@ -8,17 +17,122 @@ import { MultiSelect } from "../../components/common/MultiSelect";
 import { Schedule } from "../../types";
 import { api } from "../../utils/api";
 
+// Komponen Modal Konfirmasi
+const ConfirmationModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
+  confirmText = "Hapus",
+  cancelText = "Batal",
+  type = "danger",
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  type?: "danger" | "warning" | "info";
+}) => {
+  if (!isOpen) return null;
+
+  const getTypeStyles = () => {
+    switch (type) {
+      case "danger":
+        return {
+          icon: <Trash className="h-6 w-6 text-red-600" />,
+          iconBg: "bg-red-100",
+          confirmBtn: "bg-red-600 hover:bg-red-700 text-white",
+        };
+      case "warning":
+        return {
+          icon: <AlertTriangle className="h-6 w-6 text-yellow-600" />,
+          iconBg: "bg-yellow-100",
+          confirmBtn: "bg-yellow-600 hover:bg-yellow-700 text-white",
+        };
+      default:
+        return {
+          icon: <AlertTriangle className="h-6 w-6 text-blue-600" />,
+          iconBg: "bg-blue-100",
+          confirmBtn: "bg-blue-600 hover:bg-blue-700 text-white",
+        };
+    }
+  };
+
+  const styles = getTypeStyles();
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          onClick={onClose}
+        ></div>
+
+        <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg animate-fadeIn">
+          <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+            <div className="sm:flex sm:items-start">
+              <div
+                className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full ${styles.iconBg} sm:mx-0 sm:h-10 sm:w-10`}
+              >
+                {styles.icon}
+              </div>
+              <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                <h3 className="text-base font-semibold leading-6 text-gray-900">
+                  {title}
+                </h3>
+                <div className="mt-2">
+                  <p className="text-sm text-gray-500">{message}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+            <button
+              type="button"
+              className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm sm:ml-3 sm:w-auto ${styles.confirmBtn}`}
+              onClick={onConfirm}
+            >
+              {confirmText}
+            </button>
+            <button
+              type="button"
+              className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+              onClick={onClose}
+            >
+              {cancelText}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const AdminScheduling: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [employees, setEmployees] = useState<{ id: string; nama: string }[]>(
     []
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [editingSchedule, setEditingSchedule] = useState<Schedule | null>(null);
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  }>({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
 
   useEffect(() => {
     fetchSchedules();
@@ -29,10 +143,9 @@ export const AdminScheduling: React.FC = () => {
     try {
       const response = await api.getEmployees();
       setEmployees(response.data || []);
-      setError(null);
     } catch (err) {
-      setError("Failed to fetch employees");
       console.error(err);
+      toast.error("Gagal memuat data pegawai");
     }
   };
 
@@ -41,10 +154,9 @@ export const AdminScheduling: React.FC = () => {
       setLoading(true);
       const response = await api.getSchedules();
       setSchedules(response.data || []);
-      setError(null);
     } catch (err) {
-      setError("Failed to fetch schedules");
       console.error(err);
+      toast.error("Gagal memuat data jadwal");
     } finally {
       setLoading(false);
     }
@@ -90,10 +202,11 @@ export const AdminScheduling: React.FC = () => {
       await api.createSchedule(scheduleData);
       await fetchSchedules();
       setShowAddForm(false);
-      setError(null);
+
+      toast.success("Jadwal berhasil dibuat!");
     } catch (err) {
       console.error("Failed to create schedule:", err);
-      setError("Failed to create schedule. Please try again.");
+      toast.error("Gagal membuat jadwal. Silakan coba lagi.");
     } finally {
       setIsSubmitting(false);
     }
@@ -102,31 +215,45 @@ export const AdminScheduling: React.FC = () => {
   const handleUpdateSchedule = async (id: string, data: Partial<Schedule>) => {
     try {
       setIsSubmitting(true);
+
       await api.updateSchedule(id, data);
       await fetchSchedules();
       setEditingSchedule(null);
-      setError(null);
+
+      toast.success("Jadwal berhasil diperbarui!");
     } catch (err) {
       console.error("Failed to update schedule:", err);
-      setError("Failed to update schedule. Please try again.");
+      toast.error("Gagal memperbarui jadwal. Silakan coba lagi.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const showDeleteConfirmation = (schedule: Schedule) => {
+    setConfirmModal({
+      isOpen: true,
+      title: "Hapus Jadwal",
+      message: `Apakah Anda yakin ingin menghapus jadwal "${schedule.title}"? Tindakan ini tidak dapat dibatalkan.`,
+      onConfirm: () => {
+        handleDeleteSchedule(schedule.id);
+        setConfirmModal((prev) => ({ ...prev, isOpen: false }));
+      },
+    });
+  };
+
   const handleDeleteSchedule = async (id: string) => {
-    if (window.confirm("Are you sure you want to delete this schedule?")) {
-      try {
-        setIsSubmitting(true);
-        await api.deleteSchedule(id);
-        await fetchSchedules();
-        setError(null);
-      } catch (err) {
-        console.error("Failed to delete schedule:", err);
-        setError("Failed to delete schedule. Please try again.");
-      } finally {
-        setIsSubmitting(false);
-      }
+    try {
+      setIsSubmitting(true);
+
+      await api.deleteSchedule(id);
+      await fetchSchedules();
+
+      toast.success("Jadwal berhasil dihapus!");
+    } catch (err) {
+      console.error("Failed to delete schedule:", err);
+      toast.error("Gagal menghapus jadwal. Silakan coba lagi.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -142,7 +269,15 @@ export const AdminScheduling: React.FC = () => {
 
     return (
       <Card className="mb-6 border-2 border-blue-200 animate-fadeIn">
-        <h2 className="text-lg font-semibold mb-4">Edit Jadwal</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">Edit Jadwal</h2>
+          <button
+            onClick={() => setEditingSchedule(null)}
+            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <X size={20} className="text-gray-500" />
+          </button>
+        </div>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -214,10 +349,10 @@ export const AdminScheduling: React.FC = () => {
               onClick={() => setEditingSchedule(null)}
               disabled={isSubmitting}
             >
-              Cancel
+              Batal
             </Button>
             <Button variant="primary" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Updating..." : "Update Jadwal"}
+              {isSubmitting ? "Memperbarui..." : "Perbarui Jadwal"}
             </Button>
           </div>
         </form>
@@ -230,7 +365,15 @@ export const AdminScheduling: React.FC = () => {
 
     return (
       <Card className="mb-6">
-        <h2 className="text-lg font-semibold mb-4">Tambah Jadwal Baru</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-semibold">Tambah Jadwal Baru</h2>
+          <button
+            onClick={() => setShowAddForm(false)}
+            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <X size={20} className="text-gray-500" />
+          </button>
+        </div>
         <form onSubmit={handleCreateSchedule}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
@@ -283,10 +426,10 @@ export const AdminScheduling: React.FC = () => {
               onClick={() => setShowAddForm(false)}
               disabled={isSubmitting}
             >
-              Cancel
+              Batal
             </Button>
             <Button variant="primary" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Buat Jadwal"}
+              {isSubmitting ? "Membuat..." : "Buat Jadwal"}
             </Button>
           </div>
         </form>
@@ -310,12 +453,6 @@ export const AdminScheduling: React.FC = () => {
           Membuat dan mengelola jadwal kerja untuk karyawan.
         </p>
       </div>
-
-      {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-md text-red-700">
-          {error}
-        </div>
-      )}
 
       {editingSchedule ? (
         <EditScheduleForm schedule={editingSchedule} />
@@ -409,7 +546,7 @@ export const AdminScheduling: React.FC = () => {
                     variant="danger"
                     size="sm"
                     icon={<Trash size={16} />}
-                    onClick={() => handleDeleteSchedule(schedule.id)}
+                    onClick={() => showDeleteConfirmation(schedule)}
                     disabled={isSubmitting}
                   >
                     Hapus
@@ -423,12 +560,12 @@ export const AdminScheduling: React.FC = () => {
             <div className="text-center py-8">
               <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900">
-                No schedules found
+                Tidak ada jadwal ditemukan
               </h3>
               <p className="mt-1 text-sm text-gray-500">
                 {searchTerm
-                  ? "Try adjusting your search criteria."
-                  : "Create your first schedule to get started."}
+                  ? "Coba sesuaikan kriteria pencarian Anda."
+                  : "Buat jadwal pertama Anda untuk memulai."}
               </p>
               <div className="mt-6">
                 <Button
@@ -436,13 +573,25 @@ export const AdminScheduling: React.FC = () => {
                   onClick={() => setShowAddForm(true)}
                   disabled={isSubmitting}
                 >
-                  Create New Schedule
+                  Buat Jadwal Baru
                 </Button>
               </div>
             </div>
           </Card>
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        onClose={() => setConfirmModal((prev) => ({ ...prev, isOpen: false }))}
+        onConfirm={confirmModal.onConfirm}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        confirmText="Hapus"
+        cancelText="Batal"
+        type="danger"
+      />
     </div>
   );
 };

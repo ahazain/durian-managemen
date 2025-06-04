@@ -15,21 +15,37 @@ import { useAuth } from "../../contexts/AuthContext";
 import { api } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
+// Interface untuk schedule
+interface Schedule {
+  id: string;
+  title: string;
+  start: string;
+  end: string;
+  description?: string;
+}
+
+// Interface untuk attendance stats
+interface AttendanceStats {
+  present: number;
+  absent: number;
+  late: number;
+  month: string;
+}
+
 export const EmployeeDashboard: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const today = new Date();
 
   // State for check-in functionality
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   // State for schedule functionality
-  const [todaySchedules, setTodaySchedules] = useState<any[]>([]);
+  const [todaySchedules, setTodaySchedules] = useState<Schedule[]>([]);
   const [scheduleLoading, setScheduleLoading] = useState(true);
 
-  // State for monthly attendance - Updated to use API data
-  const [attendanceStats, setAttendanceStats] = useState({
+  // State for monthly attendance
+  const [attendanceStats, setAttendanceStats] = useState<AttendanceStats>({
     present: 0,
     absent: 0,
     late: 0,
@@ -37,10 +53,53 @@ export const EmployeeDashboard: React.FC = () => {
   });
   const [attendanceLoading, setAttendanceLoading] = useState(true);
 
+  // FIXED: Timezone utility functions
+  const getIndonesiaTime = (date: Date = new Date()): Date => {
+    // Menggunakan Intl API untuk timezone yang akurat
+    const indonesiaTimeString = date.toLocaleString("en-US", {
+      timeZone: "Asia/Jakarta",
+    });
+    return new Date(indonesiaTimeString);
+  };
+
+  const formatIndonesiaTime = (
+    date: Date | string,
+    formatStr: string = "HH:mm"
+  ): string => {
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+    const indonesiaDate = getIndonesiaTime(dateObj);
+    return format(indonesiaDate, formatStr, { locale: id });
+  };
+
+  const formatIndonesiaDate = (
+    date: Date | string,
+    formatStr: string = "EEEE, d MMMM yyyy"
+  ): string => {
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+    const indonesiaDate = getIndonesiaTime(dateObj);
+    return format(indonesiaDate, formatStr, { locale: id });
+  };
+
+  const getTodayIndonesia = (): string => {
+    const today = getIndonesiaTime();
+    return format(today, "yyyy-MM-dd");
+  };
+
+  const getCurrentIndonesiaTime = (): Date => {
+    return getIndonesiaTime();
+  };
+
+  // FIXED: Format schedule time dengan timezone Indonesia yang benar
+  const formatScheduleTime = (dateString: string): string => {
+    return formatIndonesiaTime(dateString, "HH:mm");
+  };
+
   // Check if user has already checked in
   useEffect(() => {
+    // FIXED: Gunakan tanggal Indonesia untuk pengecekan
+    const todayIndonesia = getTodayIndonesia();
     const checkedInToday =
-      localStorage.getItem("checkedInDate") === format(today, "yyyy-MM-dd");
+      localStorage.getItem("checkedInDate") === todayIndonesia;
     setIsCheckedIn(checkedInToday);
 
     // Fetch today's schedules and monthly attendance
@@ -48,18 +107,30 @@ export const EmployeeDashboard: React.FC = () => {
     fetchMonthlyAttendance();
   }, []);
 
-  // Fetch today's schedules
-  const fetchTodaySchedules = async () => {
+  // FIXED: Fetch today's schedules dengan timezone Indonesia
+  const fetchTodaySchedules = async (): Promise<void> => {
     try {
       setScheduleLoading(true);
       const response = await api.getEmployeeSchedules();
-      const schedules = response.data || [];
+      const schedules: Schedule[] = response.data || [];
 
-      // Filter schedules for today
-      const todayFormatted = format(today, "yyyy-MM-dd");
-      const todaySchedulesList = schedules.filter((schedule: any) => {
-        const scheduleDate = format(new Date(schedule.start), "yyyy-MM-dd");
-        return scheduleDate === todayFormatted;
+      // FIXED: Filter schedules untuk hari ini dengan timezone Indonesia
+      const todayIndonesia = getTodayIndonesia();
+      const todaySchedulesList = schedules.filter((schedule: Schedule) => {
+        // Convert schedule date ke Indonesia timezone
+        const scheduleIndonesiaTime = getIndonesiaTime(
+          new Date(schedule.start)
+        );
+        const scheduleDateStr = format(scheduleIndonesiaTime, "yyyy-MM-dd");
+
+        // Debug logging
+        console.log("Schedule original:", schedule.start);
+        console.log("Schedule Indonesia time:", scheduleIndonesiaTime);
+        console.log("Schedule date string:", scheduleDateStr);
+        console.log("Today Indonesia:", todayIndonesia);
+        console.log("Match:", scheduleDateStr === todayIndonesia);
+
+        return scheduleDateStr === todayIndonesia;
       });
 
       setTodaySchedules(todaySchedulesList);
@@ -71,45 +142,101 @@ export const EmployeeDashboard: React.FC = () => {
     }
   };
 
-  // Fetch monthly attendance data - NEW FUNCTION
-  const fetchMonthlyAttendance = async () => {
+  // Fetch monthly attendance data
+  const fetchMonthlyAttendance = async (): Promise<void> => {
     try {
       setAttendanceLoading(true);
 
-      // Get start and end date of current month
-      const currentMonth = new Date();
+      // FIXED: Get start and end date of current month dalam timezone Indonesia
+      const currentMonth = getIndonesiaTime();
       const startDate = format(startOfMonth(currentMonth), "yyyy-MM-dd");
       const endDate = format(endOfMonth(currentMonth), "yyyy-MM-dd");
 
       const response = await api.getRecapAbsensi(startDate, endDate);
 
-      if (response.success && response.data) {
-        // Parse the response data
-        const { bulan, hadir, absen, telat } = response.data;
+      console.log("Full API Response:", response);
 
-        // Extract numbers from strings like "1 hari" -> 1
-        const parseAttendanceValue = (value: string) => {
-          const match = value.match(/\d+/);
-          return match ? parseInt(match[0], 10) : 0;
+      if (response.success && response.data) {
+        const responseData = response.data;
+
+        console.log("Response data object:", responseData);
+        console.log("Individual properties:", {
+          bulan: responseData.bulan,
+          hadir: responseData.hadir,
+          alpha: responseData.alpha,
+          telat: responseData.telat,
+        });
+
+        // Enhanced function to parse attendance values with better error handling
+        const parseAttendanceValue = (
+          value: any,
+          fieldName: string
+        ): number => {
+          console.log(`Parsing ${fieldName}:`, value, "Type:", typeof value);
+
+          // Handle null or undefined
+          if (value === null || value === undefined) {
+            console.warn(`${fieldName} is null/undefined`);
+            return 0;
+          }
+
+          // Handle number type
+          if (typeof value === "number") {
+            return value;
+          }
+
+          // Handle string type
+          if (typeof value === "string") {
+            // Extract numbers from strings like "1 hari" -> 1
+            const match = value.match(/\d+/);
+            const result = match ? parseInt(match[0], 10) : 0;
+            console.log(`Extracted from "${value}":`, result);
+            return result;
+          }
+
+          // Return 0 for other types
+          console.warn(
+            `Unexpected type for ${fieldName}:`,
+            typeof value,
+            value
+          );
+          return 0;
         };
 
+        // Parse each field individually with logging
+        const presentCount = parseAttendanceValue(responseData.hadir, "hadir");
+        const absentCount = parseAttendanceValue(responseData.alpha, "alpha");
+        const lateCount = parseAttendanceValue(responseData.telat, "telat");
+
+        console.log("Parsed values:", { presentCount, absentCount, lateCount });
+
         setAttendanceStats({
-          present: parseAttendanceValue(hadir),
-          absent: parseAttendanceValue(absen),
-          late: parseAttendanceValue(telat),
-          month: bulan,
+          present: presentCount,
+          absent: absentCount,
+          late: lateCount,
+          month:
+            responseData.bulan ||
+            formatIndonesiaTime(getCurrentIndonesiaTime(), "MMMM"),
         });
       } else {
         // Fallback to default values if API fails
+        console.warn("API response unsuccessful or no data:", response);
         setAttendanceStats({
           present: 0,
           absent: 0,
           late: 0,
-          month: format(today, "MMMM", { locale: id }),
+          month: formatIndonesiaTime(getCurrentIndonesiaTime(), "MMMM"),
         });
       }
     } catch (error) {
       console.error("Failed to fetch monthly attendance:", error);
+
+      // Log the full error for debugging
+      if (error instanceof Error) {
+        console.error("Error details:", error.message);
+        console.error("Error stack:", error.stack);
+      }
+
       toast.error("Gagal memuat data kehadiran bulanan");
 
       // Set default values on error
@@ -117,24 +244,25 @@ export const EmployeeDashboard: React.FC = () => {
         present: 0,
         absent: 0,
         late: 0,
-        month: format(today, "MMMM", { locale: id }),
+        month: formatIndonesiaTime(getCurrentIndonesiaTime(), "MMMM"),
       });
     } finally {
       setAttendanceLoading(false);
     }
   };
 
-  // Handle check-in
-  const handleCheckIn = async () => {
+  // FIXED: Handle check-in dengan timezone Indonesia
+  const handleCheckIn = async (): Promise<void> => {
     if (isCheckedIn) return;
 
     setIsLoading(true);
     try {
       const response = await api.checkIn();
 
-      // Update state and store in localStorage
+      // FIXED: Update state dan store tanggal Indonesia
       setIsCheckedIn(true);
-      localStorage.setItem("checkedInDate", format(today, "yyyy-MM-dd"));
+      const todayIndonesia = getTodayIndonesia();
+      localStorage.setItem("checkedInDate", todayIndonesia);
 
       toast.success("Berhasil melakukan check in!");
 
@@ -163,33 +291,20 @@ export const EmployeeDashboard: React.FC = () => {
   };
 
   // Navigation handlers
-  const handleNavigateToSchedule = () => {
+  const handleNavigateToSchedule = (): void => {
     navigate("schedule");
   };
 
-  const handleNavigateToAttendance = () => {
+  const handleNavigateToAttendance = (): void => {
     navigate("attendance");
   };
 
-  const handleNavigateToPrediction = () => {
+  const handleNavigateToPrediction = (): void => {
     navigate("prediction");
   };
 
-  const handleNavigateToAccount = () => {
+  const handleNavigateToAccount = (): void => {
     navigate("account");
-  };
-
-  // Helper functions untuk format waktu Indonesia
-  const formatScheduleTime = (dateString: string) => {
-    const date = new Date(dateString);
-    const indonesiaTime = new Date(date.getTime() + 7 * 60 * 60 * 1000);
-    return format(indonesiaTime, "HH:mm", { locale: id });
-  };
-
-  const getCurrentIndonesiaTime = () => {
-    const now = new Date();
-    const indonesiaTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
-    return indonesiaTime;
   };
 
   // Calculate total working days for percentage calculation
@@ -204,9 +319,7 @@ export const EmployeeDashboard: React.FC = () => {
           Selamat datang, {user?.nama}
         </h1>
         <p className="text-gray-600">
-          {format(getCurrentIndonesiaTime(), "EEEE, d MMMM yyyy", {
-            locale: id,
-          })}
+          {formatIndonesiaDate(getCurrentIndonesiaTime(), "EEEE, d MMMM yyyy")}
         </p>
       </div>
 
@@ -218,9 +331,9 @@ export const EmployeeDashboard: React.FC = () => {
               Kehadiran Hari Ini
             </h2>
             <p className="text-gray-600">
-              {format(getCurrentIndonesiaTime(), "d MMMM yyyy", { locale: id })}{" "}
-              | Waktu saat ini:{" "}
-              {format(getCurrentIndonesiaTime(), "HH:mm", { locale: id })} WIB
+              {formatIndonesiaDate(getCurrentIndonesiaTime(), "d MMMM yyyy")} |
+              Waktu saat ini:{" "}
+              {formatIndonesiaTime(getCurrentIndonesiaTime(), "HH:mm")} WIB
             </p>
           </div>
           <Button
@@ -314,7 +427,7 @@ export const EmployeeDashboard: React.FC = () => {
           </div>
         </Card>
 
-        {/* Monthly Attendance - Updated with API integration */}
+        {/* Monthly Attendance */}
         <Card>
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-lg font-medium text-gray-800">

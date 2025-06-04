@@ -11,6 +11,8 @@ import { AppLayout } from "./components/layout/AppLayout";
 // Pages
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
+import { ForgotPassword } from "./pages/ForgotPassword";
+import { ResetPassword } from "./pages/ResetPassword";
 
 // Admin Pages
 import { AdminDashboard } from "./pages/admin/Dashboard";
@@ -36,6 +38,8 @@ function App() {
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AppLayout />}>
