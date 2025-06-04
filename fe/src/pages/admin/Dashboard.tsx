@@ -63,25 +63,21 @@ export const AdminDashboard: React.FC = () => {
 
   const stats = [
     {
-      label: "Total Employees",
+      label: "Jumlah Karyawan",
       value: totalEmployees,
       icon: <Users size={24} className="text-blue-500" />,
     },
     {
-      label: "Pending Attendance",
+      label: "Kehadiran Yang terlambat",
       value: attendanceStats.pending.toString(),
       icon: <Calendar size={24} className="text-durian-yellow-500" />,
     },
     {
-      label: "Verified Attendance",
+      label: "Kehadiran Terverifikasi",
       value: attendanceStats.verified.toString(),
       icon: <CheckCircle size={24} className="text-green-500" />,
     },
-    {
-      label: "Revenue This Month",
-      value: "Rp 12.5M",
-      icon: <DollarSign size={24} className="text-purple-500" />,
-    },
+    
   ];
 
   const formatDate = (date: Date): string => {
@@ -151,10 +147,10 @@ export const AdminDashboard: React.FC = () => {
     <div className="animate-fade-in">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-800">
-          Welcome back, {user?.nama}
+          Selamat datang kembali, {user?.nama}
         </h1>
         <p className="text-gray-600">
-          Here's what's happening with your durian business today.
+          Inilah yang terjadi dengan bisnis durian Anda saat ini.
         </p>
       </div>
 
@@ -268,7 +264,7 @@ export const AdminDashboard: React.FC = () => {
         </Card>
 
         {/* Quick Actions */}
-        <Card title="Quick Actions">
+        <Card title="Tindakan Cepat">
           <div className="space-y-3">
             <a
               href="/admin/scheduling"
@@ -276,7 +272,7 @@ export const AdminDashboard: React.FC = () => {
             >
               <div className="flex items-center">
                 <Calendar size={18} className="text-durian-600 mr-2" />
-                <span className="font-medium">Create New Schedule</span>
+                <span className="font-medium">Buat Jadwal Baru</span>
               </div>
             </a>
             <a
@@ -285,7 +281,7 @@ export const AdminDashboard: React.FC = () => {
             >
               <div className="flex items-center">
                 <CheckCircle size={18} className="text-blue-600 mr-2" />
-                <span className="font-medium">Verify Attendance</span>
+                <span className="font-medium">Absensi Karyawan</span>
               </div>
             </a>
             <a
@@ -294,7 +290,7 @@ export const AdminDashboard: React.FC = () => {
             >
               <div className="flex items-center">
                 <Users size={18} className="text-purple-600 mr-2" />
-                <span className="font-medium">Manage Employees</span>
+                <span className="font-medium">Managemen Akun</span>
               </div>
             </a>
             <a
@@ -303,7 +299,7 @@ export const AdminDashboard: React.FC = () => {
             >
               <div className="flex items-center">
                 <DollarSign size={18} className="text-durian-yellow-600 mr-2" />
-                <span className="font-medium">Predict Durian Quality</span>
+                <span className="font-medium">Prediksi Durian</span>
               </div>
             </a>
           </div>

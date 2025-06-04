@@ -230,33 +230,33 @@ export const AdminScheduling: React.FC = () => {
 
     return (
       <Card className="mb-6">
-        <h2 className="text-lg font-semibold mb-4">Add New Schedule</h2>
+        <h2 className="text-lg font-semibold mb-4">Tambah Jadwal Baru</h2>
         <form onSubmit={handleCreateSchedule}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              label="Title"
+              label="Judul"
               name="title"
-              placeholder="Schedule title"
+              placeholder="Judul Jadwal"
               required
             />
 
             <div className="md:col-span-2">
               <Input
-                label="Description"
+                label="Deskripsi"
                 name="description"
-                placeholder="Schedule description"
+                placeholder="Deskripsi jadwal"
               />
             </div>
 
             <Input
-              label="Start Date & Time"
+              label="Tanggal & Waktu Mulai"
               name="start"
               type="datetime-local"
               required
             />
 
             <Input
-              label="End Date & Time"
+              label="Tanggal & Waktu Berakhir"
               name="end"
               type="datetime-local"
               required
@@ -286,7 +286,7 @@ export const AdminScheduling: React.FC = () => {
               Cancel
             </Button>
             <Button variant="primary" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Schedule"}
+              {isSubmitting ? "Creating..." : "Buat Jadwal"}
             </Button>
           </div>
         </form>
@@ -305,9 +305,9 @@ export const AdminScheduling: React.FC = () => {
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Scheduling</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Jadwal</h1>
         <p className="text-gray-600">
-          Create and manage work schedules for employees.
+          Membuat dan mengelola jadwal kerja untuk karyawan.
         </p>
       </div>
 
@@ -328,7 +328,7 @@ export const AdminScheduling: React.FC = () => {
             onClick={() => setShowAddForm(true)}
             icon={<Plus size={16} />}
           >
-            Add New Schedule
+            Tambah Jadwal Baru
           </Button>
         </div>
       )}
@@ -412,7 +412,7 @@ export const AdminScheduling: React.FC = () => {
                     onClick={() => handleDeleteSchedule(schedule.id)}
                     disabled={isSubmitting}
                   >
-                    Delete
+                    Hapus
                   </Button>
                 </div>
               </div>

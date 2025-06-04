@@ -84,7 +84,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex-1">
               {selectedOptions.length === 0 ? (
-                <span className="text-gray-500">Select employees...</span>
+                <span className="text-gray-500">Pilih Karyawan...</span>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {selectedOptions.map((option) => (
@@ -141,7 +141,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                   ref={searchInputRef}
                   type="text"
                   className="w-full px-2 py-1.5 text-sm border border-gray-200 rounded-md focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200"
-                  placeholder="Search employees..."
+                  placeholder="Pilih Karyawan..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
@@ -181,7 +181,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                   ))
                 ) : (
                   <div className="px-3 py-2 text-sm text-gray-500 text-center">
-                    No employees found
+                    Tidak ada Karyawan
                   </div>
                 )}
               </div>

@@ -157,11 +157,8 @@ export const AdminAccounts: React.FC = () => {
   return (
     <div className="animate-fade-in">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Account Management</h1>
-        <p className="text-gray-600">
-          Manage employee and admin accounts. Total Admins: {stats.total_admin},
-          Total Employees: {stats.total_karyawan}
-        </p>
+        <h1 className="text-2xl font-bold text-gray-800">managemen Akun</h1>
+        <p className="text-gray-600">Kelola akun karyawan dan admin</p>
       </div>
 
       {error && (
@@ -190,7 +187,7 @@ export const AdminAccounts: React.FC = () => {
                 variant={currentTab === "KARYAWAN" ? "primary" : "outline"}
                 onClick={() => setCurrentTab("KARYAWAN")}
               >
-                Employees ({stats.total_karyawan})
+                Karyawan ({stats.total_karyawan})
               </Button>
             </div>
           </div>
@@ -198,7 +195,7 @@ export const AdminAccounts: React.FC = () => {
           <div className="w-full sm:w-auto flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
             <div className="relative">
               <Input
-                placeholder="Search accounts..."
+                placeholder="Cari Akun..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 icon={<Search size={18} />}
@@ -211,7 +208,7 @@ export const AdminAccounts: React.FC = () => {
               icon={<UserPlus size={18} />}
               onClick={() => handleOpenModal()}
             >
-              Add New
+              Tambah Akun
             </Button>
           </div>
         </div>
@@ -221,13 +218,13 @@ export const AdminAccounts: React.FC = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
+                  Nama
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Role
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  Aksi
                 </th>
               </tr>
             </thead>

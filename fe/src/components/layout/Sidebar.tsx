@@ -34,24 +34,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
   const adminLinks = [
     { to: "/admin", icon: <Home size={20} />, label: "Dashboard" },
     {
+      to: "/admin/profil",
+      icon: <Users size={20} />,
+      label: "Profil Akun",
+    },
+    {
       to: "/admin/accounts",
       icon: <Users size={20} />,
-      label: "Account Management",
+      label: "Management Akun",
     },
     {
       to: "/admin/scheduling",
       icon: <Calendar size={20} />,
-      label: "Scheduling",
+      label: "Jadwal Kerja",
     },
     {
       to: "/admin/attendance",
       icon: <CheckCircle size={20} />,
-      label: "Attendance Verification",
+      label: "Absensi Karyawan",
     },
     {
       to: "/admin/prediction",
       icon: <Fruit size={20} />,
-      label: "Durian Prediction",
+      label: "Prediksi Durian",
     },
   ];
 
@@ -101,7 +106,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
             <div className="flex items-center space-x-2">
               <Fruit className="h-8 w-8 text-durian-600" />
               <h1 className="text-xl font-bold text-durian-800">
-                 Manajemen Durian
+                Manajemen Durian
               </h1>
             </div>
           </div>
@@ -137,17 +142,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobile }) => {
               <div className="h-10 w-10 rounded-full overflow-hidden mr-3">
                 <img
                   src={
-                    user.avatar ||
                     "https://static.vecteezy.com/system/resources/previews/021/548/095/original/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg"
                   }
-                  alt={user.fullName}
+                  alt={user.nama}
                   className="h-full w-full object-cover"
                 />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-700">
-                  {user.fullName}
-                </p>
+                <p className="text-sm font-medium text-gray-700">{user.nama}</p>
                 <p className="text-xs text-gray-500 capitalize">{user.role}</p>
               </div>
             </div>

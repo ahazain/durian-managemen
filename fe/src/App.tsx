@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,6 +15,7 @@ import { Register } from "./pages/Register";
 // Admin Pages
 import { AdminDashboard } from "./pages/admin/Dashboard";
 import { AdminAccounts } from "./pages/admin/Accounts";
+import { Profil } from "./pages/admin/Profil";
 import { AdminScheduling } from "./pages/admin/Scheduling";
 import { AdminAttendance } from "./pages/admin/Attendance";
 import { AdminDurianPrediction } from "./pages/admin/DurianPrediction";
@@ -41,6 +41,7 @@ function App() {
           <Route path="/admin" element={<AppLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="accounts" element={<AdminAccounts />} />
+            <Route path="profil" element={<Profil />} />
             <Route path="scheduling" element={<AdminScheduling />} />
             <Route path="attendance" element={<AdminAttendance />} />
             <Route path="prediction" element={<AdminDurianPrediction />} />
